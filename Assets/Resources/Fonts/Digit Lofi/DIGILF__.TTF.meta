@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: fc6162f35e5806a4ea4c48a26340ef6c
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Digit
+  fontNames:
+  - Digit
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 887b04ba6e3457b4fbbbfbe97e081ace, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
