@@ -1,0 +1,494 @@
+fileFormatVersion: 2
+guid: ce78a3fde4adf3c44bc15e5b745755fd
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3485867745739191255
+    second: n_grass_diff_0_04_0
+  - first:
+      213: 6594044686224425552
+    second: n_grass_diff_0_04_1
+  - first:
+      213: -2941408427717326586
+    second: n_grass_diff_0_04_2
+  - first:
+      213: -8487890122354078176
+    second: n_grass_diff_0_04_3
+  - first:
+      213: 5641669784740229952
+    second: n_grass_diff_0_04_4
+  - first:
+      213: 7942283290957139828
+    second: n_grass_diff_0_04_5
+  - first:
+      213: 6855235252789796765
+    second: n_grass_diff_0_04_6
+  - first:
+      213: -3656058837495938079
+    second: n_grass_diff_0_04_7
+  - first:
+      213: -2023361044031732346
+    second: n_grass_diff_0_04_8
+  - first:
+      213: -6759209132479118128
+    second: n_grass_diff_0_04_9
+  - first:
+      213: 8740818116676495605
+    second: n_grass_diff_0_04_10
+  - first:
+      213: -8103848553617782712
+    second: n_grass_diff_0_04_11
+  - first:
+      213: -4648205571521865777
+    second: n_grass_diff_0_04_12
+  - first:
+      213: -5494085355220709559
+    second: n_grass_diff_0_04_13
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: n_grass_diff_0_04_0
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 112
+        width: 15
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d3b6ceee3a406030800000000000000
+      internalID: 3485867745739191255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: n_grass_diff_0_04_1
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 114
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 052857394b0c28b50800000000000000
+      internalID: 6594044686224425552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: n_grass_diff_0_04_2
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 82
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60981968e940e27d0800000000000000
+      internalID: -2941408427717326586
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: n_grass_diff_0_04_3
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 91
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02ec98c87e4f43a80800000000000000
+      internalID: -8487890122354078176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: n_grass_diff_0_04_4
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 79
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 043fe7347cc3b4e40800000000000000
+      internalID: 5641669784740229952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: n_grass_diff_0_04_5
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 49
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47f4507b298a83e60800000000000000
+      internalID: 7942283290957139828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: n_grass_diff_0_04_6
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 43
+        width: 21
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9f554e4420b22f50800000000000000
+      internalID: 6855235252789796765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: n_grass_diff_0_04_7
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 49
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e38021abd1134dc0800000000000000
+      internalID: -3656058837495938079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: n_grass_diff_0_04_8
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 24
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6850026c9d39be3e0800000000000000
+      internalID: -2023361044031732346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: n_grass_diff_0_04_9
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 18
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d481081b177232a0800000000000000
+      internalID: -6759209132479118128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: n_grass_diff_0_04_10
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 27
+        width: 21
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f82dca24cf9d4970800000000000000
+      internalID: 8740818116676495605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: n_grass_diff_0_04_11
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 5
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8488c003da8598f80800000000000000
+      internalID: -8103848553617782712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: n_grass_diff_0_04_12
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 13
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc79272f8a14e7fb0800000000000000
+      internalID: -4648205571521865777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: n_grass_diff_0_04_13
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 6
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94fc4647a7611c3b0800000000000000
+      internalID: -5494085355220709559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      n_grass_diff_0_04_0: 3485867745739191255
+      n_grass_diff_0_04_1: 6594044686224425552
+      n_grass_diff_0_04_10: 8740818116676495605
+      n_grass_diff_0_04_11: -8103848553617782712
+      n_grass_diff_0_04_12: -4648205571521865777
+      n_grass_diff_0_04_13: -5494085355220709559
+      n_grass_diff_0_04_2: -2941408427717326586
+      n_grass_diff_0_04_3: -8487890122354078176
+      n_grass_diff_0_04_4: 5641669784740229952
+      n_grass_diff_0_04_5: 7942283290957139828
+      n_grass_diff_0_04_6: 6855235252789796765
+      n_grass_diff_0_04_7: -3656058837495938079
+      n_grass_diff_0_04_8: -2023361044031732346
+      n_grass_diff_0_04_9: -6759209132479118128
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

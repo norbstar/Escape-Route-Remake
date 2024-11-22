@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 using UI;
+using System.Linq;
 
 namespace Tests
 {
@@ -16,6 +18,7 @@ namespace Tests
         [Header("Audio")]
         [SerializeField] AudioClip jumpClip;
         [SerializeField] AudioClip landClip;
+        [SerializeField] AudioClip dashClip;
 
         [Header("UI")]
         [SerializeField] AttributeUI isGroundedUI;
@@ -28,15 +31,17 @@ namespace Tests
         [SerializeField] float moveSpeed = 25f;
 
         [Header("Jump")]
-        [Range(0f, 250f)]
-        [SerializeField] float minJumpSpeed = 250f;
-        [Range(250f, 500f)]
+        [Range(200f, 400f)]
+        [SerializeField] float minJumpSpeed = 300f;
+        [Range(400f, 600f)]
         [SerializeField] float midJumpSpeed = 500f;
-        [Range(500f, 750f)]
-        [SerializeField] float maxJumpSpeed = 750f;
+        [Range(600f, 800f)]
+        [SerializeField] float maxJumpSpeed = 700f;
 
         [Header("Dash")]
-        [SerializeField] float dashSpeed = 100f;
+        [Range(10f, 100f)]
+        [SerializeField] float dashSpeed = 50f;
+        [SerializeField] float dashDuration = 0.05f;
 
         [Header("Move Stats")]
         [SerializeField] float moveXValue;
@@ -51,19 +56,29 @@ namespace Tests
         [Header("Inferences")]
         [SerializeField] bool isGrounded;
 
+
         private InputSystem_Actions inputActions;
         private Rigidbody2D rigidBody;
+        private new Collider2D collider;
         private AudioSource audioSource;
         private PlayerState state;
 
         private bool execRun, execJump/*, execPowerJump*/, execDash;
         private float jumpPressStartTime, jumpHeldDuration;
+        private bool suspendInput, monitorDash, isDashing;
+        private float linearDamping;
+        private int layerMask;
+        private bool hasHit;
+        private RaycastHit hit;
 
         void Awake()
         {
             rigidBody = GetComponent<Rigidbody2D>();
+            collider = GetComponent<Collider2D>();
             audioSource = GetComponent<AudioSource>();
             inputActions = new InputSystem_Actions();
+            linearDamping = rigidBody.linearDamping;
+            layerMask = LayerMask.GetMask("Player");
         }
 
         void OnEnable()
@@ -124,28 +139,37 @@ namespace Tests
 
         private void OnJumpPressIntent(InputAction.CallbackContext context)
         {
-            // Debug.Log("OnJumpPressIntent");
+            if (suspendInput) return;
+
+            // Debug.Log($"OnJumpPressIntent State: {state}");
+
             jumpPressStartTime = Time.time;
         }
 
         private void OnJumpReleaseIntent(InputAction.CallbackContext context)
         {
-            // Debug.Log("OnJumpReleaseIntent");
+            if (suspendInput) return;
+
+            // Debug.Log($"OnJumpReleaseIntent State: {state}");
+
             jumpHeldDuration = Time.time - jumpPressStartTime;
             execJump = true;
         }
 
         private void OnDashIntent(InputAction.CallbackContext context)
         {
-            // Debug.Log("OnDashIntent");
+            if (suspendInput) return;
 
-            if (isGrounded)
+            // Debug.Log($"OnDashIntent State: {state}");
+
+            if (state == PlayerState.Running)
             {
+                suspendInput = true;
                 execDash = true;
             }
         }
 
-        private void EvalualRawIntents()
+        private void ScanRawIntents()
         {
             var rawValue = inputActions.Player.Move.ReadValue<Vector2>();
             moveXValue = rawValue.x;
@@ -160,6 +184,10 @@ namespace Tests
 
         private void OnRunIntent()
         {
+            // Debug.Log($"OnRunIntent State: {state}");
+
+            if (suspendInput) return;
+
             if (isGrounded && Mathf.Abs(trueMoveXValue) > Mathf.Epsilon)
             {
                 execRun = true;
@@ -182,12 +210,19 @@ namespace Tests
         // Update is called once per frame
         void Update()
         {
-            EvalualRawIntents();
             UpdateUI();
+
+            if (monitorDash)
+            {
+                monitorDash = false;
+                StartCoroutine(Co_Dash());
+            }
         }
 
         private void ApplyRun()
         {
+            // Debug.Log("ApplyRun");
+
             rigidBody.linearVelocityX = trueMoveXValue * moveSpeed;
             execRun = false;
         }
@@ -206,6 +241,8 @@ namespace Tests
 
         private void ApplyJump(float heldDuration)
         {
+            // Debug.Log($"ApplyJump Held Duration: {heldDuration}");
+
             if (heldDuration > 0.4f)
             {
                 rigidBody.AddForce(Vector2.up * maxJumpSpeed);
@@ -219,31 +256,73 @@ namespace Tests
                 rigidBody.AddForce(Vector2.up * minJumpSpeed);
             }
 
+            rigidBody.linearDamping = 0f;
             execJump = false;
+        }
+
+        private IEnumerator Co_Dash()
+        {
+            // Debug.Log($"Co_Dash VelocityX: {rigidBody.linearVelocityX}");
+
+            var elapsedTime = 0f;
+
+            while (elapsedTime < dashDuration)
+            {
+                // Debug.Log($"Co_Dash VelocityX: {rigidBody.linearVelocityX}");
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            isDashing = false;
+            suspendInput = false;
         }
 
         private void ApplyDash()
         {
+            // Debug.Log("ApplyDash");
+            
             var direction = Mathf.Sign(rigidBody.linearVelocityX);
             rigidBody.linearVelocityX = direction * dashSpeed;
+
+            audioSource.PlayOneShot(dashClip, 1f);
+
             execDash = false;
+            monitorDash = true;
+            isDashing = true;
         }
 
         public void OnGround(Collider2D collider)
         {
+            // Debug.Log("OnGround");
+
             audioSource.PlayOneShot(landClip, 1f);
-            isGrounded = true;
+            rigidBody.linearDamping = linearDamping;
+            // isGrounded = true;
         }
 
         public void OffGround(Collider2D collider)
         {
+            // Debug.Log("OffGround");
+            
             audioSource.PlayOneShot(jumpClip, 1f);
-            isGrounded = false;
+            // isGrounded = false;
         }
 
-        void FixedUpdate()
+        private void AscertState()
         {
             state = PlayerState.Idle;
+
+            if (Mathf.Abs(rigidBody.linearVelocity.x) > Mathf.Epsilon)
+            {
+                if (isDashing)
+                {
+                    state = PlayerState.Dashing;
+                }
+                else if (isGrounded)
+                {
+                    state = PlayerState.Running;
+                }
+            }
 
             if (rigidBody.linearVelocity.y > Mathf.Epsilon)
             {
@@ -253,11 +332,32 @@ namespace Tests
             {
                 state = PlayerState.Falling;
             }
+        }
 
-            if(execRun)
+        private void UpdateIsGrounded() => isGrounded = Physics2D.RaycastAll(transform.position, -transform.up, transform.localScale.y * (0.5f + 0.1f), layerMask).Count() > 0;
+
+        void FixedUpdate()
+        {
+            AscertState();
+
+            // hasHit = Physics.BoxCast(collider.bounds.center, transform.localScale * 0.5f, -transform.up, out hit, transform.rotation, 0.5f);
+            
+            // var hits = Physics2D.RaycastAll(transform.position, -transform.up, transform.localScale.y * (0.5f + 0.1f), layerMask);
+
+            // foreach (var hit in hits)
+            // {
+            //     if (!hit.collider.gameObject.tag.Equals("Player"))
+            //     {
+            //         Debug.Log($"Hit: {hit.collider.gameObject.name}");
+            //     }
+            // }
+
+            UpdateIsGrounded();
+            ScanRawIntents();
+
+            if (execRun)
             {
                 ApplyRun();
-                state = PlayerState.Running;
             }
 
             // if (execJump)
@@ -275,12 +375,33 @@ namespace Tests
                 ApplyJump(jumpHeldDuration);
             }
 
-            
             if (execDash)
             {
                 ApplyDash();
-                state = PlayerState.Dashing;
             }
         }
+
+        // void OnDrawGizmos()
+        // {
+        //     Gizmos.color = Color.yellow;
+
+        //     if (collider != null)
+        //     {
+        //         Gizmos.DrawRay(transform.position, -transform.up * transform.localScale.y * (0.5f + 0.1f));
+        //     }
+
+        //         Gizmos.color = Color.red;
+
+        //     if (hasHit)
+        //     {
+        //         Gizmos.DrawRay(transform.position, -transform.up * hit.distance);
+        //         Gizmos.DrawWireCube(transform.position + -transform.up * hit.distance, transform.localScale);
+        //     }
+        //     else
+        //     {
+        //         Gizmos.DrawRay(transform.position, -transform.up * 0.5f);
+        //         Gizmos.DrawWireCube(transform.position + -transform.up * 0.5f, transform.localScale);
+        //     }
+        // }
     }
 }

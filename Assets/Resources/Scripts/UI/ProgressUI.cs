@@ -8,6 +8,8 @@ namespace UI
     [RequireComponent(typeof(Slider))]
     public class ProgressUI : MonoBehaviour
     {
+        [SerializeField] Image fill;
+        [SerializeField] Gradient gradient;
         [SerializeField] float transitionSpeed = 1f;
 
         private Slider slider;
@@ -18,7 +20,7 @@ namespace UI
         // Start is called before the first frame update
         void Start()
         {
-            Value = 0.5f;
+
         }
 
         public float Value
@@ -51,5 +53,10 @@ namespace UI
                 yield return null;
             }
         }
+
+        private void UpdateUI() => fill.color = gradient.Evaluate(slider.value);
+
+        // Update is called once per frame
+        void Update() => UpdateUI();
     }
 }

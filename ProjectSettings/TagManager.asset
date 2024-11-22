@@ -2,8 +2,9 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
-  tags: []
+  serializedVersion: 3
+  tags:
+  - Surface
   layers:
   - Default
   - TransparentFX
@@ -11,7 +12,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 
@@ -41,3 +42,20 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background Layer
+    uniqueID: 3611709383
+    locked: 0
+  - name: Mid Background Layer
+    uniqueID: 2912110191
+    locked: 0
+  - name: Player Layer
+    uniqueID: 69002591
+    locked: 0
+  - name: Mid Foregroud Layer
+    uniqueID: 1016510463
+    locked: 0
+  - name: Foreground Layer
+    uniqueID: 2118473393
+    locked: 0
+  m_RenderingLayers:
+  - Default
