@@ -1,10 +1,12 @@
+using UI;
 using UnityEngine;
-using UnityEngine.InputSystem;
+// using UnityEngine.InputSystem;
 
 namespace Tests
 {
     public class InputActionMapping : MonoBehaviour
     {
+#if false
         // [SerializeField] InputAction moveX;
         // [SerializeField] InputAction moveY;
 
@@ -107,6 +109,24 @@ namespace Tests
 
             ScanMoveValues();
             // ScanAttackValue();
+        }
+#endif
+
+        [Header("UI")]
+        [SerializeField] EnergyBarUI energyBar;
+
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void Start()
+        {
+            
+        }
+
+        public EnergyBarUI EnergyBarUI => energyBar;
+
+        // Update is called once per frame
+        void Update()
+        {
+
         }
     }
 }

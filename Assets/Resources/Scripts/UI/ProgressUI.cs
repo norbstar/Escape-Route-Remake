@@ -9,54 +9,62 @@ namespace UI
     public class ProgressUI : MonoBehaviour
     {
         [SerializeField] Image fill;
-        [SerializeField] Gradient gradient;
-        [SerializeField] float transitionSpeed = 1f;
+        [SerializeField] float initialTransitionSpeed = 1f;
 
-        private Slider slider;
+        [Header("Gradient")]
+        [SerializeField] bool useGradient;
+        [SerializeField] Gradient gradient;
+
+        protected Slider slider;
+        protected float transitionSpeed;
+
         private Coroutine coroutine;
 
-        void Awake() => slider = GetComponent<Slider>();
+        public virtual void Awake() => slider = GetComponent<Slider>();
 
         // Start is called before the first frame update
-        void Start()
-        {
+        void Start() => transitionSpeed = initialTransitionSpeed;
 
+        public float Value { get => slider.value; set => slider.value = value; }
+
+        public void TransitionTo(float value)
+        {
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
+
+            StartCoroutine(Co_TransitionTo(value));
         }
 
-        public float Value
-        {
-            get => slider.value;
+        public float TransitionSpeed { get => transitionSpeed; set => transitionSpeed = value; }
 
-            set
+        protected virtual IEnumerator Co_TransitionTo(float target)
+        {
+            var start = slider.value;
+            float fraction = Mathf.Abs(target - start);
+
+            if (fraction != 0f)
             {
-                // slider.value = value;
-                
-                if (coroutine != null)
+                var elapsedTime = 0f;
+
+                while (isActiveAndEnabled && slider.value != target)
                 {
-                    StopCoroutine(coroutine);
+                    elapsedTime += Time.deltaTime;
+                    var time = elapsedTime / fraction * transitionSpeed;
+                    slider.value = Mathf.Lerp(start, target, time);
+                    yield return null;
                 }
-
-                StartCoroutine(Co_TransitionTo(value));
             }
         }
 
-        private IEnumerator Co_TransitionTo(float value)
+        private void UpdateUI()
         {
-            var startValue = slider.value;
-            var elapsedTime = 0f;
-
-            while (slider.value != value)
-            {
-                elapsedTime += Time.deltaTime;
-                var time = elapsedTime * transitionSpeed;
-                slider.value = Mathf.Lerp(startValue, value, time);
-                yield return null;
-            }
+            if (!useGradient || gradient == null) return;
+            fill.color = gradient.Evaluate(slider.value);
         }
-
-        private void UpdateUI() => fill.color = gradient.Evaluate(slider.value);
 
         // Update is called once per frame
-        void Update() => UpdateUI();
+        protected virtual void Update() => UpdateUI();
     }
 }

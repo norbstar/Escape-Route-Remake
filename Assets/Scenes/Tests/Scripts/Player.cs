@@ -14,6 +14,7 @@ namespace Tests
     {
         [Header("Components")]
         [SerializeField] OnTrigger2DHandler groundTrigger;
+        [SerializeField] Transform minEnergyThreshold;
 
         [Header("Audio")]
         [SerializeField] AudioClip jumpClip;
@@ -56,25 +57,28 @@ namespace Tests
         [Header("Inferences")]
         [SerializeField] bool isGrounded;
 
+        public static float POWER_MOVE_MIN_ENERGY_VALUE = 0.5f;
+        public static float MIN_FLOAT_VALUE = 0.01f;
 
+        private InputActionMapping scene;
         private InputSystem_Actions inputActions;
         private Rigidbody2D rigidBody;
-        private new Collider2D collider;
+        // private new Collider2D collider;
         private AudioSource audioSource;
         private PlayerState state;
-
         private bool execRun, execJump/*, execPowerJump*/, execDash;
         private float jumpPressStartTime, jumpHeldDuration;
         private bool suspendInput, monitorDash, isDashing;
         private float linearDamping;
         private int layerMask;
-        private bool hasHit;
-        private RaycastHit hit;
+        // private bool hasHit;
+        // private RaycastHit hit;
 
         void Awake()
         {
+            scene = FindAnyObjectByType<InputActionMapping>();
             rigidBody = GetComponent<Rigidbody2D>();
-            collider = GetComponent<Collider2D>();
+            // collider = GetComponent<Collider2D>();
             audioSource = GetComponent<AudioSource>();
             inputActions = new InputSystem_Actions();
             linearDamping = rigidBody.linearDamping;
@@ -103,6 +107,8 @@ namespace Tests
 
         // private void OnMoveIntent(InputAction.CallbackContext context)
         // {
+        //     Debug.Log("OnMoveIntent");
+
         //     var rawValue = inputActions.Player.Move.ReadValue<Vector2>();
         //     moveXValue = rawValue.x;
         //     moveYValue = rawValue.y;
@@ -111,7 +117,7 @@ namespace Tests
         //     trueMoveXValue = value.x;
         //     trueMoveYValue = value.y;
 
-        //     if (isGrounded && Mathf.Abs(trueMoveXValue) > Mathf.Epsilon)
+        //     if (isGrounded && Mathf.Abs(trueMoveXValue) > MIN_FLOAT_VALUE)
         //     {
         //         execRun = true;
         //     }
@@ -139,18 +145,18 @@ namespace Tests
 
         private void OnJumpPressIntent(InputAction.CallbackContext context)
         {
-            if (suspendInput) return;
-
             // Debug.Log($"OnJumpPressIntent State: {state}");
+            
+            if (suspendInput) return;
 
             jumpPressStartTime = Time.time;
         }
 
         private void OnJumpReleaseIntent(InputAction.CallbackContext context)
         {
-            if (suspendInput) return;
-
             // Debug.Log($"OnJumpReleaseIntent State: {state}");
+            
+            if (suspendInput) return;
 
             jumpHeldDuration = Time.time - jumpPressStartTime;
             execJump = true;
@@ -158,9 +164,9 @@ namespace Tests
 
         private void OnDashIntent(InputAction.CallbackContext context)
         {
-            if (suspendInput) return;
-
             // Debug.Log($"OnDashIntent State: {state}");
+            
+            if (suspendInput) return;
 
             if (state == PlayerState.Running)
             {
@@ -188,7 +194,7 @@ namespace Tests
 
             if (suspendInput) return;
 
-            if (isGrounded && Mathf.Abs(trueMoveXValue) > Mathf.Epsilon)
+            if (isGrounded && Mathf.Abs(trueMoveXValue) > MIN_FLOAT_VALUE)
             {
                 execRun = true;
             }
@@ -203,8 +209,9 @@ namespace Tests
 
             velocityXUI.Value = velocityX.ToString("0.00");
             velocityYUI.Value = velocityY.ToString("0.00");
-
             stateUI.Value = state.ToString();
+
+            minEnergyThreshold.gameObject.SetActive(scene.EnergyBarUI.Value >= POWER_MOVE_MIN_ENERGY_VALUE);
         }
 
         // Update is called once per frame
@@ -280,11 +287,14 @@ namespace Tests
         private void ApplyDash()
         {
             // Debug.Log("ApplyDash");
-            
-            var direction = Mathf.Sign(rigidBody.linearVelocityX);
-            rigidBody.linearVelocityX = direction * dashSpeed;
 
-            audioSource.PlayOneShot(dashClip, 1f);
+            if (scene.EnergyBarUI.Value > POWER_MOVE_MIN_ENERGY_VALUE)
+            {
+                var direction = Mathf.Sign(rigidBody.linearVelocityX);
+                rigidBody.linearVelocityX = direction * dashSpeed;
+                scene.EnergyBarUI.Value -= POWER_MOVE_MIN_ENERGY_VALUE;
+                audioSource.PlayOneShot(dashClip, 1f);
+            }
 
             execDash = false;
             monitorDash = true;
@@ -312,7 +322,7 @@ namespace Tests
         {
             state = PlayerState.Idle;
 
-            if (Mathf.Abs(rigidBody.linearVelocity.x) > Mathf.Epsilon)
+            if (Mathf.Abs(rigidBody.linearVelocity.x) > MIN_FLOAT_VALUE)
             {
                 if (isDashing)
                 {
@@ -324,11 +334,11 @@ namespace Tests
                 }
             }
 
-            if (rigidBody.linearVelocity.y > Mathf.Epsilon)
+            if (rigidBody.linearVelocity.y > MIN_FLOAT_VALUE)
             {
                 state = PlayerState.Jumping;
             }
-            else if (rigidBody.linearVelocity.y < -Mathf.Epsilon)
+            else if (rigidBody.linearVelocity.y < -MIN_FLOAT_VALUE)
             {
                 state = PlayerState.Falling;
             }
