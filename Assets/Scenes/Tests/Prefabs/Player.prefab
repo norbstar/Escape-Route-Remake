@@ -512,7 +512,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 15
+  m_LinearDamping: 20
   m_AngularDamping: 0.05
   m_GravityScale: 5
   m_Material: {fileID: 0}
@@ -644,16 +644,17 @@ MonoBehaviour:
   velocityXUI: {fileID: 0}
   velocityYUI: {fileID: 0}
   stateUI: {fileID: 0}
-  moveSpeed: 25
-  minJumpSpeed: 300
-  midJumpSpeed: 500
-  maxJumpSpeed: 700
+  moveSpeed: 15
+  dodgeSpeed: 5
+  jumpForce: 800
+  powerJumpForce: 1200
   dashSpeed: 45
   dashDuration: 0.05
+  rawValue: {x: 0, y: 0}
   moveXValue: 0
-  trueMoveXValue: 0
   moveYValue: 0
-  trueMoveYValue: 0
+  relativeMoveSpeed: {x: 0, y: 0}
+  relativeDodgeSpeed: {x: 0, y: 0}
   velocityX: 0
   velocityY: 0
   isGrounded: 0

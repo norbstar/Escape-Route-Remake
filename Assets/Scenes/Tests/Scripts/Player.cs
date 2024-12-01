@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 using UI;
-using System.Linq;
 
 namespace Tests
 {
@@ -28,16 +27,25 @@ namespace Tests
         [SerializeField] AttributeUI stateUI;
 
         [Header("Move")]
-        [Range(10f, 50f)]
-        [SerializeField] float moveSpeed = 25f;
+        [Range(10f, 20f)]
+        [SerializeField] float moveSpeed = 15f;
+
+        [Header("Dodge")]
+        [Range(0f, 5f)]
+        [SerializeField] float dodgeSpeed = 2.5f;
+        // [Range(100f, 400f)]
+        // [SerializeField] float dodgeForce = 200f;
+        // [SerializeField] float minDodgeThreshold = 0.1f;
+        // [Range(0f, 1f)]
+        // [SerializeField] float dodgeSpeedModifier = 0.5f;
+        // [Range(5f, 15f)]
+        // [SerializeField] float minDodgeSpeed = 7.5f;
 
         [Header("Jump")]
-        [Range(200f, 400f)]
-        [SerializeField] float minJumpSpeed = 300f;
-        [Range(400f, 600f)]
-        [SerializeField] float midJumpSpeed = 500f;
-        [Range(600f, 800f)]
-        [SerializeField] float maxJumpSpeed = 700f;
+        [Range(200f, 1000f)]
+        [SerializeField] float jumpForce = 800f;
+        [Range(600f, 1400f)]
+        [SerializeField] float powerJumpForce = 1200f;
 
         [Header("Dash")]
         [Range(10f, 100f)]
@@ -45,10 +53,13 @@ namespace Tests
         [SerializeField] float dashDuration = 0.05f;
 
         [Header("Move Stats")]
+        [SerializeField] Vector2 rawValue;
         [SerializeField] float moveXValue;
-        [SerializeField] float trueMoveXValue;
+        // [SerializeField] float trueMoveXValue;
         [SerializeField] float moveYValue;
-        [SerializeField] float trueMoveYValue;
+        // [SerializeField] float trueMoveYValue;
+        [SerializeField] Vector2 relativeMoveSpeed;
+        [SerializeField] Vector2 relativeDodgeSpeed;
 
         [Header("Rigidbody")]
         [SerializeField] float velocityX;
@@ -58,7 +69,8 @@ namespace Tests
         [SerializeField] bool isGrounded;
 
         public static float POWER_MOVE_MIN_ENERGY_VALUE = 0.5f;
-        public static float MIN_FLOAT_VALUE = 0.01f;
+        public static float MIN_INPUT_VALUE = 0.1f;
+        // public static float MIN_Y_INPUT_VALUE = 0.25f;
 
         private InputActionMapping scene;
         private InputSystem_Actions inputActions;
@@ -66,8 +78,9 @@ namespace Tests
         // private new Collider2D collider;
         private AudioSource audioSource;
         private PlayerState state;
-        private bool execRun, execJump/*, execPowerJump*/, execDash;
+        private bool execRun, execJump, execDodge/*, execPowerJump*/, execDash;
         private float jumpPressStartTime, jumpHeldDuration;
+        private float jumpXVelocity;
         private bool suspendInput, monitorDash, isDashing;
         private float linearDamping;
         private int layerMask;
@@ -159,6 +172,7 @@ namespace Tests
             if (suspendInput) return;
 
             jumpHeldDuration = Time.time - jumpPressStartTime;
+            jumpXVelocity = rigidBody.linearVelocity.x;
             execJump = true;
         }
 
@@ -177,29 +191,65 @@ namespace Tests
 
         private void ScanRawIntents()
         {
-            var rawValue = inputActions.Player.Move.ReadValue<Vector2>();
+            rawValue = inputActions.Player.Move.ReadValue<Vector2>();
             moveXValue = rawValue.x;
             moveYValue = rawValue.y;
 
-            var value = rawValue * Time.deltaTime * moveSpeed;
-            trueMoveXValue = value.x;
-            trueMoveYValue = value.y;
+            // Debug.Log($"Move: [{moveXValue}, {moveYValue}]");
 
-            OnRunIntent();
+            // var value = rawValue * Time.fixedDeltaTime * moveSpeed;
+            // trueMoveXValue = value.x;
+            // trueMoveYValue = value.y;
+
+            // if (Mathf.Abs(trueMoveXValue) > MIN_FLOAT_VALUE)
+            // {
+            //     OnMoveXIntent();
+            // }
+
+            if (Mathf.Abs(rawValue.x) > Mathf.Epsilon)
+            {
+                OnMoveXIntent();
+            }
         }
 
+        private void OnMoveXIntent()
+        {
+            // Debug.Log($"OnMoveXIntent State: {state}");
+
+            if (suspendInput) return;
+
+            if (isGrounded)
+            {
+                execRun = true;
+            }
+            else
+            {
+                execDodge = true;
+            }
+        }
+
+#if false
         private void OnRunIntent()
         {
             // Debug.Log($"OnRunIntent State: {state}");
 
             if (suspendInput) return;
 
-            if (isGrounded && Mathf.Abs(trueMoveXValue) > MIN_FLOAT_VALUE)
+            if (/*isGrounded && */Mathf.Abs(trueMoveXValue) > MIN_FLOAT_VALUE)
             {
-                execRun = true;
+                if (isGrounded)
+                {
+                    execRun = true;
+                }
+                else
+                {
+                    execDodge = true;
+                }
             }
-        }
 
+            // if (Mathf.Abs(rigidBody.linearVelocity.x) > minDodgeThreshold)
+        }
+#endif
         private void UpdateUI()
         {
             isGroundedUI.Value = isGrounded ? "True" : "False";
@@ -230,7 +280,10 @@ namespace Tests
         {
             // Debug.Log("ApplyRun");
 
-            rigidBody.linearVelocityX = trueMoveXValue * moveSpeed;
+            relativeMoveSpeed = rawValue * moveSpeed;
+            // Debug.Log($"ApplyRun: [{relativeMoveSpeed.x}, {relativeMoveSpeed.y}]");
+
+            rigidBody.linearVelocityX = /*trueMoveXValue*/relativeMoveSpeed.x;
             execRun = false;
         }
 
@@ -250,21 +303,59 @@ namespace Tests
         {
             // Debug.Log($"ApplyJump Held Duration: {heldDuration}");
 
-            if (heldDuration > 0.4f)
+            if (scene.EnergyBarUI.Value > POWER_MOVE_MIN_ENERGY_VALUE && heldDuration > 0.2f)
             {
-                rigidBody.AddForce(Vector2.up * maxJumpSpeed);
-            }
-            else if (heldDuration > 0.2f)
-            {
-                rigidBody.AddForce(Vector2.up * midJumpSpeed);
+                rigidBody.AddForce(Vector2.up * powerJumpForce);
+                scene.EnergyBarUI.Value -= POWER_MOVE_MIN_ENERGY_VALUE;
             }
             else
             {
-                rigidBody.AddForce(Vector2.up * minJumpSpeed);
+                rigidBody.AddForce(Vector2.up * jumpForce);
             }
 
-            rigidBody.linearDamping = 0f;
+            audioSource.PlayOneShot(jumpClip, 1f);
+            // rigidBody.linearDamping = 0f;
             execJump = false;
+        }
+
+        private float InverseClamp(float value, float minValue, float maxValue)
+        {
+            if (value > minValue && value < maxValue)
+            {
+                var mid = (maxValue - minValue) / 2 + minValue;
+                return value < mid ? minValue : maxValue;
+            }
+
+            return value;
+        }
+
+        private void ApplyDodge()
+        {
+#if false
+            Debug.Log($"ApplyDodge JumpXVelocity: {jumpXVelocity}");
+
+            rigidBody.linearVelocityX = rigidBody.linearVelocityX + /*trueMoveXValue*/relativeMoveSpeed.x * dodgeSpeedModifier;
+
+            Debug.Log($"ApplyDodge PRE LinearVelocityX: {rigidBody.linearVelocityX}");
+
+            rigidBody.linearVelocityX = Mathf.Clamp(rigidBody.linearVelocityX, -jumpXVelocity, jumpXVelocity);
+
+            Debug.Log($"ApplyDodge POST LinearVelocityX: {rigidBody.linearVelocityX}");
+            
+            // rigidBody.AddForce(Vector2.right * trueMoveXValue * dodgeForce);
+#endif
+
+            relativeDodgeSpeed = rawValue * dodgeSpeed;
+            // Debug.Log($"ApplyDodge: [{relativeDodgeSpeed.x}, {relativeDodgeSpeed.y}]");
+
+            // var foo = rigidBody.linearVelocityX + relativeMoveSpeed.x * dodgeSpeedModifier;
+            var foo = rigidBody.linearVelocityX + relativeDodgeSpeed.x;
+            // foo = InverseClamp(foo, -minDodgeSpeed, minDodgeSpeed);
+            // rigidBody.linearVelocityX = Mathf.Clamp(foo, -Mathf.Abs(jumpXVelocity), Mathf.Abs(jumpXVelocity));
+            // foo = InverseClamp(foo, -dodgeSpeed, dodgeSpeed);
+            rigidBody.linearVelocityX = Mathf.Clamp(foo, -Mathf.Abs(dodgeSpeed), Mathf.Abs(dodgeSpeed));
+
+            execDodge = false;
         }
 
         private IEnumerator Co_Dash()
@@ -314,7 +405,8 @@ namespace Tests
         {
             // Debug.Log("OffGround");
             
-            audioSource.PlayOneShot(jumpClip, 1f);
+            // audioSource.PlayOneShot(jumpClip, 1f);
+            rigidBody.linearDamping = 0f;
             // isGrounded = false;
         }
 
@@ -322,29 +414,40 @@ namespace Tests
         {
             state = PlayerState.Idle;
 
-            if (Mathf.Abs(rigidBody.linearVelocity.x) > MIN_FLOAT_VALUE)
+            if (isGrounded)
             {
-                if (isDashing)
+                if (Mathf.Abs(rigidBody.linearVelocity.x) > MIN_INPUT_VALUE)
                 {
-                    state = PlayerState.Dashing;
+                    if (isDashing)
+                    {
+                        state = PlayerState.Dashing;
+                    }
+                    else if (isGrounded)
+                    {
+                        state = PlayerState.Running;
+                    }
                 }
-                else if (isGrounded)
+            }
+            else
+            {
+                if (rigidBody.linearVelocity.y >= MIN_INPUT_VALUE)
                 {
-                    state = PlayerState.Running;
+                    state = PlayerState.Jumping;
                 }
+                else if (rigidBody.linearVelocity.y <= -MIN_INPUT_VALUE)
+                {
+                    state = PlayerState.Falling;
+                }
+                // else
+                // {
+                //     state = PlayerState.InAir;
+                // }
             }
 
-            if (rigidBody.linearVelocity.y > MIN_FLOAT_VALUE)
-            {
-                state = PlayerState.Jumping;
-            }
-            else if (rigidBody.linearVelocity.y < -MIN_FLOAT_VALUE)
-            {
-                state = PlayerState.Falling;
-            }
+            // Debug.Log($"State: {state}");
         }
 
-        private void UpdateIsGrounded() => isGrounded = Physics2D.RaycastAll(transform.position, -transform.up, transform.localScale.y * (0.5f + 0.1f), layerMask).Count() > 0;
+        private void UpdateIsGrounded() => isGrounded = Physics2D.RaycastAll(transform.position, -transform.up, transform.localScale.y * (0.5f + 0.1f), layerMask).Length > 0;
 
         void FixedUpdate()
         {
@@ -383,6 +486,11 @@ namespace Tests
             if (execJump)
             {
                 ApplyJump(jumpHeldDuration);
+            }
+
+            if (execDodge)
+            {
+                ApplyDodge();
             }
 
             if (execDash)
