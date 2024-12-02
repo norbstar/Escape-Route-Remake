@@ -346,7 +346,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 69002591
   m_SortingLayer: 3
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: -9095717837082945937, guid: bd3cb4af8406d4436a2ae8c2aafe1f8d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -372,6 +372,7 @@ GameObject:
   - component: {fileID: 8713613986000848162}
   - component: {fileID: 1825198590382261332}
   - component: {fileID: 574926269085910125}
+  - component: {fileID: 7953187905138312597}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -512,7 +513,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 20
+  m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 5
   m_Material: {fileID: 0}
@@ -630,7 +631,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6149fdbd8ff0e014b823aef167ab94bb, type: 3}
   m_Name: 
@@ -648,6 +649,41 @@ MonoBehaviour:
   dodgeSpeed: 5
   jumpForce: 800
   powerJumpForce: 1200
+  dashSpeed: 45
+  dashDuration: 0.05
+  rawValue: {x: 0, y: 0}
+  moveXValue: 0
+  moveYValue: 0
+  relativeMoveSpeed: {x: 0, y: 0}
+  relativeDodgeSpeed: {x: 0, y: 0}
+  velocityX: 0
+  velocityY: 0
+  isGrounded: 0
+--- !u!114 &7953187905138312597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6db5b4e4d910f488fd5de8b23cb933, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundTrigger: {fileID: 4308203740886051969}
+  minEnergyThreshold: {fileID: 7699197198041240433}
+  jumpClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
+  landClip: {fileID: 8300000, guid: 8984265858e419943b06a62c338ccae9, type: 3}
+  dashClip: {fileID: 8300000, guid: 7e419102b4e8c8843a7c4cf006ff68cc, type: 3}
+  isGroundedUI: {fileID: 0}
+  velocityXUI: {fileID: 0}
+  velocityYUI: {fileID: 0}
+  stateUI: {fileID: 0}
+  moveSpeed: 7.5
+  jumpForce: 500
+  powerJumpForce: 850
+  powerJumpThreshold: 0.2
   dashSpeed: 45
   dashDuration: 0.05
   rawValue: {x: 0, y: 0}
@@ -684,7 +720,7 @@ Transform:
   m_GameObject: {fileID: 3954563937439435231}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.7, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -734,7 +770,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 69002591
   m_SortingLayer: 3
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -9095717837082945937, guid: bd3cb4af8406d4436a2ae8c2aafe1f8d, type: 3}
   m_Color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   m_FlipX: 0
@@ -777,7 +813,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7771758874883039469}
@@ -797,9 +833,9 @@ MonoBehaviour:
   m_ComponentVersion: 2
   m_LightType: 1
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.5
+  m_FalloffIntensity: 0.25
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 5
+  m_Intensity: 0.25
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: c74f46d76f4693ad
