@@ -7,5 +7,6 @@ public enum PlayerState
     Running = 2,
     Jumping = 4,
     Falling = 8,
-    Dashing = 16
+    Dashing = 16,
+    Leaping = 32
 }

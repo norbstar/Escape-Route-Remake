@@ -1,0 +1,624 @@
+fileFormatVersion: 2
+guid: 97eef3fb6c9d97b4fb0734cbdc775b84
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7337883412865597851
+    second: dashed-circle_0
+  - first:
+      213: 4909103416843012544
+    second: dashed-circle_1
+  - first:
+      213: -4111420984956111874
+    second: dashed-circle_2
+  - first:
+      213: -4150037559289121638
+    second: dashed-circle_3
+  - first:
+      213: 5787710275484843943
+    second: dashed-circle_4
+  - first:
+      213: -628306300465304850
+    second: dashed-circle_5
+  - first:
+      213: 182044130484563768
+    second: dashed-circle_6
+  - first:
+      213: 219284575499185440
+    second: dashed-circle_7
+  - first:
+      213: -3629103802840707246
+    second: dashed-circle_8
+  - first:
+      213: -5562096675324220695
+    second: dashed-circle_9
+  - first:
+      213: -760015194833120074
+    second: dashed-circle_10
+  - first:
+      213: -7137648823814188127
+    second: dashed-circle_11
+  - first:
+      213: 6020777846542808036
+    second: dashed-circle_12
+  - first:
+      213: -5484308501847446072
+    second: dashed-circle_13
+  - first:
+      213: -3244517499861201051
+    second: dashed-circle_14
+  - first:
+      213: -5440815599964102886
+    second: dashed-circle_15
+  - first:
+      213: 3993514058290936299
+    second: dashed-circle_16
+  - first:
+      213: -2217295191589281353
+    second: dashed-circle_17
+  - first:
+      213: 3676652088708977006
+    second: dashed-circle_18
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: dashed-circle_0
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 240
+        width: 31
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56e3aece9e99a2a90800000000000000
+      internalID: -7337883412865597851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_1
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 249
+        width: 33
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c9859e4c83a02440800000000000000
+      internalID: 4909103416843012544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_2
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 228
+        width: 31
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef3ba9db56c41f6c0800000000000000
+      internalID: -4111420984956111874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_3
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 217
+        width: 28
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a94fa02e3da1866c0800000000000000
+      internalID: -4150037559289121638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_4
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 213
+        width: 27
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7aff629b4d3125050800000000000000
+      internalID: 5787710275484843943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_5
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 185
+        width: 22
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eea20a6afbec747f0800000000000000
+      internalID: -628306300465304850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_6
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 179
+        width: 21
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83f2af21c20c68200800000000000000
+      internalID: 182044130484563768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 146
+        width: 15
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02de95bd82e0b0300800000000000000
+      internalID: 219284575499185440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_8
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 140
+        width: 12
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25f09a2b155d2adc0800000000000000
+      internalID: -3629103802840707246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 105
+        width: 7
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ea2be40b867fc2b0800000000000000
+      internalID: -5562096675324220695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_10
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 98
+        width: 8
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b492100532e375f0800000000000000
+      internalID: -760015194833120074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_11
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 65
+        width: 16
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a3121d263af1fc90800000000000000
+      internalID: -7137648823814188127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_12
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 32
+        width: 25
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e3b9be4d891e8350800000000000000
+      internalID: 6020777846542808036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_13
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 59
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8cd6ab48972d3e3b0800000000000000
+      internalID: -5484308501847446072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_14
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 9
+        width: 30
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56f0c39268829f2d0800000000000000
+      internalID: -3244517499861201051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_15
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 27
+        width: 26
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1f5cbbd9075e74b0800000000000000
+      internalID: -5440815599964102886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_16
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 0
+        width: 32
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be9b5f1a0efcb6730800000000000000
+      internalID: 3993514058290936299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_17
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 0
+        width: 32
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b1a32f55c59a31e0800000000000000
+      internalID: -2217295191589281353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dashed-circle_18
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 7
+        width: 30
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e61523e4897160330800000000000000
+      internalID: 3676652088708977006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      dashed-circle_0: -7337883412865597851
+      dashed-circle_1: 4909103416843012544
+      dashed-circle_10: -760015194833120074
+      dashed-circle_11: -7137648823814188127
+      dashed-circle_12: 6020777846542808036
+      dashed-circle_13: -5484308501847446072
+      dashed-circle_14: -3244517499861201051
+      dashed-circle_15: -5440815599964102886
+      dashed-circle_16: 3993514058290936299
+      dashed-circle_17: -2217295191589281353
+      dashed-circle_18: 3676652088708977006
+      dashed-circle_2: -4111420984956111874
+      dashed-circle_3: -4150037559289121638
+      dashed-circle_4: 5787710275484843943
+      dashed-circle_5: -628306300465304850
+      dashed-circle_6: 182044130484563768
+      dashed-circle_7: 219284575499185440
+      dashed-circle_8: -3629103802840707246
+      dashed-circle_9: -5562096675324220695
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

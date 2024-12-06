@@ -72,7 +72,7 @@ namespace Tests
         public static float MIN_INPUT_VALUE = 0.1f;
         // public static float MIN_Y_INPUT_VALUE = 0.25f;
 
-        private InputActionMapping scene;
+        private SceneObjectMapping scene;
         private InputSystem_Actions inputActions;
         private Rigidbody2D rigidBody;
         // private new Collider2D collider;
@@ -89,7 +89,7 @@ namespace Tests
 
         void Awake()
         {
-            scene = FindAnyObjectByType<InputActionMapping>();
+            scene = FindAnyObjectByType<SceneObjectMapping>();
             rigidBody = GetComponent<Rigidbody2D>();
             // collider = GetComponent<Collider2D>();
             audioSource = GetComponent<AudioSource>();
@@ -261,7 +261,7 @@ namespace Tests
             velocityYUI.Value = velocityY.ToString("0.00");
             stateUI.Value = state.ToString();
 
-            minEnergyThreshold.gameObject.SetActive(scene.EnergyBarUI.Value >= POWER_MOVE_MIN_ENERGY_VALUE);
+            minEnergyThreshold.gameObject.SetActive(scene.EnergyBar.Value >= POWER_MOVE_MIN_ENERGY_VALUE);
         }
 
         // Update is called once per frame
@@ -303,10 +303,10 @@ namespace Tests
         {
             // Debug.Log($"ApplyJump Held Duration: {heldDuration}");
 
-            if (scene.EnergyBarUI.Value > POWER_MOVE_MIN_ENERGY_VALUE && heldDuration > 0.2f)
+            if (scene.EnergyBar.Value > POWER_MOVE_MIN_ENERGY_VALUE && heldDuration > 0.2f)
             {
                 rigidBody.AddForce(Vector2.up * powerJumpForce);
-                scene.EnergyBarUI.Value -= POWER_MOVE_MIN_ENERGY_VALUE;
+                scene.EnergyBar.Value -= POWER_MOVE_MIN_ENERGY_VALUE;
             }
             else
             {
@@ -379,11 +379,11 @@ namespace Tests
         {
             // Debug.Log("ApplyDash");
 
-            if (scene.EnergyBarUI.Value > POWER_MOVE_MIN_ENERGY_VALUE)
+            if (scene.EnergyBar.Value > POWER_MOVE_MIN_ENERGY_VALUE)
             {
                 var direction = Mathf.Sign(rigidBody.linearVelocityX);
                 rigidBody.linearVelocityX = direction * dashSpeed;
-                scene.EnergyBarUI.Value -= POWER_MOVE_MIN_ENERGY_VALUE;
+                scene.EnergyBar.Value -= POWER_MOVE_MIN_ENERGY_VALUE;
                 audioSource.PlayOneShot(dashClip, 1f);
             }
 
@@ -392,7 +392,7 @@ namespace Tests
             isDashing = true;
         }
 
-        public void OnGround(Collider2D collider)
+        public void OnGround(OnTrigger2DHandler instance, Collider2D collider)
         {
             // Debug.Log("OnGround");
 
@@ -401,7 +401,7 @@ namespace Tests
             // isGrounded = true;
         }
 
-        public void OffGround(Collider2D collider)
+        public void OffGround(OnTrigger2DHandler instance, Collider2D collider)
         {
             // Debug.Log("OffGround");
             

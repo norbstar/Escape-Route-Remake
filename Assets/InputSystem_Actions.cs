@@ -35,28 +35,257 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""F1"",
+                    ""type"": ""Button"",
+                    ""id"": ""40ba72b6-8026-43b1-8bc8-d130358b219d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""F2"",
+                    ""type"": ""Button"",
+                    ""id"": ""98aed585-6b74-419b-9e30-3262ea9caf59"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""F3"",
+                    ""type"": ""Button"",
+                    ""id"": ""0a27d28d-f94d-4374-9ff4-cae525887ff4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""F4"",
+                    ""type"": ""Button"",
+                    ""id"": ""024ba3e0-2406-496f-a8d6-95bb0ad96c25"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""F5"",
+                    ""type"": ""Button"",
+                    ""id"": ""847de325-ca93-4d21-84b4-05c501e75511"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""F6"",
+                    ""type"": ""Button"",
+                    ""id"": ""68072ae6-d049-4558-834f-c8e9173945ad"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""F7"",
+                    ""type"": ""Button"",
+                    ""id"": ""30c8b1ad-0650-4666-944e-e865bd333b2f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""F8"",
+                    ""type"": ""Button"",
+                    ""id"": ""cf7ba4a0-4dbe-47f9-8fcf-74d74dfa9f8f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""F9"",
+                    ""type"": ""Button"",
+                    ""id"": ""876109a8-454c-489b-8063-689e32cb2838"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""F10"",
+                    ""type"": ""Button"",
+                    ""id"": ""b84cd6a5-3bee-4039-b5ca-9380bf62c044"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""F11"",
+                    ""type"": ""Button"",
+                    ""id"": ""2a186632-8736-4e87-be73-976dd427a95b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""F12"",
+                    ""type"": ""Button"",
+                    ""id"": ""22eaad0e-2323-450f-a5d0-bec1122bcf1e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""45c66f77-f57b-4880-bf63-d65051de7d16"",
-                    ""path"": ""<XRController>/{PrimaryAction}"",
+                    ""id"": ""743d212f-e7fe-4866-9695-7e5cbaa85100"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""XR"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Quit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""743d212f-e7fe-4866-9695-7e5cbaa85100"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""id"": ""fe6ddc36-b11a-4e55-9569-a3b8f25f3fb0"",
+                    ""path"": ""<Keyboard>/f1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Quit"",
+                    ""action"": ""F1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""120924f4-9b34-4d4d-90ef-c7f72ae1f246"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""F2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8a03daba-482e-4b4f-8501-569622814411"",
+                    ""path"": ""<Keyboard>/f3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""F3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""440cbd14-e8de-43e3-9a93-eb5c66613281"",
+                    ""path"": ""<Keyboard>/f4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""F4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""20a18ab9-f219-44ab-879d-749978e178a6"",
+                    ""path"": ""<Keyboard>/f5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""F5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5ff4ffa9-495e-443f-8533-b915244f0d3c"",
+                    ""path"": ""<Keyboard>/f6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""F6"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""68f625c7-5ab2-449a-a454-6b38f99c0aac"",
+                    ""path"": ""<Keyboard>/f7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""F7"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e94b9c9c-78d4-4cb9-9f5c-7600cca06cf3"",
+                    ""path"": ""<Keyboard>/f8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""F8"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""449fa876-645f-4368-8b08-50c1a2c89b45"",
+                    ""path"": ""<Keyboard>/f9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""F9"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""04239874-2dff-4ad4-acba-e1e2ab6ac3e2"",
+                    ""path"": ""<Keyboard>/f10"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""F10"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3afb2bfd-734a-48da-aace-f72c0750c8ef"",
+                    ""path"": ""<Keyboard>/f11"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""F11"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""00d2f08f-28c2-41a1-be5f-abe218304eb8"",
+                    ""path"": ""<Keyboard>/f12"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""F12"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -178,6 +407,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""Sprint"",
                     ""type"": ""Button"",
                     ""id"": ""641cd816-40e6-41b4-8c3d-04687c349290"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Grip"",
+                    ""type"": ""Button"",
+                    ""id"": ""99346101-c138-4886-a0c9-4c53c2b7461d"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -699,6 +937,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b0cecf26-c9ad-44a2-a848-0b3e6c850094"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Grip"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1287,6 +1536,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         // Game
         m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
         m_Game_Quit = m_Game.FindAction("Quit", throwIfNotFound: true);
+        m_Game_F1 = m_Game.FindAction("F1", throwIfNotFound: true);
+        m_Game_F2 = m_Game.FindAction("F2", throwIfNotFound: true);
+        m_Game_F3 = m_Game.FindAction("F3", throwIfNotFound: true);
+        m_Game_F4 = m_Game.FindAction("F4", throwIfNotFound: true);
+        m_Game_F5 = m_Game.FindAction("F5", throwIfNotFound: true);
+        m_Game_F6 = m_Game.FindAction("F6", throwIfNotFound: true);
+        m_Game_F7 = m_Game.FindAction("F7", throwIfNotFound: true);
+        m_Game_F8 = m_Game.FindAction("F8", throwIfNotFound: true);
+        m_Game_F9 = m_Game.FindAction("F9", throwIfNotFound: true);
+        m_Game_F10 = m_Game.FindAction("F10", throwIfNotFound: true);
+        m_Game_F11 = m_Game.FindAction("F11", throwIfNotFound: true);
+        m_Game_F12 = m_Game.FindAction("F12", throwIfNotFound: true);
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
@@ -1302,6 +1563,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Previous = m_Player.FindAction("Previous", throwIfNotFound: true);
         m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+        m_Player_Grip = m_Player.FindAction("Grip", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1383,11 +1645,35 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Game;
     private List<IGameActions> m_GameActionsCallbackInterfaces = new List<IGameActions>();
     private readonly InputAction m_Game_Quit;
+    private readonly InputAction m_Game_F1;
+    private readonly InputAction m_Game_F2;
+    private readonly InputAction m_Game_F3;
+    private readonly InputAction m_Game_F4;
+    private readonly InputAction m_Game_F5;
+    private readonly InputAction m_Game_F6;
+    private readonly InputAction m_Game_F7;
+    private readonly InputAction m_Game_F8;
+    private readonly InputAction m_Game_F9;
+    private readonly InputAction m_Game_F10;
+    private readonly InputAction m_Game_F11;
+    private readonly InputAction m_Game_F12;
     public struct GameActions
     {
         private @InputSystem_Actions m_Wrapper;
         public GameActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Quit => m_Wrapper.m_Game_Quit;
+        public InputAction @F1 => m_Wrapper.m_Game_F1;
+        public InputAction @F2 => m_Wrapper.m_Game_F2;
+        public InputAction @F3 => m_Wrapper.m_Game_F3;
+        public InputAction @F4 => m_Wrapper.m_Game_F4;
+        public InputAction @F5 => m_Wrapper.m_Game_F5;
+        public InputAction @F6 => m_Wrapper.m_Game_F6;
+        public InputAction @F7 => m_Wrapper.m_Game_F7;
+        public InputAction @F8 => m_Wrapper.m_Game_F8;
+        public InputAction @F9 => m_Wrapper.m_Game_F9;
+        public InputAction @F10 => m_Wrapper.m_Game_F10;
+        public InputAction @F11 => m_Wrapper.m_Game_F11;
+        public InputAction @F12 => m_Wrapper.m_Game_F12;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1400,6 +1686,42 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Quit.started += instance.OnQuit;
             @Quit.performed += instance.OnQuit;
             @Quit.canceled += instance.OnQuit;
+            @F1.started += instance.OnF1;
+            @F1.performed += instance.OnF1;
+            @F1.canceled += instance.OnF1;
+            @F2.started += instance.OnF2;
+            @F2.performed += instance.OnF2;
+            @F2.canceled += instance.OnF2;
+            @F3.started += instance.OnF3;
+            @F3.performed += instance.OnF3;
+            @F3.canceled += instance.OnF3;
+            @F4.started += instance.OnF4;
+            @F4.performed += instance.OnF4;
+            @F4.canceled += instance.OnF4;
+            @F5.started += instance.OnF5;
+            @F5.performed += instance.OnF5;
+            @F5.canceled += instance.OnF5;
+            @F6.started += instance.OnF6;
+            @F6.performed += instance.OnF6;
+            @F6.canceled += instance.OnF6;
+            @F7.started += instance.OnF7;
+            @F7.performed += instance.OnF7;
+            @F7.canceled += instance.OnF7;
+            @F8.started += instance.OnF8;
+            @F8.performed += instance.OnF8;
+            @F8.canceled += instance.OnF8;
+            @F9.started += instance.OnF9;
+            @F9.performed += instance.OnF9;
+            @F9.canceled += instance.OnF9;
+            @F10.started += instance.OnF10;
+            @F10.performed += instance.OnF10;
+            @F10.canceled += instance.OnF10;
+            @F11.started += instance.OnF11;
+            @F11.performed += instance.OnF11;
+            @F11.canceled += instance.OnF11;
+            @F12.started += instance.OnF12;
+            @F12.performed += instance.OnF12;
+            @F12.canceled += instance.OnF12;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -1407,6 +1729,42 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Quit.started -= instance.OnQuit;
             @Quit.performed -= instance.OnQuit;
             @Quit.canceled -= instance.OnQuit;
+            @F1.started -= instance.OnF1;
+            @F1.performed -= instance.OnF1;
+            @F1.canceled -= instance.OnF1;
+            @F2.started -= instance.OnF2;
+            @F2.performed -= instance.OnF2;
+            @F2.canceled -= instance.OnF2;
+            @F3.started -= instance.OnF3;
+            @F3.performed -= instance.OnF3;
+            @F3.canceled -= instance.OnF3;
+            @F4.started -= instance.OnF4;
+            @F4.performed -= instance.OnF4;
+            @F4.canceled -= instance.OnF4;
+            @F5.started -= instance.OnF5;
+            @F5.performed -= instance.OnF5;
+            @F5.canceled -= instance.OnF5;
+            @F6.started -= instance.OnF6;
+            @F6.performed -= instance.OnF6;
+            @F6.canceled -= instance.OnF6;
+            @F7.started -= instance.OnF7;
+            @F7.performed -= instance.OnF7;
+            @F7.canceled -= instance.OnF7;
+            @F8.started -= instance.OnF8;
+            @F8.performed -= instance.OnF8;
+            @F8.canceled -= instance.OnF8;
+            @F9.started -= instance.OnF9;
+            @F9.performed -= instance.OnF9;
+            @F9.canceled -= instance.OnF9;
+            @F10.started -= instance.OnF10;
+            @F10.performed -= instance.OnF10;
+            @F10.canceled -= instance.OnF10;
+            @F11.started -= instance.OnF11;
+            @F11.performed -= instance.OnF11;
+            @F11.canceled -= instance.OnF11;
+            @F12.started -= instance.OnF12;
+            @F12.performed -= instance.OnF12;
+            @F12.canceled -= instance.OnF12;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -1441,6 +1799,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Previous;
     private readonly InputAction m_Player_Next;
     private readonly InputAction m_Player_Sprint;
+    private readonly InputAction m_Player_Grip;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1458,6 +1817,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Previous => m_Wrapper.m_Player_Previous;
         public InputAction @Next => m_Wrapper.m_Player_Next;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
+        public InputAction @Grip => m_Wrapper.m_Player_Grip;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1506,6 +1866,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
+            @Grip.started += instance.OnGrip;
+            @Grip.performed += instance.OnGrip;
+            @Grip.canceled += instance.OnGrip;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1549,6 +1912,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
+            @Grip.started -= instance.OnGrip;
+            @Grip.performed -= instance.OnGrip;
+            @Grip.canceled -= instance.OnGrip;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1732,6 +2098,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     public interface IGameActions
     {
         void OnQuit(InputAction.CallbackContext context);
+        void OnF1(InputAction.CallbackContext context);
+        void OnF2(InputAction.CallbackContext context);
+        void OnF3(InputAction.CallbackContext context);
+        void OnF4(InputAction.CallbackContext context);
+        void OnF5(InputAction.CallbackContext context);
+        void OnF6(InputAction.CallbackContext context);
+        void OnF7(InputAction.CallbackContext context);
+        void OnF8(InputAction.CallbackContext context);
+        void OnF9(InputAction.CallbackContext context);
+        void OnF10(InputAction.CallbackContext context);
+        void OnF11(InputAction.CallbackContext context);
+        void OnF12(InputAction.CallbackContext context);
     }
     public interface IPlayerActions
     {
@@ -1748,6 +2126,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnPrevious(InputAction.CallbackContext context);
         void OnNext(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnGrip(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

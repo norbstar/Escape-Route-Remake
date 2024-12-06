@@ -3,9 +3,9 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class OnTrigger2DHandler : MonoBehaviour
 {
-    public delegate void OnGained(Collider2D collider);
-    public delegate void OnSustained(Collider2D collider);
-    public delegate void OnLost(Collider2D collider);
+    public delegate void OnGained(OnTrigger2DHandler instance, Collider2D collider);
+    public delegate void OnSustained(OnTrigger2DHandler instance, Collider2D collider);
+    public delegate void OnLost(OnTrigger2DHandler instance, Collider2D collider);
 
     public class Events
     {
@@ -21,11 +21,11 @@ public class OnTrigger2DHandler : MonoBehaviour
 
     public void Register(Events events) => this.events = events;
 
-    private void OnTriggerEnter2D(Collider2D collider) => events?.Gained?.Invoke(collider);
+    private void OnTriggerEnter2D(Collider2D collider) => events?.Gained?.Invoke(this, collider);
 
-    private void OnTriggerStay2D(Collider2D collider) => events?.Sustained?.Invoke(collider);
+    private void OnTriggerStay2D(Collider2D collider) => events?.Sustained?.Invoke(this, collider);
 
-    private void OnTriggerExit2D(Collider2D collider) => events?.Lost?.Invoke(collider);
+    private void OnTriggerExit2D(Collider2D collider) => events?.Lost?.Invoke(this, collider);
 
     public bool Enabled { get => collider.enabled; set => collider.enabled = value; }
 }
