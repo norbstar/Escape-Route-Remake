@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Surface
+  - Springboard
   layers:
   - Default
   - TransparentFX

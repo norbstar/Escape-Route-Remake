@@ -5,11 +5,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 using UI;
+using UnityEngine.U2D;
+using System.Net.Http.Headers;
 
 namespace Tests
 {
-    [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Collider2D))]
+    [RequireComponent(typeof(SpriteShapeRenderer))]
+    [RequireComponent(typeof(SpriteShapeController))]
+    [RequireComponent(typeof(EdgeCollider2D))]
     [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(Analytics))]
     public class PlayerV2 : MonoBehaviour
@@ -26,6 +31,7 @@ namespace Tests
 
         [Header("Audio")]
         [SerializeField] AudioClip jumpClip;
+        [SerializeField] AudioClip springboardJumpClip;
         [SerializeField] AudioClip landClip;
         [SerializeField] AudioClip dashClip;
 
@@ -39,6 +45,8 @@ namespace Tests
         [SerializeField] AttributeUI isGroundedUI;
         [SerializeField] AttributeUI isBlockedLeftUI;
         [SerializeField] AttributeUI isGrippingUI;
+        [SerializeField] AttributeUI angleUI;
+        [SerializeField] AttributeUI bearingUI;
         [SerializeField] AttributeUI velocityXUI;
         [SerializeField] AttributeUI velocityYUI;
         [SerializeField] AttributeUI stateUI;
@@ -47,17 +55,27 @@ namespace Tests
         [SerializeField] Transform arrowBaseUI;
 
         [Header("Move")]
-        [Range(5f, 10f)]
+        [Range(1f, 10f)]
         [SerializeField] float moveSpeed = 5f;
+
+        [Header("Dodge")]
+        [SerializeField] bool canDodge;
+        [Range(1f, 10f)]
+        [SerializeField] float dodgeSpeed = 5f;
 
         [Header("Jump")]
         [Range(200f, 1000f)]
         [SerializeField] float jumpForce = 800f;
+        [SerializeField] bool vectorBasedJump;
+        [SerializeField] bool canPowerJump;
         [Range(600f, 1400f)]
         [SerializeField] float powerJumpForce = 1200f;
         [SerializeField] float powerJumpThreshold = 0.2f;
+        [Range(600f, 1800f)]
+        [SerializeField] float springboardJumpForce = 1500f;
 
         [Header("Dash")]
+        [SerializeField] bool canDash;
         [Range(10f, 100f)]
         [SerializeField] float dashSpeed = 50f;
         [SerializeField] float dashDuration = 0.05f;
@@ -76,6 +94,7 @@ namespace Tests
 
         [Header("Features")]
         [SerializeField] bool wallsAreSlippy;
+        [SerializeField] float deformationSpeed = 2.5f;
 
         [Header("Inferences")]
         [SerializeField] bool isBlockedAbove;
@@ -91,21 +110,25 @@ namespace Tests
         public static float POWER_MOVE_MIN_ENERGY_VALUE = 0.5f;
         public static float MIN_DAMAGE_VELOCITY = -14;
         public static float DAMAGE_PER_POINT = 0.1f;
+        public static float SQUISH_PER_POINT = 0.1f;
         public static float MIN_INPUT_VALUE = 0.1f;
-        public static int STEPPED_ANGLE_DEGREES = 15;
+        // public static int STEPPED_ANGLE_DEGREES = 15;
         public static Color ORANGE;
 
         private SceneObjectMapping scene;
         private InputSystem_Actions inputActions;
         private Rigidbody2D rigidBody;
         private new Collider2D collider;
+        private SpriteShapeController spriteShapeController;
         private AudioSource audioSource;
         private Analytics analytics;
         private PlayerState state;
-        private bool execRun, execJump, execPowerJump, execDodge, execDash;
+        private bool execRun, execJump, execPowerJump, execSpringboardJump, execDodge, execDash;
+        private Vector2 bearing;
         private float jumpPressStartTime;
         private bool suspendInput, monitorDash, jumpReleased;
         private float lastLinearVelocityY;
+        private int pointCount;
         private int layerMask;
 
         void Awake()
@@ -113,17 +136,24 @@ namespace Tests
             scene = FindAnyObjectByType<SceneObjectMapping>();
             rigidBody = GetComponent<Rigidbody2D>();
             collider = GetComponent<Collider2D>();
+            spriteShapeController = GetComponent<SpriteShapeController>();
             audioSource = GetComponent<AudioSource>();
             analytics = GetComponent<Analytics>();
             inputActions = new InputSystem_Actions();
             layerMask = LayerMask.GetMask("Player");
-
-            ColorUtility.TryParseHtmlString("#FF6100", out Color orange);
-            ORANGE = orange;
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        // void Start() => RenderCircle(100, 0.1f);
+        void Start()
+        {
+            // RenderCircle(100, 0.1f);
+
+            ColorUtility.TryParseHtmlString("#FF6100", out Color orange);
+            ORANGE = orange;
+
+            pointCount = spriteShapeController.spline.GetPointCount();
+            // Debug.Log($"Spline Point Count: {pointCount}");
+        }
 
         void OnEnable()
         {
@@ -177,7 +207,7 @@ namespace Tests
                     execJump = true;
                     break;
                 }
-                else if (isGrounded && Time.time - jumpPressStartTime > powerJumpThreshold)
+                else if (canPowerJump && isGrounded && Time.time - jumpPressStartTime > powerJumpThreshold)
                 {
                     execPowerJump = true;
                     break;
@@ -207,7 +237,7 @@ namespace Tests
         {
             if (suspendInput) return;
 
-            if (state == PlayerState.Running)
+            if (canDash && state == PlayerState.Running)
             {
                 suspendInput = true;
                 execDash = true;
@@ -234,15 +264,17 @@ namespace Tests
 
         private void ScanRawIntents()
         {
+            if (suspendInput) return;
+
             moveValue = inputActions.Player.Move.ReadValue<Vector2>();
             moveXValue = moveValue.x;
             moveYValue = moveValue.y;
 
-            if (Mathf.Abs(moveValue.x) > Mathf.Epsilon)
+            if (Mathf.Abs(moveXValue) != 0f)
             {
                 OnMoveXIntent();
             }
-            else
+            else if (isGrounded)
             {
                 rigidBody.linearVelocityX = 0f;
             }
@@ -252,15 +284,12 @@ namespace Tests
 
         private void OnMoveXIntent()
         {
-            if (suspendInput) return;
-
             if (isGrounded)
             {
                 execRun = true;
             }
             else
             {
-
                 var direction = Mathf.Sign(moveValue.x);
 
                 if (wallsAreSlippy && (direction > 0f && isBlockedRight || direction < 0f && isBlockedLeft))
@@ -269,7 +298,10 @@ namespace Tests
                     return;
                 }
 
-                execDodge = true;
+                if (canDodge && Mathf.Abs(moveXValue) != 0f)
+                {
+                    execDodge = true;
+                }
             }
         }
 
@@ -288,13 +320,13 @@ namespace Tests
                 var angle = Vector2ToAngle(new Vector2(moveXValue, moveYValue));
                 // Debug.Log($"Angle: {angle}");
 
-                var steppedAngle = AngleToSteppedAngle(angle, STEPPED_ANGLE_DEGREES);
-                // Debug.Log($"Stepped Angle: {steppedAngle}");
+                // angle = AngleToSteppedAngle(angle, STEPPED_ANGLE_DEGREES);
+                // Debug.Log($"Stepped Angle: {angle}");
 
-                arrowBaseUI.eulerAngles = new Vector3(0f, 0f, steppedAngle);
+                arrowBaseUI.eulerAngles = new Vector3(0f, 0f, angle);
             }
 
-            arrowBaseUI.gameObject.SetActive(moveValue != Vector2.zero);
+            arrowBaseUI.gameObject.SetActive(vectorBasedJump && moveValue != Vector2.zero);
         }
 
         private void UpdateUI()
@@ -349,6 +381,16 @@ namespace Tests
                 isBlockedLeftUI.Color = isBlockedLeft ? Color.green : ORANGE;
             }
 
+            if (angleUI != null)
+            {
+                angleUI.Value = arrowBaseUI.eulerAngles.z.ToString("0.00");
+            }
+
+            if (bearingUI != null)
+            {
+                bearingUI.Value = $"[{bearing.x.ToString("0.00")}, {bearing.y.ToString("0.00")}]";
+            }
+
             velocityX = rigidBody.linearVelocityX;
             velocityY = rigidBody.linearVelocityY;
 
@@ -395,9 +437,17 @@ namespace Tests
             }
         }
 #endif
+
+        private Vector2 RadianToVector2(float radian) => new Vector2(-Mathf.Sin(radian), Mathf.Cos(radian));
+        
+        private Vector2 DegreeToVector2(float degree) => RadianToVector2(degree * Mathf.Deg2Rad);
+
         // Update is called once per frame
         void Update()
         {
+            // bearing = DegreeToVector2(arrowBaseUI.eulerAngles.z);
+            bearing = new Vector2(moveXValue, moveYValue);
+
             UpdateUI();
 
             if (monitorDash)
@@ -416,16 +466,17 @@ namespace Tests
             execRun = false;
         }
 
-        private Vector2 RadianToVector2(float radian) => new Vector2(Mathf.Sin(radian), Mathf.Cos(radian));
-        
-        private Vector2 DegreeToVector2(float degree) => RadianToVector2(degree * Mathf.Deg2Rad);
-
         private void ApplyJump()
         {
-            var bearing = DegreeToVector2(arrowBaseUI.eulerAngles.z);
-            // Debug.Log($"Bearing: {bearing}");
+            if (vectorBasedJump)
+            {
+                rigidBody.AddForce(bearing * jumpForce);
+            }
+            else
+            {
+                rigidBody.AddForce(Vector2.up * jumpForce);
+            }
 
-            rigidBody.AddForce(/*Vector2.up*/bearing * jumpForce);
             audioSource.PlayOneShot(jumpClip, 1f);
             execJump = false;
         }
@@ -438,20 +489,33 @@ namespace Tests
 
         private void ApplyPowerJump()
         {
-            var bearing = DegreeToVector2(arrowBaseUI.eulerAngles.z);
-            // Debug.Log($"Bearing: {bearing}");
+            if (vectorBasedJump)
+            {
+                rigidBody.AddForce(bearing * powerJumpForce);
+            }
+            else
+            {
+                rigidBody.AddForce(Vector2.up * powerJumpForce);
+            }
 
-            rigidBody.AddForce(/*Vector2.up*/bearing * powerJumpForce);
             DrainEnergyLevel(POWER_MOVE_MIN_ENERGY_VALUE);
             audioSource.PlayOneShot(jumpClip, 1f);
             execPowerJump = false;
         }
 
+        private void ApplySpringboardJump()
+        {
+            rigidBody.AddForce(Vector2.up * springboardJumpForce);
+            audioSource.PlayOneShot(springboardJumpClip, 1f);
+            execSpringboardJump = false;
+        }
+
         private void ApplyDodge()
         {
-            relativeDodgeSpeed = moveValue * moveSpeed;
+            relativeDodgeSpeed = moveValue * dodgeSpeed;
             var velocityX = rigidBody.linearVelocityX + relativeDodgeSpeed.x;
-            rigidBody.linearVelocityX = Mathf.Clamp(velocityX, -Mathf.Abs(moveSpeed), Mathf.Abs(moveSpeed));
+            rigidBody.linearVelocityX = Mathf.Clamp(velocityX, -Mathf.Abs(dodgeSpeed), Mathf.Abs(dodgeSpeed));
+
             execDodge = false;
         }
 
@@ -484,32 +548,100 @@ namespace Tests
             isDashing = true;
         }
 
+        private void OnCollision(Collider2D collider)
+        {
+            if (collider.tag.Equals("Springboard"))
+            {
+                var sprintboard = collider.gameObject.GetComponent<Springboard>();
+                sprintboard.TempDisable();
+                execSpringboardJump = true;
+            }
+        }
+
+        private void OnTopCollision(Collider2D collider) => OnCollision(collider);
+        
+        private void OnRightCollision(Collider2D collider) => OnCollision(collider);
+
+        private IEnumerator Co_Squish(float squishFactor)
+        {
+            // suspendInput = true;
+
+            var minPosY = 0.4f - 0.4f * squishFactor;
+            var posY = 0.4f;
+            float elapsedTime = 0f;
+
+            var p1 = spriteShapeController.spline.GetPosition(1);
+            var p2 = spriteShapeController.spline.GetPosition(2);
+
+            while (posY > minPosY)
+            {
+                elapsedTime += Time.deltaTime;
+                posY = Mathf.Lerp(0.4f, minPosY, elapsedTime * deformationSpeed);
+                spriteShapeController.spline.SetPosition(1, new Vector3(p1.x, posY, p1.z));
+                spriteShapeController.spline.SetPosition(2, new Vector3(p2.x, posY, p2.z));
+                yield return null;
+            }
+
+            posY = minPosY;
+            elapsedTime = 0f;
+
+            while (posY < 0.4f)
+            {
+                elapsedTime += Time.deltaTime;
+                posY = Mathf.Lerp(minPosY, 0.4f, elapsedTime * deformationSpeed);
+                spriteShapeController.spline.SetPosition(1, new Vector3(p1.x, posY, p1.z));
+                spriteShapeController.spline.SetPosition(2, new Vector3(p2.x, posY, p2.z));
+                yield return null;
+            }
+
+            // suspendInput = false;
+        }
+
+        private void OnBottomCollision(Collider2D collider)
+        {
+            OnCollision(collider);
+
+            audioSource.PlayOneShot(landClip, 1f);
+
+            var squishPoints = 0f - lastLinearVelocityY;
+
+            if (squishPoints > 0f)
+            {
+                StartCoroutine(Co_Squish(Mathf.Clamp(SQUISH_PER_POINT * squishPoints, 0f, 1f)));
+            }
+
+            var damagePoints = MIN_DAMAGE_VELOCITY - lastLinearVelocityY;
+
+            if (damagePoints > 0f)
+            {
+                var damage = Mathf.Clamp(DAMAGE_PER_POINT * damagePoints, 0f, 1f);
+                scene.HealthBar.Value -= damage;
+            }
+        }
+
+        private void OnLeftCollision(Collider2D collider) => OnCollision(collider);
+
         public void OnGainedContactWithEdge(OnTrigger2DHandler instance, Collider2D collider)
         {
             if (instance == topEdgeTrigger)
             {
                 isBlockedAbove = true;
+                OnTopCollision(collider);
             }
             else if (instance == rightEdgeTrigger)
             {
                 isBlockedRight = true;
+                OnRightCollision(collider);
             }
             else if (instance == bottomEdgeTrigger)
             {
                 isGrounded = true;
-                audioSource.PlayOneShot(landClip, 1f);
-
-                var damagePoints = MIN_DAMAGE_VELOCITY - lastLinearVelocityY;
-
-                if (damagePoints > 0f)
-                {
-                    var damage = Mathf.Clamp(DAMAGE_PER_POINT * damagePoints, 0f, 1f);
-                    scene.HealthBar.Value -= damage;
-                }
+                OnBottomCollision(collider);
             }
             else if (instance == leftEdgeTrigger)
             {
                 isBlockedLeft = true;
+                OnLeftCollision(collider);
             }
         }
 
@@ -596,6 +728,11 @@ namespace Tests
             if (execPowerJump)
             {
                 ApplyPowerJump();
+            }
+
+            if (execSpringboardJump)
+            {
+                ApplySpringboardJump();
             }
 
             if (execDodge)
