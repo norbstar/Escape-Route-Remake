@@ -1,22 +1,37 @@
-using System.Collections;
-
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class Springboard : MonoBehaviour
 {
-    private const float TEMP_DISABLE_DURATION = 0.25f;
+    [Range(600f, 1800f)]
+    [SerializeField] float springForce = 1500f;
 
-    private new Collider2D collider2D;
+    [Header("Audio")]
+    [SerializeField] AudioClip springClip;
 
-    void Awake() => collider2D = GetComponent<Collider2D>();
-
-    private IEnumerator Co_TempDisable()
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        collider2D.enabled = false;
-        yield return new WaitForSeconds(TEMP_DISABLE_DURATION);
-        collider2D.enabled = true;
+        if (collider.tag.Equals("Player"))
+        {
+            collider.enabled = false;
+            
+            if (collider.gameObject.TryGetComponent<Rigidbody2D>(out var rigidbody))
+            {
+                rigidbody.AddForce(Vector2.up * springForce);
+            }
+
+            if (collider.gameObject.TryGetComponent<AudioSource>(out var audioSource))
+            {
+                audioSource.PlayOneShot(springClip, 1f);
+            }
+        }
     }
 
-    public void TempDisable() => StartCoroutine(Co_TempDisable());
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.tag.Equals("Player"))
+        {
+            collider.enabled = true;
+        }
+    }
 }

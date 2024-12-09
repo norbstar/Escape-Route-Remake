@@ -654,10 +654,9 @@ GameObject:
   - component: {fileID: 8713613986000848162}
   - component: {fileID: 1825198590382261332}
   - component: {fileID: 574926269085910125}
+  - component: {fileID: 2148498792734672565}
   - component: {fileID: 4853911593712930631}
   - component: {fileID: 7953187905138312597}
-  - component: {fileID: 2148498792734672565}
-  - component: {fileID: 7078043156466643972}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1029,82 +1028,6 @@ MonoBehaviour:
   velocityX: 0
   velocityY: 0
   isGrounded: 0
---- !u!114 &4853911593712930631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdf526bda87552c4d89999cbace8ab90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7953187905138312597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa6db5b4e4d910f488fd5de8b23cb933, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  topEdgeTrigger: {fileID: 1095329041190512284}
-  rightEdgeTrigger: {fileID: 1929078833261287676}
-  bottomEdgeTrigger: {fileID: 4308203740886051969}
-  leftEdgeTrigger: {fileID: 3704597339447484179}
-  minEnergyThreshold: {fileID: 7699197198041240433}
-  jumpClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
-  springboardJumpClip: {fileID: 8300000, guid: eae36b251cf950549850c1e51f517171, type: 3}
-  landClip: {fileID: 8300000, guid: 8984265858e419943b06a62c338ccae9, type: 3}
-  dashClip: {fileID: 8300000, guid: 7e419102b4e8c8843a7c4cf006ff68cc, type: 3}
-  thumbstickXUI: {fileID: 0}
-  thumbstickYUI: {fileID: 0}
-  updatesUI: {fileID: 0}
-  fixedUpdatesUI: {fileID: 0}
-  isBlockedAboveUI: {fileID: 0}
-  isBlockedRightUI: {fileID: 0}
-  isGroundedUI: {fileID: 0}
-  isBlockedLeftUI: {fileID: 0}
-  isGrippingUI: {fileID: 0}
-  angleUI: {fileID: 0}
-  bearingUI: {fileID: 0}
-  velocityXUI: {fileID: 0}
-  velocityYUI: {fileID: 0}
-  stateUI: {fileID: 0}
-  arrowBaseUI: {fileID: 254104720836281314}
-  moveSpeed: 7.5
-  canDodge: 1
-  dodgeSpeed: 7.5
-  jumpForce: 600
-  vectorBasedJump: 0
-  canPowerJump: 1
-  powerJumpForce: 800
-  powerJumpThreshold: 0.2
-  springboardJumpForce: 1000
-  canDash: 1
-  dashSpeed: 30
-  dashDuration: 0.05
-  moveValue: {x: 0, y: 0}
-  gripValue: 0
-  moveXValue: 0
-  moveYValue: 0
-  relativeMoveSpeed: {x: 0, y: 0}
-  relativeDodgeSpeed: {x: 0, y: 0}
-  velocityX: 0
-  velocityY: 0
-  wallsAreSlippy: 0
-  deformationSpeed: 12
-  isBlockedAbove: 0
-  isBlockedRight: 0
-  isGrounded: 0
-  isBlockedLeft: 0
-  isDashing: 0
-  isGripping: 0
 --- !u!120 &2148498792734672565
 LineRenderer:
   serializedVersion: 2
@@ -1212,7 +1135,7 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!114 &7078043156466643972
+--- !u!114 &4853911593712930631
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1224,6 +1147,92 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdf526bda87552c4d89999cbace8ab90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7953187905138312597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6db5b4e4d910f488fd5de8b23cb933, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topEdgeTrigger: {fileID: 1095329041190512284}
+  rightEdgeTrigger: {fileID: 1929078833261287676}
+  bottomEdgeTrigger: {fileID: 4308203740886051969}
+  leftEdgeTrigger: {fileID: 3704597339447484179}
+  minEnergyThreshold: {fileID: 7699197198041240433}
+  blendCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
+  landClip: {fileID: 8300000, guid: 8984265858e419943b06a62c338ccae9, type: 3}
+  dashClip: {fileID: 8300000, guid: 7e419102b4e8c8843a7c4cf006ff68cc, type: 3}
+  thumbstickXUI: {fileID: 0}
+  thumbstickYUI: {fileID: 0}
+  updatesUI: {fileID: 0}
+  fixedUpdatesUI: {fileID: 0}
+  isBlockedAboveUI: {fileID: 0}
+  isBlockedRightUI: {fileID: 0}
+  isGroundedUI: {fileID: 0}
+  isBlockedLeftUI: {fileID: 0}
+  isGrippingUI: {fileID: 0}
+  angleUI: {fileID: 0}
+  bearingUI: {fileID: 0}
+  velocityXUI: {fileID: 0}
+  velocityYUI: {fileID: 0}
+  stateUI: {fileID: 0}
+  arrowBaseUI: {fileID: 254104720836281314}
+  moveSpeed: 7.5
+  canDodge: 1
+  dodgeSpeed: 7.5
+  jumpForce: 600
+  vectorBasedJump: 0
+  canPowerJump: 1
+  powerJumpForce: 800
+  powerJumpThreshold: 0.2
+  canDash: 1
+  dashSpeed: 30
+  dashDuration: 0.05
+  moveValue: {x: 0, y: 0}
+  gripValue: 0
+  moveXValue: 0
+  moveYValue: 0
+  relativeMoveSpeed: {x: 0, y: 0}
+  relativeDodgeSpeed: {x: 0, y: 0}
+  velocityX: 0
+  velocityY: 0
+  wallsAreSlippy: 0
+  deformationSpeed: 12
+  isBlockedAbove: 0
+  isBlockedRight: 0
+  isGrounded: 0
+  isBlockedLeft: 0
+  isDashing: 0
+  isGripping: 0
 --- !u!1 &3954563937439435231
 GameObject:
   m_ObjectHideFlags: 0

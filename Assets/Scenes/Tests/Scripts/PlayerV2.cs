@@ -3,10 +3,9 @@ using System.Collections;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.U2D;
 
 using UI;
-using UnityEngine.U2D;
-using System.Net.Http.Headers;
 
 namespace Tests
 {
@@ -28,10 +27,10 @@ namespace Tests
         [Header("Settings")]
         [SerializeField] Transform minEnergyThreshold;
         // [SerializeField] DamageThresholds damageThresholds;
+        [SerializeField] AnimationCurve blendCurve;
 
         [Header("Audio")]
         [SerializeField] AudioClip jumpClip;
-        [SerializeField] AudioClip springboardJumpClip;
         [SerializeField] AudioClip landClip;
         [SerializeField] AudioClip dashClip;
 
@@ -71,8 +70,6 @@ namespace Tests
         [Range(600f, 1400f)]
         [SerializeField] float powerJumpForce = 1200f;
         [SerializeField] float powerJumpThreshold = 0.2f;
-        [Range(600f, 1800f)]
-        [SerializeField] float springboardJumpForce = 1500f;
 
         [Header("Dash")]
         [SerializeField] bool canDash;
@@ -123,7 +120,7 @@ namespace Tests
         private AudioSource audioSource;
         private Analytics analytics;
         private PlayerState state;
-        private bool execRun, execJump, execPowerJump, execSpringboardJump, execDodge, execDash;
+        private bool execRun, execJump, execPowerJump, execDodge, execDash;
         private Vector2 bearing;
         private float jumpPressStartTime;
         private bool suspendInput, monitorDash, jumpReleased;
@@ -269,6 +266,8 @@ namespace Tests
             moveValue = inputActions.Player.Move.ReadValue<Vector2>();
             moveXValue = moveValue.x;
             moveYValue = moveValue.y;
+            // moveXValue = Mathf.Sign(moveValue.x) * blendCurve.Evaluate(Mathf.Abs(moveValue.x));
+            // moveYValue = Mathf.Sign(moveValue.y) * blendCurve.Evaluate(Mathf.Abs(moveValue.y));
 
             if (Mathf.Abs(moveXValue) != 0f)
             {
@@ -503,13 +502,6 @@ namespace Tests
             execPowerJump = false;
         }
 
-        private void ApplySpringboardJump()
-        {
-            rigidBody.AddForce(Vector2.up * springboardJumpForce);
-            audioSource.PlayOneShot(springboardJumpClip, 1f);
-            execSpringboardJump = false;
-        }
-
         private void ApplyDodge()
         {
             relativeDodgeSpeed = moveValue * dodgeSpeed;
@@ -548,15 +540,7 @@ namespace Tests
             isDashing = true;
         }
 
-        private void OnCollision(Collider2D collider)
-        {
-            if (collider.tag.Equals("Springboard"))
-            {
-                var sprintboard = collider.gameObject.GetComponent<Springboard>();
-                sprintboard.TempDisable();
-                execSpringboardJump = true;
-            }
-        }
+        private void OnCollision(Collider2D collider) { }
 
         private void OnTopCollision(Collider2D collider) => OnCollision(collider);
         
@@ -564,8 +548,6 @@ namespace Tests
 
         private IEnumerator Co_Squish(float squishFactor)
         {
-            // suspendInput = true;
-
             var minPosY = 0.4f - 0.4f * squishFactor;
             var posY = 0.4f;
             float elapsedTime = 0f;
@@ -593,8 +575,6 @@ namespace Tests
                 spriteShapeController.spline.SetPosition(2, new Vector3(p2.x, posY, p2.z));
                 yield return null;
             }
-
-            // suspendInput = false;
         }
 
         private void OnBottomCollision(Collider2D collider)
@@ -728,11 +708,6 @@ namespace Tests
             if (execPowerJump)
             {
                 ApplyPowerJump();
-            }
-
-            if (execSpringboardJump)
-            {
-                ApplySpringboardJump();
             }
 
             if (execDodge)
