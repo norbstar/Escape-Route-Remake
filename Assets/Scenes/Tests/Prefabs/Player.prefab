@@ -118,11 +118,11 @@ GameObject:
   - component: {fileID: 4424425471590120224}
   m_Layer: 0
   m_Name: Spot Light
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6236108017069128842
 Transform:
   m_ObjectHideFlags: 0
@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 1095329041190512284}
   m_Layer: 0
   m_Name: Top Edge Trigger
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -399,8 +399,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: 0.48, y: 0.5}
-  - {x: -0.48, y: 0.5}
+  - {x: 0.375, y: 0.425}
+  - {x: -0.375, y: 0.425}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -431,7 +431,7 @@ GameObject:
   - component: {fileID: 4308203740886051969}
   m_Layer: 0
   m_Name: Bottom Edge Trigger
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -534,8 +534,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: 0.48, y: -0.5}
-  - {x: -0.48, y: -0.5}
+  - {x: 0.375, y: -0.425}
+  - {x: -0.375, y: -0.425}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -657,7 +657,7 @@ GameObject:
   - component: {fileID: 2148498792734672565}
   - component: {fileID: 4853911593712930631}
   - component: {fileID: 7953187905138312597}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -803,7 +803,7 @@ MonoBehaviour:
   m_AdaptiveUV: 1
   m_StretchUV: 0
   m_WorldSpaceUV: 0
-  m_CornerAngleThreshold: 30
+  m_CornerAngleThreshold: 29.6
   m_ColliderDetail: 16
   m_ColliderOffset: 0
   m_UpdateCollider: 1
@@ -1036,7 +1036,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1164,30 +1164,6 @@ MonoBehaviour:
   bottomEdgeTrigger: {fileID: 4308203740886051969}
   leftEdgeTrigger: {fileID: 3704597339447484179}
   minEnergyThreshold: {fileID: 7699197198041240433}
-  blendCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   jumpClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
   landClip: {fileID: 8300000, guid: 8984265858e419943b06a62c338ccae9, type: 3}
   dashClip: {fileID: 8300000, guid: 7e419102b4e8c8843a7c4cf006ff68cc, type: 3}
@@ -1206,9 +1182,51 @@ MonoBehaviour:
   velocityYUI: {fileID: 0}
   stateUI: {fileID: 0}
   arrowBaseUI: {fileID: 254104720836281314}
-  moveSpeed: 7.5
+  moveSpeed: 10
+  sensitivityProfile:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.8449274
+      value: 0.42363614
+      inSlope: 2.3741722
+      outSlope: 2.3741722
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   canDodge: 1
-  dodgeSpeed: 7.5
+  dodgeSpeed: 10
   jumpForce: 600
   vectorBasedJump: 0
   canPowerJump: 1
@@ -1221,7 +1239,7 @@ MonoBehaviour:
   gripValue: 0
   moveXValue: 0
   moveYValue: 0
-  relativeMoveSpeed: {x: 0, y: 0}
+  relativeMoveSpeed: 0
   relativeDodgeSpeed: {x: 0, y: 0}
   velocityX: 0
   velocityY: 0
@@ -1337,11 +1355,11 @@ GameObject:
   - component: {fileID: 2877434486869418528}
   m_Layer: 0
   m_Name: Glow
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1788404238055028362
 Transform:
   m_ObjectHideFlags: 0
@@ -1516,7 +1534,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &254104720836281314
 Transform:
   m_ObjectHideFlags: 0
@@ -1550,7 +1568,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4088097041618351600
 Transform:
   m_ObjectHideFlags: 0
@@ -1759,7 +1777,7 @@ GameObject:
   - component: {fileID: 636202987087580292}
   m_Layer: 0
   m_Name: Glow
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1937,7 +1955,7 @@ GameObject:
   - component: {fileID: 3704597339447484179}
   m_Layer: 0
   m_Name: Left Edge Trigger
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2040,8 +2058,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -0.5, y: 0.48}
-  - {x: -0.5, y: -0.48}
+  - {x: -0.425, y: 0.375}
+  - {x: -0.425, y: -0.375}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -2159,7 +2177,7 @@ GameObject:
   - component: {fileID: 1929078833261287676}
   m_Layer: 0
   m_Name: Right Edge Trigger
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2262,8 +2280,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: 0.5, y: 0.48}
-  - {x: 0.5, y: -0.48}
+  - {x: 0.425, y: 0.375}
+  - {x: 0.425, y: -0.375}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0

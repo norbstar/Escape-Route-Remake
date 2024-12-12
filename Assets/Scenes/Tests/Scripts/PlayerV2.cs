@@ -27,7 +27,7 @@ namespace Tests
         [Header("Settings")]
         [SerializeField] Transform minEnergyThreshold;
         // [SerializeField] DamageThresholds damageThresholds;
-        [SerializeField] AnimationCurve blendCurve;
+        // [SerializeField] AnimationCurve blendCurve;
 
         [Header("Audio")]
         [SerializeField] AudioClip jumpClip;
@@ -56,6 +56,7 @@ namespace Tests
         [Header("Move")]
         [Range(1f, 10f)]
         [SerializeField] float moveSpeed = 5f;
+        [SerializeField] AnimationCurve sensitivityProfile;
 
         [Header("Dodge")]
         [SerializeField] bool canDodge;
@@ -63,12 +64,12 @@ namespace Tests
         [SerializeField] float dodgeSpeed = 5f;
 
         [Header("Jump")]
-        [Range(200f, 1000f)]
-        [SerializeField] float jumpForce = 800f;
+        [Range(400f, 800f)]
+        [SerializeField] float jumpForce = 600f;
         [SerializeField] bool vectorBasedJump;
         [SerializeField] bool canPowerJump;
-        [Range(600f, 1400f)]
-        [SerializeField] float powerJumpForce = 1200f;
+        [Range(600f, 1000f)]
+        [SerializeField] float powerJumpForce = 800f;
         [SerializeField] float powerJumpThreshold = 0.2f;
 
         [Header("Dash")]
@@ -82,7 +83,7 @@ namespace Tests
         [SerializeField] float gripValue;
         [SerializeField] float moveXValue;
         [SerializeField] float moveYValue;
-        [SerializeField] Vector2 relativeMoveSpeed;
+        [SerializeField] /*Vector2*/float relativeMoveSpeed;
         [SerializeField] Vector2 relativeDodgeSpeed;
 
         [Header("Rigidbody")]
@@ -115,7 +116,7 @@ namespace Tests
         private SceneObjectMapping scene;
         private InputSystem_Actions inputActions;
         private Rigidbody2D rigidBody;
-        private new Collider2D collider;
+        // private new Collider2D collider;
         private SpriteShapeController spriteShapeController;
         private AudioSource audioSource;
         private Analytics analytics;
@@ -132,7 +133,7 @@ namespace Tests
         {
             scene = FindAnyObjectByType<SceneObjectMapping>();
             rigidBody = GetComponent<Rigidbody2D>();
-            collider = GetComponent<Collider2D>();
+            // collider = GetComponent<Collider2D>();
             spriteShapeController = GetComponent<SpriteShapeController>();
             audioSource = GetComponent<AudioSource>();
             analytics = GetComponent<Analytics>();
@@ -309,18 +310,19 @@ namespace Tests
             var radians = Mathf.Atan2(value.y, value.x);
             return radians * (180f / Mathf.PI) - 90f;
         }
-
+#if false
         private float AngleToSteppedAngle(float angle, int steps) => (int) angle / steps * steps; 
-
+#endif
         private void UpdatePlayerUI()
         {
             if (arrowBaseUI != null)
             {
                 var angle = Vector2ToAngle(new Vector2(moveXValue, moveYValue));
                 // Debug.Log($"Angle: {angle}");
-
+#if false
                 // angle = AngleToSteppedAngle(angle, STEPPED_ANGLE_DEGREES);
                 // Debug.Log($"Stepped Angle: {angle}");
+#endif
 
                 arrowBaseUI.eulerAngles = new Vector3(0f, 0f, angle);
             }
@@ -460,8 +462,12 @@ namespace Tests
 
         private void ApplyRun()
         {
-            relativeMoveSpeed = moveValue * moveSpeed;
-            rigidBody.linearVelocityX = relativeMoveSpeed.x;
+            // relativeMoveSpeed = moveValue * moveSpeed;
+            // rigidBody.linearVelocityX = relativeMoveSpeed.x;
+
+            var inputSensitivity = sensitivityProfile.Evaluate(Mathf.Abs(moveXValue));
+            relativeMoveSpeed = moveSpeed * Mathf.Sign(moveXValue) * inputSensitivity;
+            rigidBody.linearVelocityX = relativeMoveSpeed;
             execRun = false;
         }
 
@@ -504,10 +510,13 @@ namespace Tests
 
         private void ApplyDodge()
         {
-            relativeDodgeSpeed = moveValue * dodgeSpeed;
-            var velocityX = rigidBody.linearVelocityX + relativeDodgeSpeed.x;
-            rigidBody.linearVelocityX = Mathf.Clamp(velocityX, -Mathf.Abs(dodgeSpeed), Mathf.Abs(dodgeSpeed));
+            // relativeDodgeSpeed = moveValue * dodgeSpeed;
+            // var velocityX = rigidBody.linearVelocityX + relativeDodgeSpeed.x;
+            // rigidBody.linearVelocityX = Mathf.Clamp(velocityX, -Mathf.Abs(dodgeSpeed), Mathf.Abs(dodgeSpeed));
 
+            var inputSensitivity = sensitivityProfile.Evaluate(Mathf.Abs(moveXValue));
+            relativeMoveSpeed = dodgeSpeed * Mathf.Sign(moveXValue) * inputSensitivity;
+            rigidBody.linearVelocityX = relativeMoveSpeed;
             execDodge = false;
         }
 
@@ -548,8 +557,8 @@ namespace Tests
 
         private IEnumerator Co_Squish(float squishFactor)
         {
-            var minPosY = 0.4f - 0.4f * squishFactor;
-            var posY = 0.4f;
+            var minPosY = 0.425f - 0.425f * squishFactor;
+            var posY = 0.425f;
             float elapsedTime = 0f;
 
             var p1 = spriteShapeController.spline.GetPosition(1);
@@ -558,7 +567,7 @@ namespace Tests
             while (posY > minPosY)
             {
                 elapsedTime += Time.deltaTime;
-                posY = Mathf.Lerp(0.4f, minPosY, elapsedTime * deformationSpeed);
+                posY = Mathf.Lerp(0.425f, minPosY, elapsedTime * deformationSpeed);
                 spriteShapeController.spline.SetPosition(1, new Vector3(p1.x, posY, p1.z));
                 spriteShapeController.spline.SetPosition(2, new Vector3(p2.x, posY, p2.z));
                 yield return null;
@@ -567,10 +576,10 @@ namespace Tests
             posY = minPosY;
             elapsedTime = 0f;
 
-            while (posY < 0.4f)
+            while (posY < 0.425f)
             {
                 elapsedTime += Time.deltaTime;
-                posY = Mathf.Lerp(minPosY, 0.4f, elapsedTime * deformationSpeed);
+                posY = Mathf.Lerp(minPosY, 0.425f, elapsedTime * deformationSpeed);
                 spriteShapeController.spline.SetPosition(1, new Vector3(p1.x, posY, p1.z));
                 spriteShapeController.spline.SetPosition(2, new Vector3(p2.x, posY, p2.z));
                 yield return null;
