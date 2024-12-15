@@ -1,7 +1,7 @@
 using System;
 
 // [Flags]
-public enum PlayerState
+public enum PlayerStateEnum
 {
     Idle = 1,
     Running = 2,

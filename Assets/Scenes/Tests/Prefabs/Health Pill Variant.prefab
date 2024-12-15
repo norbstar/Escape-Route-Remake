@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7356886577657726897
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1446454940151458520, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1446454940151458520, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1446454940151458520, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7563992652830172849, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7563992652830172849, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 7563992652830172849, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7563992652830172849, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7563992652830172849, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7563992652830172849, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7563992652830172849, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7563992652830172849, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7563992652830172849, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7563992652830172849, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7637254868919827437, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7637254868919827437, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7637254868919827437, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8546791667270169420, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      propertyPath: m_Name
+      value: Health Pill Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2445236475700984846, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8546791667270169420, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2430099889832499376}
+  m_SourcePrefab: {fileID: 100100000, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+--- !u!1 &1190257484498531581 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8546791667270169420, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+  m_PrefabInstance: {fileID: 7356886577657726897}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2430099889832499376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190257484498531581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3bd5acabc2722449938365a4174e816, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 4408625582407698979}
+  consumeClip: {fileID: 8300000, guid: 2ad957bbf954af04082d545c4db1d54d, type: 3}
+  healthPoints: 1
+--- !u!95 &4408625582407698979 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6572577899549592978, guid: 63fbf566e0957db4ea548634111299e7, type: 3}
+  m_PrefabInstance: {fileID: 7356886577657726897}
+  m_PrefabAsset: {fileID: 0}

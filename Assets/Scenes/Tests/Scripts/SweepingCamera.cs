@@ -9,13 +9,13 @@ namespace Tests
     [RequireComponent(typeof(AudioSource))]
     public class SweepingCamera : MonoBehaviour
     {
-        public enum Mode
+        public enum ModeEnum
         {
             Sweep,
             Tracking
         }
 
-        public enum Rotation
+        public enum RotationEnum
         {
             Clockwise,
             AntiClockwise
@@ -32,7 +32,7 @@ namespace Tests
         [SerializeField] float rightSweepAngle;
         [Range(0f, 50f)]
         [SerializeField] float sweepSpeed = 10f;
-        [SerializeField] Rotation startRotation;
+        [SerializeField] RotationEnum startRotation;
 
         [Header("Audio")]
         [SerializeField] AudioClip alarmClip;
@@ -49,25 +49,28 @@ namespace Tests
         [SerializeField] bool hasHit;
         [SerializeField] bool playerDetected;
 
-        private Player player;
+        private BasePlayer player;
         private SpriteRenderer spriteRenderer;
         private AudioSource audioSource;
-        private Mode mode, lastMode;
-        private Rotation rotation;
+        private ModeEnum mode, lastMode;
+        private RotationEnum rotation;
         private int layerMask;
 
         void Awake()
         {
-            player = FindAnyObjectByType<Player>();
             spriteRenderer = lightBase.GetComponent<SpriteRenderer>();
             audioSource = GetComponent<AudioSource>();
-            mode = lastMode = Mode.Sweep;
+            mode = lastMode = ModeEnum.Sweep;
             layerMask = LayerMask.GetMask("Player");
             rotation = startRotation;
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start() => StartCoroutine(Co_Sweep());
+        void Start()
+        {
+            player = FindAnyObjectByType<BasePlayer>(FindObjectsInactive.Include);
+            StartCoroutine(Co_Sweep());
+        }
 
         private bool IsPointWithinSensorCone(Vector3 point, out ConeData data)
         {
@@ -96,11 +99,11 @@ namespace Tests
         {
             switch (mode)
             {
-                case Mode.Sweep:
+                case ModeEnum.Sweep:
                     spriteRenderer.color = light.color = sweepColor;
                     break;
 
-                case Mode.Tracking:
+                case ModeEnum.Tracking:
                     spriteRenderer.color = light.color = trackingColor;
                     break;
             }
@@ -110,13 +113,13 @@ namespace Tests
         {
             while (!playerDetected)
             {
-                if (rotation == Rotation.Clockwise)
+                if (rotation == RotationEnum.Clockwise)
                 {
                     light.transform.Rotate(new Vector3(0f, 0f, -1f), sweepSpeed * Time.deltaTime);
 
                     if (light.transform.eulerAngles.z < 180f - rightSweepAngle)
                     {
-                        rotation = Rotation.AntiClockwise;
+                        rotation = RotationEnum.AntiClockwise;
                     }
                 }
                 else
@@ -125,7 +128,7 @@ namespace Tests
 
                     if (light.transform.eulerAngles.z > 180f + leftSweepAngle)
                     {
-                        rotation = Rotation.Clockwise;
+                        rotation = RotationEnum.Clockwise;
                     }
                 }
 
@@ -141,7 +144,7 @@ namespace Tests
 
         private void OnSweep()
         {
-            if (lastMode == Mode.Tracking)
+            if (lastMode == ModeEnum.Tracking)
             {
                 audioSource.Stop();
                 audioSource.loop = false;
@@ -154,7 +157,7 @@ namespace Tests
             var angle = Vector2ToAngle((Vector2) direction);
             light.transform.eulerAngles = new Vector3(0f, 0f, angle);
 
-            if (lastMode == Mode.Sweep)
+            if (lastMode == ModeEnum.Sweep)
             {
                 audioSource.loop = true;
                 audioSource.clip = alarmClip;
@@ -174,15 +177,15 @@ namespace Tests
             
             hasHit = ExtensionMethods.HasHit(light.transform.position, direction, Mathf.Infinity, layerMask, out ExtensionMethods.RaycastHitSet.Data hitData);
             playerDetected = inCone && hasHit && hitData.other.tag.Equals("Player");
-            mode = playerDetected ? Mode.Tracking : Mode.Sweep;
+            mode = playerDetected ? ModeEnum.Tracking : ModeEnum.Sweep;
 
             switch (mode)
             {
-                case Mode.Sweep:
+                case ModeEnum.Sweep:
                     OnSweep();
                     break;
 
-                case Mode.Tracking:
+                case ModeEnum.Tracking:
                     OnTracking(direction);
                     break;
             }

@@ -28,7 +28,10 @@ namespace Tests
                 Destroy(gameObject, 1f);
 
                 isTriggered = true;
+                // OnTriggered();
             }
         }
+
+        // protected virtual void OnTriggered() { }
     }
 }

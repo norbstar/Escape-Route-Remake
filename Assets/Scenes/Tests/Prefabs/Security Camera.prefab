@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 3293637246299575050}
   - component: {fileID: 109888755440389943}
   m_Layer: 6
-  m_Name: Sweeping Camera
+  m_Name: Security Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

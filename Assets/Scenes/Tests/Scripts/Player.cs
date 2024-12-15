@@ -9,7 +9,7 @@ using UI;
 namespace Tests
 {
     [RequireComponent(typeof(AudioSource))]
-    public class Player : MonoBehaviour
+    public class Player : BasePlayer
     {
         [Header("Components")]
         [SerializeField] OnTrigger2DHandler groundTrigger;
@@ -77,7 +77,7 @@ namespace Tests
         private Rigidbody2D rigidBody;
         // private new Collider2D collider;
         private AudioSource audioSource;
-        private PlayerState state;
+        private PlayerStateEnum state;
         private bool execRun, execJump, execDodge/*, execPowerJump*/, execDash;
         private float jumpPressStartTime, jumpHeldDuration;
         private float jumpXVelocity;
@@ -182,7 +182,7 @@ namespace Tests
             
             if (suspendInput) return;
 
-            if (state == PlayerState.Running)
+            if (state == PlayerStateEnum.Running)
             {
                 suspendInput = true;
                 execDash = true;
@@ -412,7 +412,7 @@ namespace Tests
 
         private void AscertState()
         {
-            state = PlayerState.Idle;
+            state = PlayerStateEnum.Idle;
 
             if (isGrounded)
             {
@@ -420,11 +420,11 @@ namespace Tests
                 {
                     if (isDashing)
                     {
-                        state = PlayerState.Dashing;
+                        state = PlayerStateEnum.Dashing;
                     }
                     else if (isGrounded)
                     {
-                        state = PlayerState.Running;
+                        state = PlayerStateEnum.Running;
                     }
                 }
             }
@@ -432,11 +432,11 @@ namespace Tests
             {
                 if (rigidBody.linearVelocity.y >= MIN_INPUT_VALUE)
                 {
-                    state = PlayerState.Jumping;
+                    state = PlayerStateEnum.Jumping;
                 }
                 else if (rigidBody.linearVelocity.y <= -MIN_INPUT_VALUE)
                 {
-                    state = PlayerState.Falling;
+                    state = PlayerStateEnum.Falling;
                 }
                 // else
                 // {

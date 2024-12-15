@@ -11,18 +11,20 @@ namespace Tests
         [Header("Components")]
         [SerializeField] Slider blendSpeedUI;
 
-        [Header("Move")]
-        [Range(1f, 10f)]
-        [SerializeField] float moveSpeed = 5f;
+        [Header("Movement")]
+        [Range(0f, 100f)]
+        [SerializeField] float moveSpeed = 10f;
 
-        // [Header("Blending")]
-        // [Range(0f, 100f)]
-        // [SerializeField] float blendSpeed = 100f;
+        [Header("Blending")]
+        [Range(0f, 1f)]
+        [SerializeField] float blendSpeed = 1f;
+        // [SerializeField] bool enableBlendSpeedRelativity = true;
 
         [Header("UI")]
         [SerializeField] AttributeUI signUI;
         [SerializeField] AttributeUI stepSizeUI;
         [SerializeField] AttributeUI blendValueUI;
+        [SerializeField] AttributeUI targetValueUI;
 
         [Header("Stats")]
         [SerializeField] Vector2 moveValue;
@@ -37,9 +39,6 @@ namespace Tests
         {
             rigidBody = GetComponent<Rigidbody2D>();
             inputActions = new InputSystem_Actions();
-
-            // Debug.Log($"Time.fixedDeltaTime: {Time.fixedDeltaTime}");
-            // Debug.Log($"BlendSpeed: {blendSpeed}");
         }
 
         void OnEnable() => inputActions.Enable();
@@ -50,6 +49,7 @@ namespace Tests
         {
             moveValue = inputActions.Player.Move.ReadValue<Vector2>();
             moveXValue = moveValue.x;
+            targetValueUI.Value = moveXValue.ToString("0.00");
 
             if (Mathf.Abs(moveXValue) != 0f)
             {
@@ -69,9 +69,9 @@ namespace Tests
         {
             var sign = Mathf.Sign(moveXValue);
             signUI.Value = sign.ToString();
-
-            var blendSpeed = blendSpeedUI.value;
-            var stepSize = Time.fixedDeltaTime * blendSpeed;
+            var blendSpeed = this.blendSpeed = blendSpeedUI.value;
+            var stepSize = blendSpeed * Time.fixedDeltaTime;
+            // var stepSize = enableBlendSpeedRelativity ? 0f : blendSpeed * Time.fixedDeltaTime;
             stepSizeUI.Value = stepSize.ToString();
 
             if (sign > 0)
@@ -84,9 +84,7 @@ namespace Tests
             }
 
             blendValueUI.Value = blendValue.ToString();
-
-            var relativeMoveSpeed = blendValue * moveSpeed;
-            rigidBody.linearVelocityX = relativeMoveSpeed;
+            rigidBody.linearVelocityX = blendValue * moveSpeed;
             execRun = false;
         }
 

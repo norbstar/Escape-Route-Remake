@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Intensity: 2.5
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: c74f46d75fe51c04
+  m_ApplyToSortingLayers: 00000000c74f46d76f4693ad61230f055fe51c04ffb7963cb156457e
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -160,7 +160,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 69002591
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 6637211618670407020}
   - component: {fileID: 4530256309747102577}
   - component: {fileID: 2445236475700984846}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
