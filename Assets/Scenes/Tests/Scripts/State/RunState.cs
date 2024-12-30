@@ -14,15 +14,18 @@ namespace Tests.State
 
         private void Evaluate()
         {
-            if (Essentials.IsGrounded())
-            {
-                moveValue = Essentials.InputActions().Player.Move.ReadValue<Vector2>();
+            // if (Essentials.IsGrounded())
+            // {
+            //     moveValue = Essentials.InputActions().Player.Move.ReadValue<Vector2>();
 
-                // if (Mathf.Abs(moveValue.x) != 0f)
-                {
-                    execRun = true;
-                }
-            }
+            //     if (Mathf.Abs(moveValue.x) != 0f)
+            //     {
+            //         execRun = true;
+            //     }
+            // }
+
+            moveValue = Essentials.InputActions().Player.Move.ReadValue<Vector2>();
+            execRun = Essentials.IsGrounded() && Mathf.Abs(moveValue.x) != 0f; 
         }
 
         // Update is called once per frame
@@ -33,7 +36,7 @@ namespace Tests.State
             // cachedMoveVector = Vector2.SmoothDamp(cachedMoveVector, moveValue, ref smoothInputVelocity, smoothInputSpeed);
             // Essentials.RigidBody().linearVelocityX = cachedMoveVector.x * speed;
             Essentials.RigidBody().linearVelocityX = moveValue.x * speed;
-            execRun = false;
+            // execRun = false;
         }
 
         void FixedUpdate()

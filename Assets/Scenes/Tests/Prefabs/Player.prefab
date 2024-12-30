@@ -293,8 +293,9 @@ GameObject:
   - component: {fileID: 5328875633240343937}
   - component: {fileID: 4675396570485585784}
   - component: {fileID: 2359634054644554955}
+  - component: {fileID: 16227015474600186}
   m_Layer: 0
-  m_Name: Top Edge Collider
+  m_Name: Top Edge
   m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -365,9 +366,21 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1295658314474292028}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fb81cc536ec0a546a1acb9acc82da65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &16227015474600186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295658314474292028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848d002f410c58e4db5d7be7a116aa82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1827422854866348150
@@ -381,8 +394,9 @@ GameObject:
   - component: {fileID: 1076190577503197158}
   - component: {fileID: 7268728528282350451}
   - component: {fileID: 2866720314943067206}
+  - component: {fileID: 6106991342889763119}
   m_Layer: 0
-  m_Name: Bottom Edge Collider
+  m_Name: Bottom Edge
   m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -453,9 +467,21 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1827422854866348150}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fb81cc536ec0a546a1acb9acc82da65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6106991342889763119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827422854866348150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848d002f410c58e4db5d7be7a116aa82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2474346795944532610
@@ -1016,7 +1042,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb687a77ed215824181cda390b04f182, type: 3}
   m_Name: 
@@ -1062,7 +1088,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6ca8b5cfd9a57147ba5bcb53dc63217, type: 3}
   m_Name: 
@@ -1077,7 +1103,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91ae37bb9ecf6364190b579da95b18c0, type: 3}
   m_Name: 
@@ -1090,7 +1116,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c04fd4a6736daac4986c0b20b054fb65, type: 3}
   m_Name: 
@@ -1110,15 +1136,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   edgeCollisionHandler: {fileID: 6183590988341010715}
-  velocityXUI: {fileID: 0}
-  velocityYUI: {fileID: 0}
-  stateUI: {fileID: 0}
-  isBlockedTopUI: {fileID: 0}
-  isBlockedRightUI: {fileID: 0}
-  isGroundedUI: {fileID: 0}
-  isBlockedLeftUI: {fileID: 0}
-  isDashingUI: {fileID: 0}
-  isGrippingUI: {fileID: 0}
 --- !u!1 &3954563937439435231
 GameObject:
   m_ObjectHideFlags: 0
@@ -1437,7 +1454,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6610229697992314393
 Transform:
   m_ObjectHideFlags: 0
@@ -1611,8 +1628,9 @@ GameObject:
   m_Component:
   - component: {fileID: 9136040000164958685}
   - component: {fileID: 6183590988341010715}
+  - component: {fileID: 1564858219368971033}
   m_Layer: 0
-  m_Name: Edge Colliders
+  m_Name: Edges
   m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1644,7 +1662,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6990256498626115190}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33012327a0040c4448f198e263663349, type: 3}
   m_Name: 
@@ -1653,6 +1671,22 @@ MonoBehaviour:
   rightEdgeCollider: {fileID: 2178154617189860854}
   bottomEdgeCollider: {fileID: 2866720314943067206}
   leftEdgeCollider: {fileID: 6198635297068782582}
+--- !u!114 &1564858219368971033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6990256498626115190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8f3880b6b425174c92a956912194127, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topEdgeTrigger: {fileID: 16227015474600186}
+  rightEdgeTrigger: {fileID: 6578630349340265393}
+  bottomEdgeTrigger: {fileID: 6106991342889763119}
+  leftEdgeTrigger: {fileID: 2589649889093571926}
 --- !u!1 &7983589189986567590
 GameObject:
   m_ObjectHideFlags: 0
@@ -1931,8 +1965,9 @@ GameObject:
   - component: {fileID: 1084867064834741693}
   - component: {fileID: 7855013157526110201}
   - component: {fileID: 6198635297068782582}
+  - component: {fileID: 2589649889093571926}
   m_Layer: 0
-  m_Name: Left Edge Collider
+  m_Name: Left Edge
   m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2003,9 +2038,21 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8311759869213272925}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fb81cc536ec0a546a1acb9acc82da65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2589649889093571926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8311759869213272925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848d002f410c58e4db5d7be7a116aa82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8391271791085037240
@@ -2106,8 +2153,9 @@ GameObject:
   - component: {fileID: 5104684072663815646}
   - component: {fileID: 6775860516332230983}
   - component: {fileID: 2178154617189860854}
+  - component: {fileID: 6578630349340265393}
   m_Layer: 0
-  m_Name: Right Edge Collider
+  m_Name: Right Edge
   m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2178,9 +2226,21 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9090316178348279405}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fb81cc536ec0a546a1acb9acc82da65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6578630349340265393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9090316178348279405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848d002f410c58e4db5d7be7a116aa82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &4667948520406551866

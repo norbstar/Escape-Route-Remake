@@ -57,6 +57,8 @@ public class AnalyticsUI : MonoBehaviour
     public int UpdatesPerSecond => updatesPerSecond;
     
     public int FixedUpdatesPerSecond => fixedUpdatesPerSecond;
+
+    public void SetActive(bool active) => viewUI.gameObject.SetActive(active);
     
-    public void FlipView() => viewUI.gameObject.SetActive(!viewUI.gameObject.activeSelf);
+    public void FlipView() => SetActive(!viewUI.gameObject.activeSelf);
 }

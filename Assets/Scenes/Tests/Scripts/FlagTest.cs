@@ -6,7 +6,7 @@ namespace Tests
 {
     public class FlagTest : MonoBehaviour
     {
-        [SerializeField] PlayerPropertyEnum property;
+        [SerializeField] ObjectPropertyEnum property;
         // [SerializeField] TestEnum test;
 
         // [Flags]
@@ -24,31 +24,20 @@ namespace Tests
         void Start()
         {
             // property = new PlayerPropertyEnum();
-            // property = property.Set(PlayerPropertyEnum.Sticky | PlayerPropertyEnum.Other);
-            // property = PlayerPropertyEnum.Other;
+            // property = property.Set(PlayerPropertyEnum.Gripable | PlayerPropertyEnum.Traversable);
+            // property = PlayerPropertyEnum.Traversable;
 
-            if (Convert.ToInt64(property) == -1)
-            {
-
-            }
-
-            var flags = PlayerPropertyEnum.Sticky/* | PlayerPropertyEnum.Other*/;
+            var flags = ObjectPropertyEnum.Gripable/* | PlayerPropertyEnum.Traversable*/;
 
             // Debug.Log($"Local Test Value: {localTest}");
             // Debug.Log($"Test Value: {test}");
             Debug.Log($"LValue: {Convert.ToInt64(property)}");
             Debug.Log($"FValue: {Convert.ToInt64(flags)}");
 
-            // Debug.Log($"{lValue | Convert.ToInt64(PlayerPropertyEnum.Sticky)}");
+            // Debug.Log($"{lValue | Convert.ToInt64(PlayerPropertyEnum.Gripable)}");
 
             var hasFlag = property.HasFlag(flags);
             Debug.Log($"HasFlags: {flags} {hasFlag}");
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            
         }
     }
 }

@@ -26,7 +26,7 @@ public class AttributesUI : MonoBehaviour
     [SerializeField] AttributeUI velocityYUI;
     [SerializeField] AttributeUI stateUI;
 
-    private enum ViewEnum
+    public enum ViewEnum
     {
         None,
         Booleans,
@@ -55,7 +55,7 @@ public class AttributesUI : MonoBehaviour
     void OnDisable() => inputActions.Disable();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start() => ApplyView(ViewEnum.None);
+    void Start() => SetView(ViewEnum.None);
 
     private float Vector2ToAngle(Vector2 value)
     {
@@ -158,7 +158,7 @@ public class AttributesUI : MonoBehaviour
     // Update is called once per frame
     void Update() => UpdateUI();
 
-    private void ApplyView(ViewEnum view)
+    public void SetView(ViewEnum view)
     {
         switch (view)
         {
@@ -211,6 +211,6 @@ public class AttributesUI : MonoBehaviour
                 break;
         }
 
-        ApplyView(nextView);
+        SetView(nextView);
     }
 }

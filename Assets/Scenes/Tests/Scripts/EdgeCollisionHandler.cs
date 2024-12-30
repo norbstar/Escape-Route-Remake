@@ -18,8 +18,8 @@ namespace Tests
         [SerializeField] OnCollision2DHandler bottomEdgeCollider;
         [SerializeField] OnCollision2DHandler leftEdgeCollider;
 
-        public delegate void HasContactWithEdge(EdgeCollisionHandler instance, Edge edge);
-        public delegate void HasLostContactWithEdge(EdgeCollisionHandler instance, Edge edge);
+        public delegate void HasContactWithEdge(EdgeCollisionHandler instance, Collision2D collision, Edge edge);
+        public delegate void HasLostContactWithEdge(EdgeCollisionHandler instance, Collision2D collision, Edge edge);
 
         public class Events
         {
@@ -64,19 +64,19 @@ namespace Tests
         {
             if (instance == topEdgeCollider)
             {
-                events?.OnContact?.Invoke(this, Edge.Top);
+                events?.OnContact?.Invoke(this, collision, Edge.Top);
             }
             else if (instance == rightEdgeCollider)
             {
-                events?.OnContact?.Invoke(this, Edge.Right);
+                events?.OnContact?.Invoke(this, collision, Edge.Right);
             }
             else if (instance == bottomEdgeCollider)
             {
-                events?.OnContact?.Invoke(this, Edge.Bottom);
+                events?.OnContact?.Invoke(this, collision, Edge.Bottom);
             }
             else if (instance == leftEdgeCollider)
             {
-                events?.OnContact?.Invoke(this, Edge.Left);
+                events?.OnContact?.Invoke(this, collision, Edge.Left);
             }
         }
 
@@ -84,19 +84,19 @@ namespace Tests
         {
             if (instance == topEdgeCollider)
             {
-                events?.OnLostContact?.Invoke(this, Edge.Top);
+                events?.OnLostContact?.Invoke(this, collision, Edge.Top);
             }
             else if (instance == rightEdgeCollider)
             {
-                events?.OnLostContact?.Invoke(this, Edge.Right);
+                events?.OnLostContact?.Invoke(this, collision, Edge.Right);
             }
             else if (instance == bottomEdgeCollider)
             {
-                events?.OnLostContact?.Invoke(this, Edge.Bottom);
+                events?.OnLostContact?.Invoke(this, collision, Edge.Bottom);
             }
             else if (instance == leftEdgeCollider)
             {
-                events?.OnLostContact?.Invoke(this, Edge.Left);
+                events?.OnLostContact?.Invoke(this, collision, Edge.Left);
             }
         }
     }

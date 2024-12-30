@@ -12,7 +12,12 @@ namespace Tests
     public class AbstractedStatePlayer : BasePlayer, PlayerEssentials
     {
         [Header("Components")]
+#if false
         [SerializeField] EdgeCollisionHandler edgeCollisionHandler;
+#endif
+#if true
+        [SerializeField] EdgeTriggerHandler edgeTriggerHandler;
+#endif
 
         public static float MIN_INPUT_VALUE = 0.1f;
 
@@ -72,8 +77,18 @@ namespace Tests
         void OnEnable() => inputActions.Enable();
 
         void OnDisable() => inputActions.Disable();
+#if false
+        private void OnContact(Collision2D collision)
+        {
+            Debug.Log($"OnContact {collision.gameObject.name}");
 
-        public void OnContactWithEdge(EdgeCollisionHandler instance, EdgeCollisionHandler.Edge edge)
+            if (collision.gameObject.TryGetComponent<ObjectProperties>(out var objectProperties))
+            {
+                Debug.Log($"OnContact {collision.gameObject.name} {objectProperties}");
+            }
+        }
+
+        public void OnContactWithEdge(EdgeCollisionHandler instance, Collision2D collision, EdgeCollisionHandler.Edge edge)
         {
             switch (edge)
             {
@@ -113,9 +128,21 @@ namespace Tests
                     }
                     break;
             }
+
+            OnContact(collision);
         }
 
-        public void OnLostContactWithEdge(EdgeCollisionHandler instance, EdgeCollisionHandler.Edge edge)
+        private void OnLostContact(Collision2D collision)
+        {
+            Debug.Log($"OnLostContact {collision.gameObject.name}");
+
+            if (collision.gameObject.TryGetComponent<ObjectProperties>(out var objectProperties))
+            {
+                Debug.Log($"OnLostContact {collision.gameObject.name} {objectProperties}");
+            }
+        }
+
+        public void OnLostContactWithEdge(EdgeCollisionHandler instance, Collision2D collision, EdgeCollisionHandler.Edge edge)
         {
             switch (edge)
             {
@@ -155,18 +182,137 @@ namespace Tests
                     }
                     break;
             }
+
+            OnLostContact(collision);
+        }
+#endif
+#if true
+        private void OnContact(Collider2D collider)
+        {
+            Debug.Log($"OnContact {collider.gameObject.name}");
+
+            if (collider.gameObject.TryGetComponent<ObjectProperties>(out var objectProperties))
+            {
+                Debug.Log($"OnContact {collider.gameObject.name} {objectProperties}");
+            }
         }
 
+        public void OnContactWithEdge(EdgeTriggerHandler instance, Collider2D collider, EdgeTriggerHandler.Edge edge)
+        {
+            switch (edge)
+            {
+                case EdgeTriggerHandler.Edge.Top:
+                    isBlockedTop = true;
+
+                    foreach (var state in states)
+                    {
+                        state.OnBlockedTop();
+                    }
+                    break;
+
+                case EdgeTriggerHandler.Edge.Right:
+                    isBlockedRight = true;
+
+                    foreach (var state in states)
+                    {
+                        state.OnBlockedRight();
+                    }
+                    break;
+
+                case EdgeTriggerHandler.Edge.Bottom:
+                    isGrounded = true;
+
+                    foreach (var state in states)
+                    {
+                        state.OnGrounded();
+                    }
+                    break;
+
+                case EdgeTriggerHandler.Edge.Left:
+                    isBlockedLeft = true;
+
+                    foreach (var state in states)
+                    {
+                        state.OnBlockedLeft();
+                    }
+                    break;
+            }
+
+            OnContact(collider);
+        }
+
+        private void OnLostContact(Collider2D collider)
+        {
+            Debug.Log($"OnLostContact {collider.gameObject.name}");
+
+            if (collider.gameObject.TryGetComponent<ObjectProperties>(out var objectProperties))
+            {
+                Debug.Log($"OnLostContact {collider.gameObject.name} {objectProperties}");
+            }
+        }
+
+        public void OnLostContactWithEdge(EdgeTriggerHandler instance, Collider2D collider, EdgeTriggerHandler.Edge edge)
+        {
+            switch (edge)
+            {
+                case EdgeTriggerHandler.Edge.Top:
+                    isBlockedTop = false;
+
+                    foreach (var state in states)
+                    {
+                        state.OnNotBlockedTop();
+                    }
+                    break;
+
+                case EdgeTriggerHandler.Edge.Right:
+                    isBlockedRight = false;
+
+                    foreach (var state in states)
+                    {
+                        state.OnNotBlockedRight();
+                    }
+                    break;
+
+                case EdgeTriggerHandler.Edge.Bottom:
+                    isGrounded = false;
+
+                    foreach (var state in states)
+                    {
+                        state.OnNotGrounded();
+                    }
+                    break;
+
+                case EdgeTriggerHandler.Edge.Left:
+                    isBlockedLeft = false;
+
+                    foreach (var state in states)
+                    {
+                        state.OnNotBlockedLeft();
+                    }
+                    break;
+            }
+
+            OnLostContact(collider);
+        }
+#endif
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+#if false
             edgeCollisionHandler.Register(new EdgeCollisionHandler.Events
             {
                 OnContact = OnContactWithEdge,
                 OnLostContact = OnLostContactWithEdge
             });
+#endif
+#if true
+            edgeTriggerHandler.Register(new EdgeTriggerHandler.Events
+            {
+                OnContact = OnContactWithEdge,
+                OnLostContact = OnLostContactWithEdge
+            });
         }
-
+#endif
         private void AscertainState()
         {
             playerState = 0;
