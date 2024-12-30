@@ -1,5 +1,6 @@
-using UI;
 using UnityEngine;
+
+using UI;
 
 namespace Tests
 {
@@ -8,18 +9,18 @@ namespace Tests
         [Header("UI")]
         [SerializeField] HealthBarUI healthBarUI;
         [SerializeField] EnergyBarUI energyBarUI;
-        [SerializeField] Transform attributesUI;
-        [SerializeField] Transform actuatorsUI;
-        [SerializeField] Transform analyticsUI;
+        [SerializeField] AttributesUI attributesUI;
+        [SerializeField] ActuatorsUI actuatorsUI;
+        [SerializeField] AnalyticsUI analyticsUI;
 
         public HealthBarUI HealthBar => healthBarUI;
 
         public EnergyBarUI EnergyBar => energyBarUI;
 
-        public Transform Attributes => attributesUI;
+        public AttributesUI Attributes => attributesUI;
 
-        public Transform Actuators => actuatorsUI;
+        public ActuatorsUI Actuators => actuatorsUI;
 
-        public Transform Analytics => analyticsUI;
+        public AnalyticsUI Analytics => analyticsUI;
     }
 }

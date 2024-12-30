@@ -7,6 +7,7 @@ TagManager:
   - Surface
   - Springboard
   - Ladder
+  - Player Child
   layers:
   - Default
   - TransparentFX

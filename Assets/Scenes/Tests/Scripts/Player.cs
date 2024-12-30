@@ -9,7 +9,7 @@ using UI;
 namespace Tests
 {
     [RequireComponent(typeof(AudioSource))]
-    public class Player : BasePlayer
+    public class Player : MonoBehaviour
     {
         [Header("Components")]
         [SerializeField] OnTrigger2DHandler groundTrigger;

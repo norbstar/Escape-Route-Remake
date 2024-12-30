@@ -176,7 +176,10 @@ namespace Tests
             var direction = player.transform.position - light.transform.position;
             
             hasHit = ExtensionMethods.HasHit(light.transform.position, direction, Mathf.Infinity, layerMask, out ExtensionMethods.RaycastHitSet.Data hitData);
+            // if (hasHit) Debug.Log($"Hit: {hitData.other}");
+            
             playerDetected = inCone && hasHit && hitData.other.tag.Equals("Player");
+            // playerDetected = inCone && hasHit && Equals(hitData.other, player);
             mode = playerDetected ? ModeEnum.Tracking : ModeEnum.Sweep;
 
             switch (mode)

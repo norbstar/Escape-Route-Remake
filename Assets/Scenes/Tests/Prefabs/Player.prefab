@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5034088705216668140}
   m_Layer: 0
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 4424425471590120224}
   m_Layer: 0
   m_Name: Spot Light
-  m_TagString: Untagged
+  m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 2359634054644554955}
   m_Layer: 0
   m_Name: Top Edge Collider
-  m_TagString: Untagged
+  m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -383,7 +383,7 @@ GameObject:
   - component: {fileID: 2866720314943067206}
   m_Layer: 0
   m_Name: Bottom Edge Collider
-  m_TagString: Untagged
+  m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -559,8 +559,16 @@ GameObject:
   - component: {fileID: 3880886106867080442}
   - component: {fileID: 8713613986000848162}
   - component: {fileID: 1825198590382261332}
-  - component: {fileID: 4853911593712930631}
   - component: {fileID: 7953187905138312597}
+  - component: {fileID: 3857116850155278743}
+  - component: {fileID: 7861500509887436274}
+  - component: {fileID: 587907603067185212}
+  - component: {fileID: 7022302524767866629}
+  - component: {fileID: 8647255560267297929}
+  - component: {fileID: 4292005443447469781}
+  - component: {fileID: 3792087067580405508}
+  - component: {fileID: 4351664096799953022}
+  - component: {fileID: 2492654755538693766}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -898,18 +906,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4853911593712930631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdf526bda87552c4d89999cbace8ab90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7953187905138312597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -917,7 +913,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa6db5b4e4d910f488fd5de8b23cb933, type: 3}
   m_Name: 
@@ -942,61 +938,22 @@ MonoBehaviour:
   isGroundedUI: {fileID: 0}
   isBlockedLeftUI: {fileID: 0}
   isGrippingUI: {fileID: 0}
-  angleUI: {fileID: 0}
-  bearingUI: {fileID: 0}
+  moveBearingUI: {fileID: 0}
+  moveAngleUI: {fileID: 0}
+  lookBearingUI: {fileID: 0}
+  lookAngleUI: {fileID: 0}
   velocityXUI: {fileID: 0}
   velocityYUI: {fileID: 0}
   stateUI: {fileID: 0}
   arrowBaseUI: {fileID: 254104720836281314}
   moveSpeed: 10
-  applySensitivityProfile: 0
-  applyBlending: 0
-  sensitivityProfile:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 69
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.5
-      value: 0.1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.8449274
-      value: 0.42363614
-      inSlope: 2.3741722
-      outSlope: 2.3741722
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  canDodge: 1
-  dodgeSpeed: 10
+  deadzoneNormalizedRadius: 0.25
+  smoothInputSpeed: 0.2
+  shiftSpeed: 10
+  minShiftAngle: 90
+  maxShiftAngle: 270
   jumpForce: 600
-  vectorBasedJump: 0
+  visualiseLookVector: 1
   canPowerJump: 1
   powerJumpForce: 800
   powerJumpThreshold: 0.2
@@ -1004,12 +961,8 @@ MonoBehaviour:
   dashSpeed: 50
   dashDuration: 0.05
   moveValue: {x: 0, y: 0}
-  moveXValue: 0
-  moveYValue: 0
-  relativeMoveSpeed: 0
+  blendValue: 0
   lookValue: {x: 0, y: 0}
-  lookXValue: 0
-  lookYValue: 0
   velocityX: 0
   velocityY: 0
   wallsAreSlippy: 0
@@ -1021,6 +974,151 @@ MonoBehaviour:
   isDashing: 0
   isClimbing: 0
   isGripping: 0
+--- !u!114 &3857116850155278743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fae0a4e475e59c744a5e0c24d632f8dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bottomEdgeCollision: {fileID: 2866720314943067206}
+  jumpClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
+  landClip: {fileID: 8300000, guid: 8984265858e419943b06a62c338ccae9, type: 3}
+  isGroundedUI: {fileID: 0}
+  moveSpeed: 10
+  jumpForce: 600
+  canPowerJump: 0
+  powerJumpForce: 800
+  powerJumpThreshold: 0.2
+  deformationSpeed: 12
+--- !u!114 &7861500509887436274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22e25725acc22384494d7c1ca59b0bb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+--- !u!114 &587907603067185212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb687a77ed215824181cda390b04f182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 50
+  duration: 0.05
+  clip: {fileID: 8300000, guid: 7e419102b4e8c8843a7c4cf006ff68cc, type: 3}
+--- !u!114 &7022302524767866629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6943afbed384cd9458d775fb54b4e884, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpForce: 600
+  jumpClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
+  canPowerJump: 1
+  powerJumpForce: 800
+  powerJumpThreshold: 0.2
+--- !u!114 &8647255560267297929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5bb646971e2dcc4b859258cb45cbad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpForce: 600
+  jumpClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
+--- !u!114 &4292005443447469781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6ca8b5cfd9a57147ba5bcb53dc63217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpForce: 600
+  jumpClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
+  canDoubleJump: 1
+--- !u!114 &3792087067580405508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91ae37bb9ecf6364190b579da95b18c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+--- !u!114 &4351664096799953022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c04fd4a6736daac4986c0b20b054fb65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  landClip: {fileID: 8300000, guid: 8984265858e419943b06a62c338ccae9, type: 3}
+  deformationSpeed: 12
+--- !u!114 &2492654755538693766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98440eaa55388ef409564077cd92a22d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  edgeCollisionHandler: {fileID: 6183590988341010715}
+  velocityXUI: {fileID: 0}
+  velocityYUI: {fileID: 0}
+  stateUI: {fileID: 0}
+  isBlockedTopUI: {fileID: 0}
+  isBlockedRightUI: {fileID: 0}
+  isGroundedUI: {fileID: 0}
+  isBlockedLeftUI: {fileID: 0}
+  isDashingUI: {fileID: 0}
+  isGrippingUI: {fileID: 0}
 --- !u!1 &3954563937439435231
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,7 +1131,7 @@ GameObject:
   - component: {fileID: 2204570325481548858}
   m_Layer: 0
   m_Name: Min Energy
-  m_TagString: Untagged
+  m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1125,7 +1223,7 @@ GameObject:
   - component: {fileID: 2877434486869418528}
   m_Layer: 0
   m_Name: Glow
-  m_TagString: Untagged
+  m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1300,7 +1398,7 @@ GameObject:
   - component: {fileID: 254104720836281314}
   m_Layer: 0
   m_Name: Arrow Base
-  m_TagString: Untagged
+  m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1333,9 +1431,9 @@ GameObject:
   - component: {fileID: 6610229697992314393}
   - component: {fileID: 2657094558093534864}
   - component: {fileID: 6543963185860037140}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Contact Map Trigger
-  m_TagString: Untagged
+  m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1428,7 +1526,7 @@ GameObject:
   - component: {fileID: 5465770648399239158}
   m_Layer: 0
   m_Name: Inner Body
-  m_TagString: Untagged
+  m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1512,9 +1610,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9136040000164958685}
+  - component: {fileID: 6183590988341010715}
   m_Layer: 0
   m_Name: Edge Colliders
-  m_TagString: Untagged
+  m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1538,6 +1637,22 @@ Transform:
   - {fileID: 1084867064834741693}
   m_Father: {fileID: 7771758874883039469}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6183590988341010715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6990256498626115190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33012327a0040c4448f198e263663349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topEdgeCollider: {fileID: 2359634054644554955}
+  rightEdgeCollider: {fileID: 2178154617189860854}
+  bottomEdgeCollider: {fileID: 2866720314943067206}
+  leftEdgeCollider: {fileID: 6198635297068782582}
 --- !u!1 &7983589189986567590
 GameObject:
   m_ObjectHideFlags: 0
@@ -1641,7 +1756,7 @@ GameObject:
   - component: {fileID: 636202987087580292}
   m_Layer: 0
   m_Name: Glow
-  m_TagString: Untagged
+  m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1818,7 +1933,7 @@ GameObject:
   - component: {fileID: 6198635297068782582}
   m_Layer: 0
   m_Name: Left Edge Collider
-  m_TagString: Untagged
+  m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1993,7 +2108,7 @@ GameObject:
   - component: {fileID: 2178154617189860854}
   m_Layer: 0
   m_Name: Right Edge Collider
-  m_TagString: Untagged
+  m_TagString: Player Child
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2079,6 +2194,10 @@ PrefabInstance:
     - target: {fileID: 773249027274081310, guid: 1eb2aefde80354d4fa783d65b3d35331, type: 3}
       propertyPath: m_Name
       value: Circlular Energy Bar
+      objectReference: {fileID: 0}
+    - target: {fileID: 773249027274081310, guid: 1eb2aefde80354d4fa783d65b3d35331, type: 3}
+      propertyPath: m_TagString
+      value: Player Child
       objectReference: {fileID: 0}
     - target: {fileID: 2369047256195650836, guid: 1eb2aefde80354d4fa783d65b3d35331, type: 3}
       propertyPath: m_Pivot.x

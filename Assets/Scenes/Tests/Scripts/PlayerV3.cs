@@ -15,8 +15,8 @@ namespace Tests
     [RequireComponent(typeof(SpriteShapeController))]
     [RequireComponent(typeof(EdgeCollider2D))]
     [RequireComponent(typeof(AudioSource))]
-    [RequireComponent(typeof(Analytics))]
-    public class PlayerV3 : BasePlayer
+    // [RequireComponent(typeof(AnalyticsUI))]
+    public class PlayerV3 : MonoBehaviour
     {
         [Header("Components")]
         [SerializeField] OnTrigger2DHandler topEdgeTrigger;
@@ -112,7 +112,7 @@ namespace Tests
         // private new Collider2D collider;
         private SpriteShapeController spriteShapeController;
         private AudioSource audioSource;
-        private Analytics analytics;
+        private AnalyticsUI analytics;
         private PlayerStateEnum state;
         private bool execRun, execJump, execPowerJump, execDodge, execDash;
         private Vector2 bearing;
@@ -129,7 +129,7 @@ namespace Tests
             // collider = GetComponent<Collider2D>();
             spriteShapeController = GetComponent<SpriteShapeController>();
             audioSource = GetComponent<AudioSource>();
-            analytics = GetComponent<Analytics>();
+            analytics = FindFirstObjectByType<AnalyticsUI>();
             inputActions = new InputSystem_Actions();
             layerMask = LayerMask.GetMask("Player");
         }

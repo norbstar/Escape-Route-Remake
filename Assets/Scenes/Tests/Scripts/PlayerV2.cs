@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.U2D;
 
 using UI;
-using System.Net.Http.Headers;
 
 namespace Tests
 {
@@ -17,9 +16,16 @@ namespace Tests
     [RequireComponent(typeof(EdgeCollider2D))]
     [RequireComponent(typeof(AudioSource))]
     // [RequireComponent(typeof(ContactMap))]
-    [RequireComponent(typeof(Analytics))]
-    public class PlayerV2 : BasePlayer
+    // [RequireComponent(typeof(AnalyticsUI))]
+    public class PlayerV2 : MonoBehaviour
     {
+        // private enum JumpType
+        // {
+        //     Vertical,
+        //     VectorBased,
+        //     VelocityBased
+        // }
+
         [Header("Components")]
         [SerializeField] OnCollision2DHandler topEdgeCollision;
         [SerializeField] OnCollision2DHandler rightEdgeCollision;
@@ -49,8 +55,10 @@ namespace Tests
         [SerializeField] AttributeUI isGroundedUI;
         [SerializeField] AttributeUI isBlockedLeftUI;
         [SerializeField] AttributeUI isGrippingUI;
-        [SerializeField] AttributeUI angleUI;
-        [SerializeField] AttributeUI bearingUI;
+        [SerializeField] AttributeUI moveBearingUI;
+        [SerializeField] AttributeUI moveAngleUI;
+        [SerializeField] AttributeUI lookBearingUI;
+        [SerializeField] AttributeUI lookAngleUI;
         [SerializeField] AttributeUI velocityXUI;
         [SerializeField] AttributeUI velocityYUI;
         [SerializeField] AttributeUI stateUI;
@@ -61,19 +69,37 @@ namespace Tests
         [Header("Move")]
         [Range(1f, 10f)]
         [SerializeField] float moveSpeed = 5f;
-        [SerializeField] bool applySensitivityProfile;
-        [SerializeField] bool applyBlending;
-        [SerializeField] AnimationCurve sensitivityProfile;
+        // [SerializeField] float stepSize = 0.025f;
+        [SerializeField] float deadzoneNormalizedRadius = 0.1f;
+        // [SerializeField] bool applySensitivityProfile;
+        // [SerializeField] AnimationCurve sensitivityProfile;
+        [SerializeField] float smoothInputSpeed = 0.2f;
 
-        [Header("Dodge")]
-        [SerializeField] bool canDodge;
+        // [Header("Blending")]
+        // [SerializeField] bool blendingVelocity;
+        // [Range(0f, 1f)]
+        // [SerializeField] float minBlendSpeed = 0.1f;
+        // [Range(0f, 1f)]
+        // [SerializeField] float maxBlendSpeed = 1f;
+
+        // [Header("Dodge")]
+        // [SerializeField] bool canDodge;
+        // [Range(1f, 10f)]
+        // [SerializeField] float dodgeSpeed = 5f;
+
+        [Header("Shift")]
         [Range(1f, 10f)]
-        [SerializeField] float dodgeSpeed = 5f;
+        [SerializeField] float shiftSpeed = 5f;
+        [SerializeField] float minShiftAngle = 90f;
+        [SerializeField] float maxShiftAngle = 180f;
 
         [Header("Jump")]
         [Range(400f, 800f)]
         [SerializeField] float jumpForce = 600f;
-        [SerializeField] bool vectorBasedJump;
+        // [SerializeField] bool vectorBasedJump;
+        // [SerializeField] bool velocityBasedJump;
+        // [SerializeField] JumpType jumpType;
+        [SerializeField] bool visualiseLookVector;
         [SerializeField] bool canPowerJump;
         [Range(600f, 1000f)]
         [SerializeField] float powerJumpForce = 800f;
@@ -87,7 +113,8 @@ namespace Tests
 
         [Header("Stats")]
         [SerializeField] Vector2 moveValue;
-        [SerializeField] float relativeMoveSpeed;
+        // [SerializeField] float relativeMoveSpeed;
+        [SerializeField] float blendValue;
         [SerializeField] Vector2 lookValue;
 
         [Header("Rigidbody")]
@@ -125,15 +152,17 @@ namespace Tests
         private SpriteShapeController spriteShapeController;
         private AudioSource audioSource;
         // private ContactMap contactMap;
-        private Analytics analytics;
-        private PlayerStateEnum state;
-        private bool execRun, execJump, execPowerJump, execDodge, execDash;
-        private Vector2 bearing;
+        private AnalyticsUI analytics;
+        private PlayerStateEnum playerState;
+        private bool execRun, execShift, execJump, execPowerJump/*, execDodge*/, execDash;
+        // private Vector2 moveBearing, lookBearing;
         private float jumpPressStartTime;
         private bool suspendInput, monitorDash, jumpReleased;
         private float lastLinearVelocityY;
         private int pointCount;
         private float defaultGravityScale;
+        private Vector2 cachedMoveVector, smoothInputVelocity;
+        private float moveAngle, lookAngle;
         private int layerMask;
 
         void Awake()
@@ -144,7 +173,7 @@ namespace Tests
             spriteShapeController = GetComponent<SpriteShapeController>();
             audioSource = GetComponent<AudioSource>();
             // contactMap = GetComponent<ContactMap>();
-            analytics = GetComponent<Analytics>();
+            analytics = FindFirstObjectByType<AnalyticsUI>();
             inputActions = new InputSystem_Actions();
             defaultGravityScale = rigidBody.gravityScale;
             layerMask = LayerMask.GetMask("Player");
@@ -199,17 +228,17 @@ namespace Tests
         }
 
         void OnDisable() => inputActions.Disable();
-
+#if false
         private void OnTriggerEnter2D(Collider2D collider)
         {
             Debug.Log($"OnTriggerEnter2D Name: {collider.name} Tag: {collider.tag}");
             
             if (collider.tag.Equals("Pill"))
             {
-                // TODO
+                Debug.Log($"Pill: {collider.name}");
             }
         }
-
+#endif
         private IEnumerator Co_MonitorJumpIntent()
         {
             jumpPressStartTime = Time.time;
@@ -254,7 +283,7 @@ namespace Tests
         {
             if (suspendInput) return;
 
-            if (canDash && state == PlayerStateEnum.Running)
+            if (canDash && playerState == PlayerStateEnum.Running)
             {
                 suspendInput = true;
                 execDash = true;
@@ -279,12 +308,13 @@ namespace Tests
             scene.Analytics.gameObject.SetActive(!scene.Analytics.gameObject.activeSelf);
         }
 
-        private void OnMoveXIntent()
+        private void OnRunIntent()
         {
             if (isGrounded)
             {
                 execRun = true;
             }
+#if false
             else
             {
                 var direction = Mathf.Sign(moveValue.x);
@@ -297,39 +327,81 @@ namespace Tests
 
                 if (canDodge) execDodge = true;
             }
+#endif
         }
 
-        private void OnMoveYIntent()
+        private void OnShiftIntent()
         {
+            if (isGrounded) return;
+#if false
             var direction = Mathf.Sign(moveValue.y);
-            transform.position += Vector3.up * direction *  moveSpeed * 0.5f * Time.fixedDeltaTime;
+            // transform.position += Vector3.up * direction *  moveSpeed * 0.5f * Time.fixedDeltaTime;
+
+            if (direction > 0 && moveAngle >= 180f && moveAngle <= 270f || direction < 0 && moveAngle >= 180 && moveAngle <= 90)
+            {
+                execShift = true;
+            }
+#endif
+            // if (moveAngle >= minShiftAngle && moveAngle <= maxShiftAngle)
+            {
+                execShift = true;
+            }
+        }
+
+        private float Vector2ToAngle(Vector2 value)
+        {
+            var angle = Mathf.Atan2(value.x, value.y) * Mathf.Rad2Deg;
+            return (angle + 360) % 360;
+        }
+#if false
+        private float AngleToSteppedAngle(float angle, int steps) => (int) angle / steps * steps; 
+#endif
+
+        private bool OutsideDeadzone(Vector2 point)
+        {
+            // return (point - Vector2.zero).magnitude > deadzoneNormalizedRadius;
+            return Vector2.Distance(Vector2.zero, point) > deadzoneNormalizedRadius;
         }
 
         private void EvaluateMove()
         {
             moveValue = inputActions.Player.Move.ReadValue<Vector2>();
-
+            moveAngle = Vector2ToAngle(moveValue);
+#if false
             if (Mathf.Abs(moveValue.x) != 0f)
             {
                 OnMoveXIntent();
             }
             else if (isGrounded)
             {
-                rigidBody.linearVelocityX = 0f;
+                rigidBody.linearVelocityX /*= blendValue*/ = 0f;
             }
+#endif
 
-            if (Mathf.Abs(moveValue.y) > 0f)
+            if (isGrounded)
             {
-                rigidBody.linearVelocityY = 0f;
-                OnMoveYIntent();
+                if (OutsideDeadzone(new Vector2(moveValue.x, 0f)))
+                // if (Mathf.Abs(moveValue.x) != 0f)
+                {
+                    OnRunIntent();
+                }
+                else
+                {
+                    rigidBody.linearVelocityX = blendValue = 0f;
+                }
             }
-            else if (isGrounded)
+            // else if (Mathf.Abs(moveValue.x) != 0f && Mathf.Abs(moveValue.y) != 0f)
+            else if (OutsideDeadzone(new Vector2(moveValue.x, moveValue.y)))
             {
-                rigidBody.linearVelocityY = 0f;
+                OnShiftIntent();
             }
         }
 
-        private void EvaluateLook() => lookValue = inputActions.Player.Look.ReadValue<Vector2>();
+        private void EvaluateLook()
+        {
+            lookValue = inputActions.Player.Look.ReadValue<Vector2>();
+            lookAngle = Vector2ToAngle(lookValue);
+        }
 
         private void EvaluateGrip() => isGripping = inputActions.Player.Grip.IsPressed();
 
@@ -375,29 +447,19 @@ namespace Tests
             EvaluateGrip();
         }
 
-        private float Vector2ToAngle(Vector2 value)
-        {
-            var radians = Mathf.Atan2(value.y, value.x);
-            return radians * (180f / Mathf.PI) - 90f;
-        }
-#if false
-        private float AngleToSteppedAngle(float angle, int steps) => (int) angle / steps * steps; 
-#endif
         private void UpdatePlayerUI()
         {
             if (arrowBaseUI != null)
             {
-                var angle = Vector2ToAngle(new Vector2(moveValue.x, moveValue.y));
-                // Debug.Log($"Angle: {angle}");
 #if false
-                // angle = AngleToSteppedAngle(angle, STEPPED_ANGLE_DEGREES);
+                // lookAngle = AngleToSteppedAngle(lookAngle, STEPPED_ANGLE_DEGREES);
                 // Debug.Log($"Stepped Angle: {angle}");
 #endif
 
-                arrowBaseUI.eulerAngles = new Vector3(0f, 0f, angle);
+                arrowBaseUI.eulerAngles = new Vector3(0f, 0f, -lookAngle);
             }
 
-            arrowBaseUI.gameObject.SetActive(vectorBasedJump && moveValue != Vector2.zero);
+            arrowBaseUI.gameObject.SetActive(visualiseLookVector && lookValue != Vector2.zero);
         }
 
         private void UpdateUI()
@@ -462,14 +524,24 @@ namespace Tests
                 isBlockedLeftUI.Color = isBlockedLeft ? Color.green : ORANGE;
             }
 
-            if (angleUI != null)
+            if (moveBearingUI != null)
             {
-                angleUI.Value = arrowBaseUI.eulerAngles.z.ToString("0.00");
+                moveBearingUI.Value = $"[{moveValue.x.ToString("0.00")}, {moveValue.y.ToString("0.00")}]";
+            }
+            
+            if (moveAngleUI != null)
+            {
+                moveAngleUI.Value = moveAngle.ToString("0.00");
             }
 
-            if (bearingUI != null)
+            if (lookBearingUI != null)
             {
-                bearingUI.Value = $"[{bearing.x.ToString("0.00")}, {bearing.y.ToString("0.00")}]";
+                lookBearingUI.Value = $"[{lookValue.x.ToString("0.00")}, {lookValue.y.ToString("0.00")}]";
+            }
+            
+            if (lookAngleUI != null)
+            {
+                lookAngleUI.Value = lookAngle.ToString("0.00");//arrowBaseUI.eulerAngles.z.ToString("0.00");
             }
 
             velocityX = rigidBody.linearVelocityX;
@@ -487,7 +559,7 @@ namespace Tests
 
             if (stateUI != null)
             {
-                stateUI.Value = state.ToString();
+                stateUI.Value = playerState.ToString();
             }
             
             minEnergyThreshold.gameObject.SetActive(scene.EnergyBar.Value >= POWER_MOVE_MIN_ENERGY_VALUE);
@@ -529,7 +601,8 @@ namespace Tests
             UpdateUI();
             
             // bearing = DegreeToVector2(arrowBaseUI.eulerAngles.z);
-            bearing = new Vector2(moveValue.x, moveValue.y);
+            // moveBearing = moveValue;
+            // lookBearing = lookValue;
 
             if (contactMap.HasContacts)
             {
@@ -549,7 +622,7 @@ namespace Tests
 
             // RenderCircle(25, 0.55f, 0.015f, Color.grey);
         }
-
+#if false
         private void ApplyRun()
         {
             if (applySensitivityProfile)
@@ -565,17 +638,103 @@ namespace Tests
             rigidBody.linearVelocityX = relativeMoveSpeed;
             execRun = false;
         }
-
-        private void ApplyJump()
+#endif
+        private void ApplyRun()
         {
-            if (vectorBasedJump)
+#if false
+            var sign = Mathf.Sign(moveValue.x);
+
+            if (sign > 0)
             {
-                rigidBody.AddForce(bearing * jumpForce);
+                blendValue = blendValue + stepSize > moveValue.x ? moveValue.x : blendValue + stepSize;
             }
             else
             {
-                rigidBody.AddForce(Vector2.up * jumpForce);
+                blendValue = blendValue - stepSize < moveValue.x ? moveValue.x : blendValue - stepSize;
             }
+            
+            rigidBody.linearVelocityX = blendValue * moveSpeed;
+#endif
+#if false
+            var sign = Mathf.Sign(moveValue.x);
+            var relativeSpeed = Mathf.Clamp(Mathf.Abs(rigidBody.linearVelocityX) / moveSpeed, minBlendSpeed, maxBlendSpeed);
+            var stepSize = maxBlendSpeed * relativeSpeed * Time.fixedDeltaTime;
+
+            if (sign > 0)
+            {
+                blendValue = blendValue + stepSize > moveValue.x ? moveValue.x : blendValue + stepSize;
+            }
+            else
+            {
+                blendValue = blendValue - stepSize < moveValue.x ? moveValue.x : blendValue - stepSize;
+            }
+            
+            rigidBody.linearVelocityX = blendValue * moveSpeed;
+#endif
+#if true
+            cachedMoveVector = Vector2.SmoothDamp(cachedMoveVector, moveValue, ref smoothInputVelocity, smoothInputSpeed);
+            rigidBody.linearVelocityX = cachedMoveVector.x * moveSpeed;
+#endif
+            execRun = false;
+        }
+
+        private void ApplyShift()
+        {
+            // rigidBody.linearVelocityX = moveValue.x * shiftSpeed;
+#if false
+            var sign = Mathf.Sign(moveValue.x);
+
+            if (sign > 0)
+            {
+                blendValue = blendValue + stepSize > moveValue.x ? moveValue.x : blendValue + stepSize;
+            }
+            else
+            {
+                blendValue = blendValue - stepSize < moveValue.x ? moveValue.x : blendValue - stepSize;
+            }
+            
+            rigidBody.linearVelocityX = blendValue * moveSpeed;
+#endif
+#if true
+            cachedMoveVector = Vector2.SmoothDamp(cachedMoveVector, moveValue, ref smoothInputVelocity, smoothInputSpeed);
+            rigidBody.linearVelocityX = cachedMoveVector.x * moveSpeed;
+#endif
+            execShift = false;
+        }
+
+        private void ApplyJump()
+        {
+            rigidBody.AddForce(Vector2.up * jumpForce);
+
+            // if (vectorBasedJump)
+            // {
+            //     rigidBody.AddForce(moveValue * jumpForce);
+            // }
+            
+            // else
+            // {
+            //     rigidBody.AddForce(Vector2.up * jumpForce);
+            // }
+
+            // switch (jumpType)
+            // {
+            //     case JumpType.Vertical:
+            //         rigidBody.AddForce(Vector2.up * jumpForce);
+            //         break;
+
+            //     case JumpType.VectorBased:
+            //         rigidBody.AddForce(lookValue * jumpForce);
+            //         break;
+
+            //     case JumpType.VelocityBased:
+            //         var direction = Mathf.Sign(rigidBody.linearVelocityX);
+            //         var relativeVelocity = rigidBody.linearVelocityX / moveSpeed;
+            //         var angle = Mathf.Lerp(0f, direction > 0 ? 45f : -45f, relativeVelocity);
+            //         // angle = (angle + 360) % 360;
+            //         var vector = new Vector2(Mathf.Sin(angle * Mathf.Deg2Rad), Mathf.Cos(angle * Mathf.Deg2Rad));
+            //         rigidBody.AddForce(vector * jumpForce);
+            //         break;
+            // }
 
             audioSource.PlayOneShot(jumpClip, 1f);
             execJump = false;
@@ -589,28 +748,66 @@ namespace Tests
 
         private void ApplyPowerJump()
         {
-            if (vectorBasedJump)
-            {
-                rigidBody.AddForce(bearing * powerJumpForce);
-            }
-            else
-            {
-                rigidBody.AddForce(Vector2.up * powerJumpForce);
-            }
+            rigidBody.AddForce(Vector2.up * powerJumpForce);
+
+            // if (vectorBasedJump)
+            // {
+            //     rigidBody.AddForce(lookValue * powerJumpForce);
+            // }
+            // else
+            // {
+            //     rigidBody.AddForce(Vector2.up * powerJumpForce);
+            // }
+
+            // switch (jumpType)
+            // {
+            //     case JumpType.Vertical:
+            //         rigidBody.AddForce(Vector2.up * powerJumpForce);
+            //         break;
+
+            //     case JumpType.VectorBased:
+            //         rigidBody.AddForce(lookValue * powerJumpForce);
+            //         break;
+
+            //     case JumpType.VelocityBased:
+            //         var direction = Mathf.Sign(rigidBody.linearVelocityX);
+            //         var relativeVelocity = rigidBody.linearVelocityX / moveSpeed;
+            //         var angle = Mathf.Lerp(0f, direction > 0 ? 45f : -45f, relativeVelocity);
+            //         // angle = (angle + 360) % 360;
+            //         var vector = new Vector2(Mathf.Sin(angle * Mathf.Deg2Rad), Mathf.Cos(angle * Mathf.Deg2Rad));
+            //         rigidBody.AddForce(vector * powerJumpForce);
+            //         break;
+            // }
 
             DrainEnergyLevel(POWER_MOVE_MIN_ENERGY_VALUE);
             audioSource.PlayOneShot(jumpClip, 1f);
             execPowerJump = false;
         }
-
+#if false
         private void ApplyDodge()
         {
-            var inputSensitivity = sensitivityProfile.Evaluate(Mathf.Abs(moveValue.x));
-            relativeMoveSpeed = dodgeSpeed * Mathf.Sign(moveValue.x) * inputSensitivity;
-            rigidBody.linearVelocityX = relativeMoveSpeed;
+            // var inputSensitivity = sensitivityProfile.Evaluate(Mathf.Abs(moveValue.x));
+            // relativeMoveSpeed = dodgeSpeed * Mathf.Sign(moveValue.x) * inputSensitivity;
+            // rigidBody.linearVelocityX = relativeMoveSpeed;
+
+            // var sign = Mathf.Sign(moveValue.x);
+            // var stepSize = maxBlendSpeed * Time.fixedDeltaTime;
+
+            // if (sign > 0)
+            // {
+            //     blendValue = blendValue + stepSize > moveValue.x ? moveValue.x : blendValue + stepSize;
+            // }
+            // else
+            // {
+            //     blendValue = blendValue - stepSize < moveValue.x ? moveValue.x : blendValue - stepSize;
+            // }
+
+            // rigidBody.linearVelocityX = blendValue * dodgeSpeed;
+            // cachedMoveVector = Vector2.SmoothDamp(cachedMoveVector, moveValue, ref smoothInputVelcoity, smoothInputSpeed);
+            rigidBody.linearVelocityX = /*cachedMoveVector.x*/moveValue.x * moveSpeed;
             execDodge = false;
         }
-
+#endif
         private IEnumerator Co_Dash()
         {
             var elapsedTime = 0f;
@@ -745,33 +942,26 @@ namespace Tests
             }
         }
 
-        private void AscertState()
+        private void AscertainState()
         {
-            state = PlayerStateEnum.Idle;
+            playerState = PlayerStateEnum.Idle;
 
             if (isGrounded)
             {
                 if (Mathf.Abs(rigidBody.linearVelocity.x) > MIN_INPUT_VALUE)
                 {
-                    if (isDashing)
-                    {
-                        state = PlayerStateEnum.Dashing;
-                    }
-                    else if (isGrounded)
-                    {
-                        state = PlayerStateEnum.Running;
-                    }
+                    playerState = isDashing ? PlayerStateEnum.Dashing : PlayerStateEnum.Running;
                 }
             }
             else
             {
                 if (rigidBody.linearVelocity.y >= MIN_INPUT_VALUE)
                 {
-                    state = PlayerStateEnum.Jumping;
+                    playerState = PlayerStateEnum.Jumping;
                 }
                 else if (rigidBody.linearVelocity.y <= -MIN_INPUT_VALUE)
                 {
-                    state = PlayerStateEnum.Falling;
+                    playerState = PlayerStateEnum.Falling;
                 }
             }
         }
@@ -793,7 +983,7 @@ namespace Tests
 
         void FixedUpdate()
         {
-            AscertState();
+            AscertainState();
             AscertGravity();
             // UpdateCollisionStatus();
             EvaluateRawIntents();
@@ -801,6 +991,11 @@ namespace Tests
             if (execRun)
             {
                 ApplyRun();
+            }
+
+            if (execShift)
+            {
+                ApplyShift();
             }
 
             if (execJump)
@@ -813,10 +1008,10 @@ namespace Tests
                 ApplyPowerJump();
             }
 
-            if (execDodge)
-            {
-                ApplyDodge();
-            }
+            // if (execDodge)
+            // {
+            //     ApplyDodge();
+            // }
 
             if (execDash)
             {
