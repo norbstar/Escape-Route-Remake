@@ -391,7 +391,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Grip",
+                    "name": "Hold",
                     "type": "Button",
                     "id": "99346101-c138-4886-a0c9-4c53c2b7461d",
                     "expectedControlType": "",
@@ -925,7 +925,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Grip",
+                    "action": "Hold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9a8c35b5-98af-492a-b68d-3822588d3ac4",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Hold",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -15,17 +15,40 @@ public class OnTrigger2DHandler : MonoBehaviour
     }
 
     private Events events;
+    private LayerMask layerMask;
     private new Collider2D collider;
 
     public void Awake() => collider = GetComponent<Collider2D>();
 
-    public void Register(Events events) => this.events = events;
+    public void Register(Events events, LayerMask layerMask)
+    {
+        this.events = events;
+        this.layerMask = layerMask;
+    }
 
-    private void OnTriggerEnter2D(Collider2D collider) => events?.Gained?.Invoke(this, collider);
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if ((layerMask.value & (1 << collider.gameObject.layer)) > 0)
+        {
+            events?.Gained?.Invoke(this, collider);
+        }
+    }
 
-    private void OnTriggerStay2D(Collider2D collider) => events?.Sustained?.Invoke(this, collider);
+    private void OnTriggerStay2D(Collider2D collider)
+    {
+        if ((layerMask.value & (1 << collider.gameObject.layer)) > 0)
+        {
+            events?.Sustained?.Invoke(this, collider);
+        }
+    }
 
-    private void OnTriggerExit2D(Collider2D collider) => events?.Lost?.Invoke(this, collider);
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        if ((layerMask.value & (1 << collider.gameObject.layer)) > 0)
+        {
+            events?.Lost?.Invoke(this, collider);
+        }
+    }
 
     public bool Enabled { get => collider.enabled; set => collider.enabled = value; }
 }

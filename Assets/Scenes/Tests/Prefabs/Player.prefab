@@ -346,7 +346,7 @@ EdgeCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -447,7 +447,7 @@ EdgeCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -594,6 +594,7 @@ GameObject:
   - component: {fileID: 4292005443447469781}
   - component: {fileID: 3792087067580405508}
   - component: {fileID: 4351664096799953022}
+  - component: {fileID: 8106415712434088462}
   - component: {fileID: 2492654755538693766}
   m_Layer: 6
   m_Name: Player
@@ -963,7 +964,7 @@ MonoBehaviour:
   isBlockedRightUI: {fileID: 0}
   isGroundedUI: {fileID: 0}
   isBlockedLeftUI: {fileID: 0}
-  isGrippingUI: {fileID: 0}
+  isHoldingUI: {fileID: 0}
   moveBearingUI: {fileID: 0}
   moveAngleUI: {fileID: 0}
   lookBearingUI: {fileID: 0}
@@ -999,7 +1000,7 @@ MonoBehaviour:
   isBlockedLeft: 0
   isDashing: 0
   isClimbing: 0
-  isGripping: 0
+  isHolding: 0
 --- !u!114 &3857116850155278743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1123,6 +1124,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   landClip: {fileID: 8300000, guid: 8984265858e419943b06a62c338ccae9, type: 3}
   deformationSpeed: 12
+--- !u!114 &8106415712434088462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03629ab2ba09160488bdd40ff4aba391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpForce: 600
+  jumpClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
 --- !u!114 &2492654755538693766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1135,7 +1150,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98440eaa55388ef409564077cd92a22d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  edgeCollisionHandler: {fileID: 6183590988341010715}
+  contactMap: {fileID: 6543963185860037140}
+  edgeTriggerHandler: {fileID: 1564858219368971033}
+  arrowBaseUI: {fileID: 254104720836281314}
 --- !u!1 &3954563937439435231
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,7 +1471,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6610229697992314393
 Transform:
   m_ObjectHideFlags: 0
@@ -1531,6 +1548,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 256
+  contactNames: []
 --- !u!1 &5116402538624913495
 GameObject:
   m_ObjectHideFlags: 0
@@ -2018,7 +2036,7 @@ EdgeCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -2206,7 +2224,7 @@ EdgeCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

@@ -18,6 +18,7 @@ public class AttributesUI : MonoBehaviour
     [SerializeField] AttributeUI isBlockedLeftUI;
     [SerializeField] AttributeUI isDashingUI;
     [SerializeField] AttributeUI isGrippingUI;
+    [SerializeField] AttributeUI isTraversingUI;
     [SerializeField] AttributeUI moveBearingUI;
     [SerializeField] AttributeUI moveAngleUI;
     [SerializeField] AttributeUI lookBearingUI;
@@ -46,7 +47,7 @@ public class AttributesUI : MonoBehaviour
 
         if (basePlayer != null)
         {
-            essentials = (PlayerEssentials) basePlayer;
+            essentials = basePlayer;
         }
     }
 
@@ -57,12 +58,6 @@ public class AttributesUI : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() => SetView(ViewEnum.None);
 
-    private float Vector2ToAngle(Vector2 value)
-    {
-        var angle = Mathf.Atan2(value.x, value.y) * Mathf.Rad2Deg;
-        return (angle + 360) % 360;
-    }
-    
     private void UpdateUI()
     {
         if (isBlockedTopUI != null)
@@ -102,9 +97,16 @@ public class AttributesUI : MonoBehaviour
 
         if (isGrippingUI != null)
         {
-            var isGripping = essentials.IsGripping();
+            var isGripping = essentials.IsHolding() && essentials.IsGrabbable();
             isGrippingUI.Value = isGripping ? "True" : "False";
             isGrippingUI.Color = isGripping ? Color.white : Color.grey;
+        }
+
+        if (isTraversingUI != null)
+        {
+            var isTraversing = essentials.IsHolding() && essentials.IsTraversable();
+            isTraversingUI.Value = isTraversing ? "True" : "False";
+            isTraversingUI.Color = isTraversing ? Color.white : Color.grey;
         }
 
         var moveValue = inputActions.Player.Move.ReadValue<Vector2>();
@@ -114,7 +116,7 @@ public class AttributesUI : MonoBehaviour
             moveBearingUI.Value = $"[{moveValue.x.ToString("0.00")}, {moveValue.y.ToString("0.00")}]";
         }
         
-        var moveAngle = Vector2ToAngle(moveValue);
+        var moveAngle = moveValue.ToAngle360();
 
         if (moveAngleUI != null)
         {
@@ -128,7 +130,7 @@ public class AttributesUI : MonoBehaviour
             lookBearingUI.Value = $"[{lookValue.x.ToString("0.00")}, {lookValue.y.ToString("0.00")}]";
         }
         
-        var lookAngle = Vector2ToAngle(lookValue);
+        var lookAngle = lookValue.ToAngle360();
 
         if (lookAngleUI != null)
         {

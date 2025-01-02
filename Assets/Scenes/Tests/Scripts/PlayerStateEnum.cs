@@ -11,7 +11,7 @@ namespace Tests
         Shifting = 0x08,
         Falling = 0x10,
         Dashing = 0x20,
-        Leaping = 0x40,
+        Grabbing = 0x40,
         Traversing = 0x80
     }
 }

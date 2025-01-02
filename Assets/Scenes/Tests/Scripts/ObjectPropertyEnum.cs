@@ -5,7 +5,8 @@ namespace Tests
     [Flags]
     public enum ObjectPropertyEnum
     {
-        Gripable = 0x01,
+        Grabbable = 0x01,
         Traversable = 0x02
+        
     }
 }

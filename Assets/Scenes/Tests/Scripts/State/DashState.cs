@@ -12,7 +12,7 @@ namespace Tests.State
         [SerializeField] float duration = 0.05f;
         [SerializeField] AudioClip clip;
 
-        private bool execDash, monitorDash;
+        private bool execDash, canExec, monitorDash;
         
         void OnEnable() => Essentials.InputActions().Player.Dash.performed += OnDashIntent;
 
@@ -20,11 +20,13 @@ namespace Tests.State
 
         private void OnDashIntent(InputAction.CallbackContext context)
         {
+            if (!canExec) return;
+
             if (Essentials.IsInputSuspended()) return;
 
             if (Essentials.PlayerState() == PlayerStateEnum.Running)
             {
-                Essentials.SuspendInput(true);
+                Essentials.SetSuspendInput(true);
                 execDash = true;
             }
         }
@@ -37,7 +39,7 @@ namespace Tests.State
 
             execDash = false;
             monitorDash = true;
-            Essentials.Dashing(true);
+            Essentials.SetDashing(true);
         }
 
         private IEnumerator Co_Dash()
@@ -50,12 +52,11 @@ namespace Tests.State
                 yield return null;
             }
 
-            Essentials.Dashing(false);
-            Essentials.SuspendInput(false);
+            Essentials.SetDashing(false);
+            Essentials.SetSuspendInput(false);
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Evaluate()
         {
             if (monitorDash)
             {
@@ -64,8 +65,21 @@ namespace Tests.State
             }
         }
 
+        // Update is called once per frame
+        void Update()
+        {
+            canExec = !((Essentials.IsGrabbable() || Essentials.IsTraversable()) && Essentials.IsHolding());
+
+            if (canExec)
+            {
+                Evaluate();
+            }
+        }
+
         void FixedUpdate()
         {
+            if (!canExec) return;
+
             if (execDash)
             {
                 ApplyDash();

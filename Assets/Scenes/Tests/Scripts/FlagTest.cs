@@ -27,7 +27,7 @@ namespace Tests
             // property = property.Set(PlayerPropertyEnum.Gripable | PlayerPropertyEnum.Traversable);
             // property = PlayerPropertyEnum.Traversable;
 
-            var flags = ObjectPropertyEnum.Gripable/* | PlayerPropertyEnum.Traversable*/;
+            var flags = ObjectPropertyEnum.Grabbable/* | PlayerPropertyEnum.Traversable*/;
 
             // Debug.Log($"Local Test Value: {localTest}");
             // Debug.Log($"Test Value: {test}");

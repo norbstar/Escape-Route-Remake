@@ -54,7 +54,7 @@ namespace Tests
         [SerializeField] AttributeUI isBlockedRightUI;
         [SerializeField] AttributeUI isGroundedUI;
         [SerializeField] AttributeUI isBlockedLeftUI;
-        [SerializeField] AttributeUI isGrippingUI;
+        [SerializeField] AttributeUI isHoldingUI;
         [SerializeField] AttributeUI moveBearingUI;
         [SerializeField] AttributeUI moveAngleUI;
         [SerializeField] AttributeUI lookBearingUI;
@@ -132,7 +132,7 @@ namespace Tests
         [SerializeField] bool isBlockedLeft;
         [SerializeField] bool isDashing;
         [SerializeField] bool isClimbing;
-        [SerializeField] bool isGripping;
+        [SerializeField] bool isHolding;
 #if false
         [Header("Sandbox")]
         [SerializeField] LineRenderer circleRenderer;
@@ -194,25 +194,25 @@ namespace Tests
             {
                 Gained = OnGainedContactWithEdge,
                 Lost = OnLostContactWithEdge
-            });
+            }, layerMask);
 
             rightEdgeCollision.Register(new OnCollision2DHandler.Events
             {
                 Gained = OnGainedContactWithEdge,
                 Lost = OnLostContactWithEdge
-            });
+            }, layerMask);
 
             bottomEdgeCollision.Register(new OnCollision2DHandler.Events
             {
                 Gained = OnGainedContactWithEdge,
                 Lost = OnLostContactWithEdge
-            });
+            }, layerMask);
 
             leftEdgeCollision.Register(new OnCollision2DHandler.Events
             {
                 Gained = OnGainedContactWithEdge,
                 Lost = OnLostContactWithEdge
-            });
+            }, layerMask);
         }
 
         void OnEnable()
@@ -348,11 +348,6 @@ namespace Tests
             }
         }
 
-        private float Vector2ToAngle(Vector2 value)
-        {
-            var angle = Mathf.Atan2(value.x, value.y) * Mathf.Rad2Deg;
-            return (angle + 360) % 360;
-        }
 #if false
         private float AngleToSteppedAngle(float angle, int steps) => (int) angle / steps * steps; 
 #endif
@@ -366,7 +361,7 @@ namespace Tests
         private void EvaluateMove()
         {
             moveValue = inputActions.Player.Move.ReadValue<Vector2>();
-            moveAngle = Vector2ToAngle(moveValue);
+            moveAngle = moveValue.ToAngle();
 #if false
             if (Mathf.Abs(moveValue.x) != 0f)
             {
@@ -400,10 +395,10 @@ namespace Tests
         private void EvaluateLook()
         {
             lookValue = inputActions.Player.Look.ReadValue<Vector2>();
-            lookAngle = Vector2ToAngle(lookValue);
+            lookAngle = lookValue.ToAngle();
         }
 
-        private void EvaluateGrip() => isGripping = inputActions.Player.Grip.IsPressed();
+        private void EvaluateHold() => isHolding = inputActions.Player.Hold.IsPressed();
 
         private void EvaluateRawIntents()
         {
@@ -444,7 +439,7 @@ namespace Tests
 
             EvaluateMove();
             EvaluateLook();
-            EvaluateGrip();
+            EvaluateHold();
         }
 
         private void UpdatePlayerUI()
@@ -494,10 +489,10 @@ namespace Tests
                 fixedUpdatesUI.Value = analytics.FixedUpdatesPerSecond.ToString();
             }
 
-            if (isGrippingUI != null)
+            if (isHoldingUI != null)
             {
-                isGrippingUI.Value = isGripping ? "True" : "False";    
-                isGrippingUI.Color = isGripping ? Color.green : ORANGE;
+                isHoldingUI.Value = isHolding ? "True" : "False";    
+                isHoldingUI.Color = isHolding ? Color.green : ORANGE;
             }
 
             if (isBlockedAboveUI != null)
@@ -608,9 +603,9 @@ namespace Tests
             {
                 // Debug.Log($"Contacts: {contactMap.Contacts.Count}");
 
-                foreach (var contact in contactMap.Contacts.Values)
+                foreach (var contact in contactMap.Contacts)
                 {
-                    Debug.Log($"Contact: {contact.tag}");
+                    Debug.Log($"Contact: {contact.properties.gameObject.tag}");
                 }
             }
 

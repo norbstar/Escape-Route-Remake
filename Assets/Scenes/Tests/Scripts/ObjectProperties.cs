@@ -7,5 +7,7 @@ namespace Tests
         [SerializeField] ObjectPropertyEnum properties;
         
         public ObjectPropertyEnum Properties => properties;
+
+        public bool Contains(ObjectPropertyEnum properties) => this.properties.HasFlag(properties);
     }
 }

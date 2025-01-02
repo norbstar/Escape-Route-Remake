@@ -136,12 +136,6 @@ namespace Tests
             }
         }
 
-        private float Vector2ToAngle(Vector2 value)
-        {
-            var radians = Mathf.Atan2(value.y, value.x);
-            return radians * (180f / Mathf.PI) - 90f;
-        }
-
         private void OnSweep()
         {
             if (lastMode == ModeEnum.Tracking)
@@ -154,7 +148,7 @@ namespace Tests
 
         private void OnTracking(Vector3 direction)
         {
-            var angle = Vector2ToAngle((Vector2) direction);
+            var angle = ((Vector2) direction).ToAngle();
             light.transform.eulerAngles = new Vector3(0f, 0f, angle);
 
             if (lastMode == ModeEnum.Sweep)
@@ -175,11 +169,8 @@ namespace Tests
             var inCone = IsPointWithinSensorCone(player.transform.position, out ConeData coneData);
             var direction = player.transform.position - light.transform.position;
             
-            hasHit = ExtensionMethods.HasHit(light.transform.position, direction, Mathf.Infinity, layerMask, out ExtensionMethods.RaycastHitSet.Data hitData);
-            // if (hasHit) Debug.Log($"Hit: {hitData.other}");
-            
+            hasHit = ExtensionMethods.HasHit(light.transform.position, direction, Mathf.Infinity, layerMask, out ExtensionMethods.RaycastHitSet.Data hitData);           
             playerDetected = inCone && hasHit && hitData.other.tag.Equals("Player");
-            // playerDetected = inCone && hasHit && Equals(hitData.other, player);
             mode = playerDetected ? ModeEnum.Tracking : ModeEnum.Sweep;
 
             switch (mode)

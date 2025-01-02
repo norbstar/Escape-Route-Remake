@@ -15,7 +15,6 @@ namespace Tests
     [RequireComponent(typeof(SpriteShapeController))]
     [RequireComponent(typeof(EdgeCollider2D))]
     [RequireComponent(typeof(AudioSource))]
-    // [RequireComponent(typeof(AnalyticsUI))]
     public class PlayerV3 : MonoBehaviour
     {
         [Header("Components")]
@@ -41,7 +40,7 @@ namespace Tests
         [SerializeField] AttributeUI isBlockedRightUI;
         [SerializeField] AttributeUI isGroundedUI;
         [SerializeField] AttributeUI isBlockedLeftUI;
-        [SerializeField] AttributeUI isGrippingUI;
+        [SerializeField] AttributeUI isHoldingUI;
         [SerializeField] AttributeUI angleUI;
         [SerializeField] AttributeUI bearingUI;
         [SerializeField] AttributeUI velocityXUI;
@@ -96,7 +95,7 @@ namespace Tests
         [SerializeField] bool isGrounded;
         [SerializeField] bool isBlockedLeft;
         [SerializeField] bool isDashing;
-        [SerializeField] bool isGripping;
+        [SerializeField] bool isHolding;
 
         public static float POWER_MOVE_MIN_ENERGY_VALUE = 0.5f;
         public static float MIN_DAMAGE_VELOCITY = -14;
@@ -159,25 +158,25 @@ namespace Tests
             {
                 Gained = OnGainedContactWithEdge,
                 Lost = OnLostContactWithEdge
-            });
+            }, layerMask);
 
             rightEdgeTrigger.Register(new OnTrigger2DHandler.Events
             {
                 Gained = OnGainedContactWithEdge,
                 Lost = OnLostContactWithEdge
-            });
+            }, layerMask);
 
             bottomEdgeTrigger.Register(new OnTrigger2DHandler.Events
             {
                 Gained = OnGainedContactWithEdge,
                 Lost = OnLostContactWithEdge
-            });
+            }, layerMask);
 
             leftEdgeTrigger.Register(new OnTrigger2DHandler.Events
             {
                 Gained = OnGainedContactWithEdge,
                 Lost = OnLostContactWithEdge
-            });
+            }, layerMask);
         }
 
         void OnDisable() => inputActions.Disable();
@@ -277,7 +276,7 @@ namespace Tests
             //     rigidBody.linearVelocityY = 0f;
             // }
 
-            isGripping = inputActions.Player.Grip.IsPressed();
+            isHolding = inputActions.Player.Hold.IsPressed();
         }
 
         private void OnMoveXIntent()
@@ -305,11 +304,6 @@ namespace Tests
             // TODO
         }
 
-        private float Vector2ToAngle(Vector2 value)
-        {
-            var radians = Mathf.Atan2(value.y, value.x);
-            return radians * (180f / Mathf.PI) - 90f;
-        }
 #if false
         private float AngleToSteppedAngle(float angle, int steps) => (int) angle / steps * steps; 
 #endif
@@ -317,7 +311,7 @@ namespace Tests
         {
             if (arrowBaseUI != null)
             {
-                var angle = Vector2ToAngle(new Vector2(moveXValue, moveYValue));
+                var angle = new Vector2(moveXValue, moveYValue).ToAngle();
                 // Debug.Log($"Angle: {angle}");
 #if false
                 // angle = AngleToSteppedAngle(angle, STEPPED_ANGLE_DEGREES);
@@ -352,10 +346,10 @@ namespace Tests
                 fixedUpdatesUI.Value = analytics.FixedUpdatesPerSecond.ToString();
             }
 
-            if (isGrippingUI != null)
+            if (isHoldingUI != null)
             {
-                isGrippingUI.Value = isGripping ? "True" : "False";    
-                isGrippingUI.Color = isGripping ? Color.green : ORANGE;
+                isHoldingUI.Value = isHolding ? "True" : "False";    
+                isHoldingUI.Color = isHolding ? Color.green : ORANGE;
             }
 
             if (isBlockedAboveUI != null)

@@ -29,6 +29,9 @@ namespace Tests
         }
 
         private Events events;
+        private LayerMask layerMask;
+
+        void Awake() => layerMask = LayerMask.GetMask("Player");
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -37,25 +40,25 @@ namespace Tests
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge
-            });
+            }, layerMask);
 
             rightEdgeCollider.Register(new OnCollision2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge
-            });
+            }, layerMask);
 
             bottomEdgeCollider.Register(new OnCollision2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge
-            });
+            }, layerMask);
 
             leftEdgeCollider.Register(new OnCollision2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge
-            });
+            }, layerMask);
         }
 
         public void Register(Events events) => this.events = events;

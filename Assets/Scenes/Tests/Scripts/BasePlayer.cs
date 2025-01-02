@@ -13,6 +13,8 @@ namespace Tests
     {
         public abstract Rigidbody2D RigidBody();
 
+        public abstract float OriginalGravityScale();
+
         public abstract SpriteShapeController SpriteShapeController();
 
         public abstract AudioSource AudioSource();
@@ -29,16 +31,28 @@ namespace Tests
 
         public abstract bool IsBlockedLeft();
 
-        public abstract void Dashing(bool isDashing);
+        public abstract void SetDashing(bool isDashing);
 
         public abstract bool IsDashing();
 
-        public abstract void Gripping(bool isGripping);
+        public abstract void SetHolding(bool isHolding);
 
-        public abstract bool IsGripping();
+        public abstract bool IsHolding();
 
-        public abstract void SuspendInput(bool suspendInput);
+        public abstract void SetGrabbable(bool isGrabbable);
+
+        public abstract bool IsGrabbable();
+
+        public abstract GameObject GrabbableGameObject();
+
+        public abstract void SetTraversable(bool isTraversing);
+
+        public abstract bool IsTraversable();
+
+        public abstract void SetSuspendInput(bool suspendInput);
 
         public abstract bool IsInputSuspended();
+
+        public abstract void ShowArrow(bool showArrow);
     }
 }

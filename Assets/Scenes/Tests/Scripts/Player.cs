@@ -113,7 +113,7 @@ namespace Tests
             {
                 Gained = OnGround,
                 Lost = OffGround
-            });
+            }, layerMask);
         }
 
         void OnDisable() => inputActions.Disable();

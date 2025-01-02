@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+
 using UnityEngine;
 using UnityEngine.U2D;
 
@@ -12,12 +15,11 @@ namespace Tests
     public class AbstractedStatePlayer : BasePlayer, PlayerEssentials
     {
         [Header("Components")]
-#if false
-        [SerializeField] EdgeCollisionHandler edgeCollisionHandler;
-#endif
-#if true
+        [SerializeField] ContactMap contactMap;
         [SerializeField] EdgeTriggerHandler edgeTriggerHandler;
-#endif
+
+        [Header("Player UI")]
+        [SerializeField] Transform arrowBaseUI;
 
         public static float MIN_INPUT_VALUE = 0.1f;
 
@@ -25,12 +27,16 @@ namespace Tests
         private SpriteShapeController spriteShapeController;
         private AudioSource audioSource;
         private InputSystem_Actions inputActions;
-        private bool isBlockedTop, isBlockedRight, isGrounded, isBlockedLeft, isDashing, isGripping;
+        private bool isBlockedTop, isBlockedRight, isGrounded, isBlockedLeft, isHolding, isDashing, isGrabbable, isTraversable;
         private State.State[] states;
         private PlayerStateEnum playerState;
-        private bool suspendInput;
+        private bool suspendInput, showArrow;
+        private float originalGravityScale;
+        private GameObject grabbable;
 
         public override Rigidbody2D RigidBody() => rigidBody;
+
+        public override float OriginalGravityScale() => originalGravityScale;
 
         public override SpriteShapeController SpriteShapeController() => spriteShapeController;
 
@@ -48,21 +54,34 @@ namespace Tests
 
         public override bool IsBlockedLeft() => isBlockedLeft;
 
-        public override void Dashing(bool isDashing) => this.isDashing = isDashing;
+        public override void SetDashing(bool isDashing) => this.isDashing = isDashing;
 
         public override bool IsDashing() => isDashing;
 
-        public override void Gripping(bool isGripping) => this.isGripping = isGripping;
+        public override void SetHolding(bool isHolding) => this.isHolding = isHolding;
 
-        public override bool IsGripping() => isGripping;
+        public override bool IsHolding() => isHolding;
 
-        public override void SuspendInput(bool suspendInput) => this.suspendInput = suspendInput;
+        public override void SetGrabbable(bool isGrabbable) => this.isGrabbable = isGrabbable;
+
+        public override bool IsGrabbable() => isGrabbable;
+
+        public override GameObject GrabbableGameObject() => grabbable;
+
+        public override void SetTraversable(bool isTraversable) => this.isTraversable = isTraversable;
+
+        public override bool IsTraversable() => isTraversable;
+
+        public override void SetSuspendInput(bool suspendInput) => this.suspendInput = suspendInput;
 
         public override bool IsInputSuspended() => suspendInput;
+
+        public override void ShowArrow(bool showArrow) => this.showArrow = showArrow;
 
         void Awake()
         {
             rigidBody = GetComponent<Rigidbody2D>();
+            originalGravityScale = rigidBody.gravityScale;
             spriteShapeController = GetComponent<SpriteShapeController>();
             audioSource = GetComponent<AudioSource>();
             inputActions = new InputSystem_Actions();
@@ -77,116 +96,8 @@ namespace Tests
         void OnEnable() => inputActions.Enable();
 
         void OnDisable() => inputActions.Disable();
+
 #if false
-        private void OnContact(Collision2D collision)
-        {
-            Debug.Log($"OnContact {collision.gameObject.name}");
-
-            if (collision.gameObject.TryGetComponent<ObjectProperties>(out var objectProperties))
-            {
-                Debug.Log($"OnContact {collision.gameObject.name} {objectProperties}");
-            }
-        }
-
-        public void OnContactWithEdge(EdgeCollisionHandler instance, Collision2D collision, EdgeCollisionHandler.Edge edge)
-        {
-            switch (edge)
-            {
-                case EdgeCollisionHandler.Edge.Top:
-                    isBlockedTop = true;
-
-                    foreach (var state in states)
-                    {
-                        state.OnBlockedTop();
-                    }
-                    break;
-
-                case EdgeCollisionHandler.Edge.Right:
-                    isBlockedRight = true;
-
-                    foreach (var state in states)
-                    {
-                        state.OnBlockedRight();
-                    }
-                    break;
-
-                case EdgeCollisionHandler.Edge.Bottom:
-                    isGrounded = true;
-
-                    foreach (var state in states)
-                    {
-                        state.OnGrounded();
-                    }
-                    break;
-
-                case EdgeCollisionHandler.Edge.Left:
-                    isBlockedLeft = true;
-
-                    foreach (var state in states)
-                    {
-                        state.OnBlockedLeft();
-                    }
-                    break;
-            }
-
-            OnContact(collision);
-        }
-
-        private void OnLostContact(Collision2D collision)
-        {
-            Debug.Log($"OnLostContact {collision.gameObject.name}");
-
-            if (collision.gameObject.TryGetComponent<ObjectProperties>(out var objectProperties))
-            {
-                Debug.Log($"OnLostContact {collision.gameObject.name} {objectProperties}");
-            }
-        }
-
-        public void OnLostContactWithEdge(EdgeCollisionHandler instance, Collision2D collision, EdgeCollisionHandler.Edge edge)
-        {
-            switch (edge)
-            {
-                case EdgeCollisionHandler.Edge.Top:
-                    isBlockedTop = false;
-
-                    foreach (var state in states)
-                    {
-                        state.OnNotBlockedTop();
-                    }
-                    break;
-
-                case EdgeCollisionHandler.Edge.Right:
-                    isBlockedRight = false;
-
-                    foreach (var state in states)
-                    {
-                        state.OnNotBlockedRight();
-                    }
-                    break;
-
-                case EdgeCollisionHandler.Edge.Bottom:
-                    isGrounded = false;
-
-                    foreach (var state in states)
-                    {
-                        state.OnNotGrounded();
-                    }
-                    break;
-
-                case EdgeCollisionHandler.Edge.Left:
-                    isBlockedLeft = false;
-
-                    foreach (var state in states)
-                    {
-                        state.OnNotBlockedLeft();
-                    }
-                    break;
-            }
-
-            OnLostContact(collision);
-        }
-#endif
-#if true
         private void OnContact(Collider2D collider)
         {
             Debug.Log($"OnContact {collider.gameObject.name}");
@@ -196,8 +107,27 @@ namespace Tests
                 Debug.Log($"OnContact {collider.gameObject.name} {objectProperties}");
             }
         }
+#endif
+        private void OnContactWithMap(ContactMap contactMap, Collider2D collider, List<ContactMap.ContactInfo> contacts)
+        {
+            isGrabbable = isTraversable = false;
 
-        public void OnContactWithEdge(EdgeTriggerHandler instance, Collider2D collider, EdgeTriggerHandler.Edge edge)
+            if (contacts.Count > 0)
+            {
+                var contact = contacts[0];
+                isGrabbable = contact.properties.Contains(ObjectPropertyEnum.Grabbable);
+                isTraversable = contact.properties.Contains(ObjectPropertyEnum.Traversable);
+            }
+
+            if (isGrabbable)
+            {
+                grabbable = collider.gameObject;
+            }
+
+            // OnContact(collider);
+        }
+
+        private void OnContactWithEdge(EdgeTriggerHandler instance, Collider2D collider, EdgeTriggerHandler.Edge edge)
         {
             switch (edge)
             {
@@ -238,9 +168,9 @@ namespace Tests
                     break;
             }
 
-            OnContact(collider);
+            // OnContact(collider);
         }
-
+#if false
         private void OnLostContact(Collider2D collider)
         {
             Debug.Log($"OnLostContact {collider.gameObject.name}");
@@ -250,8 +180,27 @@ namespace Tests
                 Debug.Log($"OnLostContact {collider.gameObject.name} {objectProperties}");
             }
         }
+#endif
+        private void OnLostContactWithMap(ContactMap contactMap, Collider2D collider, List<ContactMap.ContactInfo> contacts)
+        {
+            isGrabbable = isTraversable = false;
+            
+            if (contacts.Count > 0)
+            {
+                var contact = contacts[0];
+                isGrabbable = contact.properties.Contains(ObjectPropertyEnum.Grabbable);
+                isTraversable = contact.properties.Contains(ObjectPropertyEnum.Traversable);
+            }
 
-        public void OnLostContactWithEdge(EdgeTriggerHandler instance, Collider2D collider, EdgeTriggerHandler.Edge edge)
+            if (!isGrabbable)
+            {
+                grabbable = null;
+            }
+
+            // OnContact(collider);
+        }
+
+        private void OnLostContactWithEdge(EdgeTriggerHandler instance, Collider2D collider, EdgeTriggerHandler.Edge edge)
         {
             switch (edge)
             {
@@ -292,28 +241,26 @@ namespace Tests
                     break;
             }
 
-            OnLostContact(collider);
+            // OnLostContact(collider);
         }
-#endif
+
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-#if false
-            edgeCollisionHandler.Register(new EdgeCollisionHandler.Events
+            contactMap.Register(new ContactMap.Events
             {
-                OnContact = OnContactWithEdge,
-                OnLostContact = OnLostContactWithEdge
+                OnContact = OnContactWithMap,
+                OnLostContact = OnLostContactWithMap
             });
-#endif
-#if true
+
             edgeTriggerHandler.Register(new EdgeTriggerHandler.Events
             {
                 OnContact = OnContactWithEdge,
                 OnLostContact = OnLostContactWithEdge
             });
         }
-#endif
-        private void AscertainState()
+
+        private void AscertState()
         {
             playerState = 0;
 
@@ -341,13 +288,44 @@ namespace Tests
                 }
             }
 
+            if (isGrabbable)
+            {
+                playerState = playerState.Set(PlayerStateEnum.Grabbing);
+            }
+            else if (isTraversable)
+            {
+                playerState = playerState.Set(PlayerStateEnum.Traversing);
+            }
+
             if (System.Convert.ToInt64(playerState) == 0)
             {
                 playerState = playerState.Set(PlayerStateEnum.Idle);
             }
         }
 
+        private void AscertStatus() => isHolding = inputActions.Player.Hold.IsPressed();
+
+        private void UpdatePlayerUI()
+        {
+            if (showArrow && arrowBaseUI != null)
+            {
+                var moveValue = inputActions.Player.Move.ReadValue<Vector2>();
+                var moveAngle = moveValue.ToAngle();
+                arrowBaseUI.eulerAngles = new Vector3(0f, 0f, moveAngle);
+            }
+
+            arrowBaseUI.gameObject.SetActive(showArrow);
+        }
+
         // Update is called once per frame
-        void Update() => AscertainState();
+        void Update()
+        {
+            var diasableGravity = isGrabbable && isHolding;
+            rigidBody.gravityScale = diasableGravity ? 0f : originalGravityScale;
+
+            UpdatePlayerUI();
+            AscertStatus();
+            AscertState();
+        }
     }
 }

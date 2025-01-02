@@ -52,20 +52,25 @@ namespace Tests
         private InputSystem_Actions inputActions;
         private bool execRun, execJump, execPowerJump;
         private Vector2 moveValue;
-        private bool isBlockedTop, isBlockedRight, isGrounded, isBlockedLeft, isDashing, isGripping;
+        private bool isBlockedTop, isBlockedRight, isGrounded, isBlockedLeft, isHolding, isDashing, isGripping, isTraversing;
         private float jumpPressStartTime;
         private bool jumpReleased;
         private float lastLinearVelocityY;
         private PlayerStateEnum playerState;
-        private bool suspendInput;
+        private bool suspendInput, showArrow;
+        private float originalGravityScale;
+        private GameObject grabbable;
+        private LayerMask layerMask;
         
         void Awake()
         {
             rigidBody = GetComponent<Rigidbody2D>();
+            originalGravityScale = rigidBody.gravityScale;
             spriteShapeController = GetComponent<SpriteShapeController>();
             audioSource = GetComponent<AudioSource>();
             inputActions = new InputSystem_Actions();
-
+            layerMask = LayerMask.GetMask("Player");
+            
             var states = GetComponents<State.State>();
 
             foreach (var state in states)
@@ -76,6 +81,8 @@ namespace Tests
         }
 
         public Rigidbody2D RigidBody() => rigidBody;
+
+        public float OriginalGravityScale() => originalGravityScale;
 
         public SpriteShapeController SpriteShapeController() => spriteShapeController;
 
@@ -93,17 +100,29 @@ namespace Tests
 
         public bool IsBlockedLeft() => isBlockedLeft;
 
-        public void Dashing(bool isDashing) => this.isDashing = isDashing;
+        public void SetDashing(bool isDashing) => this.isDashing = isDashing;
 
         public bool IsDashing() => isDashing;
 
-        public void Gripping(bool isGripping) => this.isGripping = isGripping;
+        public void SetHolding(bool isHolding) => this.isHolding = isHolding;
 
-        public bool IsGripping() => isGripping;
+        public bool IsHolding() => isHolding;
 
-        public void SuspendInput(bool suspendInput) => this.suspendInput = suspendInput;
+        public void SetGrabbable(bool isGripping) => this.isGripping = isGripping;
+
+        public bool IsGrabbable() => isGripping;
+
+        public GameObject GrabbableGameObject() => grabbable;
+
+        public void SetTraversable(bool isTraversing) => this.isTraversing = isTraversing;
+
+        public bool IsTraversable() => isTraversing;
+
+        public void SetSuspendInput(bool suspendInput) => this.suspendInput = suspendInput;
 
         public bool IsInputSuspended() => suspendInput;
+
+        public void ShowArrow(bool showArrow) => this.showArrow = showArrow;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -112,7 +131,7 @@ namespace Tests
             {
                 Gained = OnGainedContactWithEdge,
                 Lost = OnLostContactWithEdge
-            });
+            }, layerMask);
         }
 
         void OnEnable()

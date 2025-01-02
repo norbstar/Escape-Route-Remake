@@ -9,9 +9,9 @@ namespace Tests.State
         // [SerializeField] float smoothInputSpeed = 0.2f;
         
         private Vector2 moveValue;
-        private bool execShift;
+        private bool execShift, canExec;
         // private Vector2 cachedMoveVector, smoothInputVelocity;
-        
+
         private void Evaluate()
         {
             if (!Essentials.IsGrounded())
@@ -26,7 +26,15 @@ namespace Tests.State
         }
 
         // Update is called once per frame
-        void Update() => Evaluate();
+        void Update()
+        {
+            canExec = !((Essentials.IsGrabbable() || Essentials.IsTraversable()) && Essentials.IsHolding());
+
+            if (canExec)
+            {
+                Evaluate();
+            }
+        }
 
         private void ApplyShift()
         {
@@ -38,6 +46,8 @@ namespace Tests.State
 
         void FixedUpdate()
         {
+            if (!canExec) return;
+
             if (execShift)
             {
                 ApplyShift();
