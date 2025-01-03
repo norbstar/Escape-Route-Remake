@@ -12,11 +12,22 @@ namespace Tests.State
         [SerializeField] float duration = 0.05f;
         [SerializeField] AudioClip clip;
 
+        private InputSystem_Actions inputActions;
         private bool execDash, canExec, monitorDash;
-        
-        void OnEnable() => Essentials.InputActions().Player.Dash.performed += OnDashIntent;
 
-        void OnDisable() => Essentials.InputActions().Player.Dash.performed -= OnDashIntent;
+        void Awake() => inputActions = new InputSystem_Actions();
+        
+        void OnEnable()
+        {
+            inputActions.Enable();
+            inputActions.Player.Dash.performed += OnDashIntent;
+        }
+
+        void OnDisable()
+        {
+            inputActions.Player.Dash.performed -= OnDashIntent;
+            inputActions.Disable();
+        }
 
         private void OnDashIntent(InputAction.CallbackContext context)
         {

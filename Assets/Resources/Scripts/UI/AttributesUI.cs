@@ -17,8 +17,9 @@ public class AttributesUI : MonoBehaviour
     [SerializeField] AttributeUI isGroundedUI;
     [SerializeField] AttributeUI isBlockedLeftUI;
     [SerializeField] AttributeUI isDashingUI;
-    [SerializeField] AttributeUI isGrippingUI;
-    [SerializeField] AttributeUI isTraversingUI;
+    [SerializeField] AttributeUI isGrabbableUI;
+    [SerializeField] AttributeUI isTraversableUI;
+    [SerializeField] AttributeUI isGravityEnabledUI;
     [SerializeField] AttributeUI moveBearingUI;
     [SerializeField] AttributeUI moveAngleUI;
     [SerializeField] AttributeUI lookBearingUI;
@@ -95,18 +96,25 @@ public class AttributesUI : MonoBehaviour
             isDashingUI.Color = isDashing ? Color.white : Color.grey;
         }
 
-        if (isGrippingUI != null)
+        if (isGrabbableUI != null)
         {
-            var isGripping = essentials.IsHolding() && essentials.IsGrabbable();
-            isGrippingUI.Value = isGripping ? "True" : "False";
-            isGrippingUI.Color = isGripping ? Color.white : Color.grey;
+            var isGrabbable = essentials.IsGrabbable();
+            isGrabbableUI.Value = isGrabbable ? "True" : "False";
+            isGrabbableUI.Color = isGrabbable ? Color.white : Color.grey;
         }
 
-        if (isTraversingUI != null)
+        if (isTraversableUI != null)
         {
-            var isTraversing = essentials.IsHolding() && essentials.IsTraversable();
-            isTraversingUI.Value = isTraversing ? "True" : "False";
-            isTraversingUI.Color = isTraversing ? Color.white : Color.grey;
+            var isTraversable = essentials.IsTraversable();
+            isTraversableUI.Value = isTraversable ? "True" : "False";
+            isTraversableUI.Color = isTraversable ? Color.white : Color.grey;
+        }
+
+        if (isGravityEnabledUI != null)
+        {
+            var isGravityEnabled = essentials.IsGravityEnabled();
+            isGravityEnabledUI.Value = isGravityEnabled ? "True" : "False";
+            isGravityEnabledUI.Color = isGravityEnabled ? Color.white : Color.grey;
         }
 
         var moveValue = inputActions.Player.Move.ReadValue<Vector2>();

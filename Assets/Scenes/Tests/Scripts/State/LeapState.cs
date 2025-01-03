@@ -13,20 +13,29 @@ namespace Tests.State
         private Vector2 moveValue;
         private bool execJump, canExec;
 
-        void Awake() => inputActions = Essentials.InputActions();
+        void Awake() => inputActions = new InputSystem_Actions();
 
-        void OnEnable() => inputActions.Player.JumpPress.performed += OnJumpPressIntent;
+        void OnEnable()
+        {
+            inputActions.Enable();
+            inputActions.Player.JumpPress.performed += OnJumpPressIntent;
+        }
 
-        void OnDisable() => inputActions.Player.JumpPress.performed -= OnJumpPressIntent;
+        void OnDisable()
+        {
+            inputActions.Player.JumpPress.performed -= OnJumpPressIntent;
+            inputActions.Disable();
+        }
 
         private void OnJumpPressIntent(InputAction.CallbackContext context)
         {
-            if (canExec) execJump = true;
+            if (!canExec) return;
+            execJump = true;
         }
         
         private void Evaluate()
         {
-            moveValue = Essentials.InputActions().Player.Move.ReadValue<Vector2>();
+            moveValue = inputActions.Player.Move.ReadValue<Vector2>();
             Essentials.RigidBody().linearVelocity = Vector2.zero;
         }
 

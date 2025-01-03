@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 using UnityEngine;
 using UnityEngine.U2D;
@@ -34,6 +33,8 @@ namespace Tests
         private float originalGravityScale;
         private GameObject grabbable;
 
+        public override Transform Transform() => transform;
+
         public override Rigidbody2D RigidBody() => rigidBody;
 
         public override float OriginalGravityScale() => originalGravityScale;
@@ -41,8 +42,6 @@ namespace Tests
         public override SpriteShapeController SpriteShapeController() => spriteShapeController;
 
         public override AudioSource AudioSource() => audioSource;
-
-        public override InputSystem_Actions InputActions() => inputActions;
 
         public override PlayerStateEnum PlayerState() => playerState;
 
@@ -71,6 +70,8 @@ namespace Tests
         public override void SetTraversable(bool isTraversable) => this.isTraversable = isTraversable;
 
         public override bool IsTraversable() => isTraversable;
+
+        public override bool IsGravityEnabled() => rigidBody.gravityScale != 0f;
 
         public override void SetSuspendInput(bool suspendInput) => this.suspendInput = suspendInput;
 
@@ -110,6 +111,7 @@ namespace Tests
 #endif
         private void OnContactWithMap(ContactMap contactMap, Collider2D collider, List<ContactMap.ContactInfo> contacts)
         {
+
             isGrabbable = isTraversable = false;
 
             if (contacts.Count > 0)
@@ -119,6 +121,8 @@ namespace Tests
                 isTraversable = contact.properties.Contains(ObjectPropertyEnum.Traversable);
             }
 
+            // Debug.Log($"OnContactWithMap Collider: {collider.gameObject} Contacts Count: {contacts.Count} Is Grabbable: {isGrabbable} Is Traversable: {isTraversable}");
+            
             if (isGrabbable)
             {
                 grabbable = collider.gameObject;
@@ -192,6 +196,8 @@ namespace Tests
                 isTraversable = contact.properties.Contains(ObjectPropertyEnum.Traversable);
             }
 
+            // Debug.Log($"OnLostContactWithMap Collider: {collider.gameObject} Contacts Count: {contacts.Count} Is Grabbable: {isGrabbable} Is Traversable: {isTraversable}");
+            
             if (!isGrabbable)
             {
                 grabbable = null;
@@ -320,7 +326,7 @@ namespace Tests
         // Update is called once per frame
         void Update()
         {
-            var diasableGravity = isGrabbable && isHolding;
+            var diasableGravity = (isGrabbable || isTraversable) && isHolding;
             rigidBody.gravityScale = diasableGravity ? 0f : originalGravityScale;
 
             UpdatePlayerUI();

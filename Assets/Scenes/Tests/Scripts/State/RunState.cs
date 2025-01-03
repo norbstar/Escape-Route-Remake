@@ -8,15 +8,22 @@ namespace Tests.State
         [SerializeField] float speed = 5f;
         // [SerializeField] float smoothInputSpeed = 0.2f;
 
+        private InputSystem_Actions inputActions;
         private Vector2 moveValue;
         private bool execRun, canExec;
         // private Vector2 cachedMoveVector, smoothInputVelocity;
+
+        void Awake() => inputActions = new InputSystem_Actions();
+
+        void OnEnable() => inputActions.Enable();
+
+        void OnDisable() => inputActions.Disable();
 
         private void Evaluate()
         {
             // if (Essentials.IsGrounded())
             // {
-            //     moveValue = Essentials.InputActions().Player.Move.ReadValue<Vector2>();
+            //     moveValue = inputActions.Player.Move.ReadValue<Vector2>();
 
             //     if (Mathf.Abs(moveValue.x) != 0f)
             //     {
@@ -24,7 +31,7 @@ namespace Tests.State
             //     }
             // }
 
-            moveValue = Essentials.InputActions().Player.Move.ReadValue<Vector2>();
+            moveValue = inputActions.Player.Move.ReadValue<Vector2>();
             execRun = Essentials.IsGrounded() && Mathf.Abs(moveValue.x) != 0f; 
         }
 

@@ -11,6 +11,8 @@ namespace Tests
     [RequireComponent(typeof(AudioSource))]
     public abstract class BasePlayer : MonoBehaviour, PlayerEssentials
     {
+        public abstract Transform Transform();
+
         public abstract Rigidbody2D RigidBody();
 
         public abstract float OriginalGravityScale();
@@ -18,8 +20,6 @@ namespace Tests
         public abstract SpriteShapeController SpriteShapeController();
 
         public abstract AudioSource AudioSource();
-
-        public abstract InputSystem_Actions InputActions();
 
         public abstract PlayerStateEnum PlayerState();
 
@@ -48,6 +48,8 @@ namespace Tests
         public abstract void SetTraversable(bool isTraversing);
 
         public abstract bool IsTraversable();
+
+        public abstract bool IsGravityEnabled();
 
         public abstract void SetSuspendInput(bool suspendInput);
 

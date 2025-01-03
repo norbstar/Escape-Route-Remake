@@ -14,10 +14,11 @@ namespace Tests.State
         private InputSystem_Actions inputActions;
         private bool jumpReleased, execJump;
         
-        void Awake() => inputActions = Essentials.InputActions();
+        void Awake() => inputActions = new InputSystem_Actions();
 
         void OnEnable()
         {
+            inputActions.Enable();
             inputActions.Player.JumpPress.performed += OnJumpPressIntent;
             inputActions.Player.JumpRelease.performed += OnJumpReleaseIntent;
         }
@@ -26,6 +27,7 @@ namespace Tests.State
         {
             inputActions.Player.JumpPress.performed -= OnJumpPressIntent;
             inputActions.Player.JumpRelease.performed -= OnJumpReleaseIntent;
+            inputActions.Disable();
         }
 
         private IEnumerator Co_MonitorJumpIntent()

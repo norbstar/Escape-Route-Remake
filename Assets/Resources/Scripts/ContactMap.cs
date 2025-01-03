@@ -40,6 +40,8 @@ namespace Tests
         {
             if ((layerMask.value & (1 << collider.gameObject.layer)) > 0)
             {
+                // Debug.Log($"OnTriggerEnter2D Collider: {collider.gameObject}");
+
                 if (collider.gameObject.TryGetComponent<ObjectProperties>(out var objectProperties))
                 {
                     if (collider.gameObject.TryGetComponent<Renderer>(out var renderer))
@@ -63,6 +65,8 @@ namespace Tests
         {
             if ((layerMask.value & (1 << collider.gameObject.layer)) > 0)
             {
+                // Debug.Log($"OnTriggerExit2D Collider: {collider.gameObject}");
+
                 if (contacts.Remove(collider.gameObject.GetInstanceID()))
                 {
                     var sortedContacts = contacts.OrderByDescending(c => c.Value.sortingOrder);

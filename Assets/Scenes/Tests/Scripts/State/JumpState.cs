@@ -15,11 +15,19 @@ namespace Tests.State
         private bool execJump, canExec;
         private int jumpCount;
         
-        void Awake() => inputActions = Essentials.InputActions();
+        void Awake() => inputActions = new InputSystem_Actions();
 
-        void OnEnable() => inputActions.Player.JumpPress.performed += OnJumpPressIntent;
+        void OnEnable()
+        {
+            inputActions.Enable();
+            inputActions.Player.JumpPress.performed += OnJumpPressIntent;
+        }
 
-        void OnDisable() => inputActions.Player.JumpPress.performed -= OnJumpPressIntent;
+        void OnDisable()
+        {
+            inputActions.Player.JumpPress.performed -= OnJumpPressIntent;
+            inputActions.Disable();
+        }
 
         private void OnJumpPressIntent(InputAction.CallbackContext context)
         {

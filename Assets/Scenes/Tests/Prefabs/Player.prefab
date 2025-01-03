@@ -595,6 +595,7 @@ GameObject:
   - component: {fileID: 3792087067580405508}
   - component: {fileID: 4351664096799953022}
   - component: {fileID: 8106415712434088462}
+  - component: {fileID: 866190008849597548}
   - component: {fileID: 2492654755538693766}
   m_Layer: 6
   m_Name: Player
@@ -1138,6 +1139,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 600
   jumpClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
+--- !u!114 &866190008849597548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1465d1ca89ac874583f4bd35e741193, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0.5
 --- !u!114 &2492654755538693766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1531,7 +1545,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.25, y: 0.25}
   m_EdgeRadius: 0
 --- !u!114 &6543963185860037140
 MonoBehaviour:
@@ -1548,7 +1562,6 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 256
-  contactNames: []
 --- !u!1 &5116402538624913495
 GameObject:
   m_ObjectHideFlags: 0

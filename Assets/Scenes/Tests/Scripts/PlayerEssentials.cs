@@ -5,11 +5,11 @@ namespace Tests
 {
     public interface PlayerEssentials
     {
+        Transform Transform();
         Rigidbody2D RigidBody();
         float OriginalGravityScale();
         SpriteShapeController SpriteShapeController();
         AudioSource AudioSource();
-        InputSystem_Actions InputActions();
         PlayerStateEnum PlayerState();
         bool IsBlockedTop();
         bool IsBlockedRight();
@@ -24,6 +24,7 @@ namespace Tests
         GameObject GrabbableGameObject();
         void SetTraversable(bool isTraversable);
         bool IsTraversable();
+        bool IsGravityEnabled();
         void SetSuspendInput(bool suspendInput);
         bool IsInputSuspended();
         void ShowArrow(bool showArrow);

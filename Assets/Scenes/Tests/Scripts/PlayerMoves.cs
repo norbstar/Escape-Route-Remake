@@ -80,6 +80,8 @@ namespace Tests
             }
         }
 
+        public Transform Transform() => transform;
+
         public Rigidbody2D RigidBody() => rigidBody;
 
         public float OriginalGravityScale() => originalGravityScale;
@@ -117,6 +119,8 @@ namespace Tests
         public void SetTraversable(bool isTraversing) => this.isTraversing = isTraversing;
 
         public bool IsTraversable() => isTraversing;
+
+        public bool IsGravityEnabled() => rigidBody.gravityScale != 0f;
 
         public void SetSuspendInput(bool suspendInput) => this.suspendInput = suspendInput;
 
