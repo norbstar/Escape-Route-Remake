@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-
+using Tests.State;
 using UnityEngine;
 using UnityEngine.U2D;
 
@@ -20,13 +20,11 @@ namespace Tests
         [Header("Player UI")]
         [SerializeField] Transform arrowBaseUI;
 
-        public static float MIN_INPUT_VALUE = 0.1f;
-
         private Rigidbody2D rigidBody;
         private SpriteShapeController spriteShapeController;
         private AudioSource audioSource;
         private InputSystem_Actions inputActions;
-        private bool isBlockedTop, isBlockedRight, isGrounded, isBlockedLeft, isHolding, isDashing, isGrabbable, isTraversable;
+        private bool isBlockedTop, isBlockedRight, isGrounded, isBlockedLeft, isHolding, isDashing, isGrabbable, isTraversable, isCrouching, isSliding;
         private State.State[] states;
         private PlayerStateEnum playerState;
         private bool suspendInput, showArrow;
@@ -70,6 +68,14 @@ namespace Tests
         public override void SetTraversable(bool isTraversable) => this.isTraversable = isTraversable;
 
         public override bool IsTraversable() => isTraversable;
+
+        public override void SetCrouching(bool isCrouching) => this.isCrouching = isCrouching;
+        
+        public override bool IsCrouching() => isCrouching;
+
+        public override void SetSliding(bool isSliding) => this.isSliding = isSliding;
+        
+        public override bool IsSliding() => isSliding;
 
         public override bool IsGravityEnabled() => rigidBody.gravityScale != 0f;
 
@@ -272,33 +278,52 @@ namespace Tests
 
             if (isGrounded)
             {
-                if (Mathf.Abs(rigidBody.linearVelocity.x) != 0/*>= MIN_INPUT_VALUE*/)
+                if (Mathf.Abs(rigidBody.linearVelocity.x) != 0)
                 {
-                    playerState = playerState.Set(isDashing ? PlayerStateEnum.Dashing : PlayerStateEnum.Running);
+                    if (isDashing)
+                    {
+                        playerState = playerState.Set(PlayerStateEnum.Dashing);
+                    }
+                    else if (isSliding)
+                    {
+                        playerState = playerState.Set(PlayerStateEnum.Sliding);
+                    }
+                    else if (isCrouching)
+                    {
+                        playerState = playerState.Set(PlayerStateEnum.Sneaking);
+                    }
+                    else
+                    {
+                        playerState = playerState.Set(PlayerStateEnum.Running);
+                    }
+                }
+                else if (isCrouching)
+                {
+                    playerState = playerState.Set(PlayerStateEnum.Crouching);
                 }
             }
             else
             {
-                if (Mathf.Abs(rigidBody.linearVelocity.x) != 0/*>= MIN_INPUT_VALUE*/)
+                if (Mathf.Abs(rigidBody.linearVelocity.x) != 0)
                 {
                     playerState = playerState.Set(PlayerStateEnum.Shifting);
                 }
 
-                if (rigidBody.linearVelocity.y > 0/*>= MIN_INPUT_VALUE*/)
+                if (rigidBody.linearVelocity.y > 0)
                 {
                     playerState = playerState.Set(PlayerStateEnum.Jumping);
                 }
-                else if (rigidBody.linearVelocity.y < 0/*<= -MIN_INPUT_VALUE*/)
+                else if (rigidBody.linearVelocity.y < 0)
                 {
                     playerState = playerState.Set(PlayerStateEnum.Falling);
                 }
             }
 
-            if (isGrabbable)
+            if (isGrabbable && isHolding)
             {
                 playerState = playerState.Set(PlayerStateEnum.Grabbing);
             }
-            else if (isTraversable)
+            else if (isTraversable && isHolding)
             {
                 playerState = playerState.Set(PlayerStateEnum.Traversing);
             }

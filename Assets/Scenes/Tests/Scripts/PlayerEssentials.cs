@@ -24,6 +24,10 @@ namespace Tests
         GameObject GrabbableGameObject();
         void SetTraversable(bool isTraversable);
         bool IsTraversable();
+        void SetCrouching(bool isCrouched);
+        bool IsCrouching();
+        void SetSliding(bool isSliding);
+        bool IsSliding();
         bool IsGravityEnabled();
         void SetSuspendInput(bool suspendInput);
         bool IsInputSuspended();

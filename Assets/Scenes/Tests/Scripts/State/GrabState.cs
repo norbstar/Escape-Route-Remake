@@ -3,15 +3,15 @@ using UnityEngine.InputSystem;
 
 namespace Tests.State
 {
-    public class LeapState : State
+    public class GrapState : State
     {
         [Range(400f, 800f)]
-        [SerializeField] float jumpForce = 600f;
-        [SerializeField] AudioClip jumpClip;
+        [SerializeField] float leapForce = 600f;
+        [SerializeField] AudioClip leapClip;
 
         private InputSystem_Actions inputActions;
         private Vector2 moveValue;
-        private bool execJump, canExec;
+        private bool execLeap, canExec;
 
         void Awake() => inputActions = new InputSystem_Actions();
 
@@ -30,7 +30,7 @@ namespace Tests.State
         private void OnJumpPressIntent(InputAction.CallbackContext context)
         {
             if (!canExec) return;
-            execJump = true;
+            execLeap = true;
         }
         
         private void Evaluate()
@@ -51,8 +51,9 @@ namespace Tests.State
             }
         }
 
-        private void ApplyJump()
+        private void ApplyLeap()
         {
+            Debug.Log($"ApplyLeap");
             var gameObject = Essentials.GrabbableGameObject();
 
             if (gameObject.TryGetComponent<Grabbable>(out var grabbable))
@@ -60,18 +61,20 @@ namespace Tests.State
                 grabbable.DisableColliderTemporarily();
             }
 
-            Essentials.RigidBody().AddForce(moveValue * jumpForce);
-            Essentials.AudioSource().PlayOneShot(jumpClip, 1f);
-            execJump = false;
+            Essentials.RigidBody().AddForce(moveValue * leapForce);
+            Essentials.AudioSource().PlayOneShot(leapClip, 1f);
+            execLeap = false;
         }
 
         void FixedUpdate()
         {
             if (!canExec) return;
 
-            if (execJump)
+            if (Essentials.IsInputSuspended()) return;
+
+            if (execLeap)
             {
-                ApplyJump();
+                ApplyLeap();
             }
         }
     }

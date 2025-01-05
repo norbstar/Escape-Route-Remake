@@ -60,6 +60,8 @@ namespace Tests.State
 
         void FixedUpdate()
         {
+            if (Essentials.IsInputSuspended()) return;
+
             if (execJump)
             {
                 Essentials.RigidBody().AddForce(Vector2.up * jumpForce);

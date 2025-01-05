@@ -70,7 +70,6 @@ namespace Tests
 
         public static float POWER_MOVE_MIN_ENERGY_VALUE = 0.5f;
         public static float MIN_INPUT_VALUE = 0.1f;
-        // public static float MIN_Y_INPUT_VALUE = 0.25f;
 
         private SceneObjectMapping scene;
         private InputSystem_Actions inputActions;

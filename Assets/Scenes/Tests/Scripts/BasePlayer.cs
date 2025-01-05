@@ -48,6 +48,14 @@ namespace Tests
         public abstract void SetTraversable(bool isTraversing);
 
         public abstract bool IsTraversable();
+        
+        public abstract void SetCrouching(bool isCrouched);
+        
+        public abstract bool IsCrouching();
+
+        public abstract void SetSliding(bool isSliding);
+        
+        public abstract bool IsSliding();
 
         public abstract bool IsGravityEnabled();
 

@@ -5,20 +5,19 @@ using UnityEngine.U2D;
 
 namespace Tests.State
 {
-    public class FallState : State
+    public abstract class AbstractCrouchState : State
     {
-        [SerializeField] AudioClip landClip;
         [SerializeField] float deformationSpeed = 2.5f;
 
-        public static float SQUISH_PER_POINT = 0.1f;
-
         private SpriteShapeController spriteShapeController;
-        private float lastLinearVelocityY;
+        private float topY;
 
-        private IEnumerator Co_Squish(float squishFactor)
+        protected IEnumerator Co_Crouch()
         {
-            var minPosY = 0.425f - 0.425f * squishFactor;
-            var posY = 0.425f;
+            Essentials.SetCrouching(true);
+            
+            var minPosY = 0f;
+            var posY = topY;
             float elapsedTime = 0f;
 
             var p1 = spriteShapeController.spline.GetPosition(1);
@@ -27,46 +26,42 @@ namespace Tests.State
             while (posY > minPosY)
             {
                 elapsedTime += Time.deltaTime;
-                posY = Mathf.Lerp(0.425f, minPosY, elapsedTime * deformationSpeed);
-                spriteShapeController.spline.SetPosition(1, new Vector3(p1.x, posY, p1.z));
-                spriteShapeController.spline.SetPosition(2, new Vector3(p2.x, posY, p2.z));
-                yield return null;
-            }
-
-            posY = minPosY;
-            elapsedTime = 0f;
-
-            while (posY < 0.425f)
-            {
-                elapsedTime += Time.deltaTime;
-                posY = Mathf.Lerp(minPosY, 0.425f, elapsedTime * deformationSpeed);
+                posY = Mathf.Lerp(topY, minPosY, elapsedTime * deformationSpeed);
                 spriteShapeController.spline.SetPosition(1, new Vector3(p1.x, posY, p1.z));
                 spriteShapeController.spline.SetPosition(2, new Vector3(p2.x, posY, p2.z));
                 yield return null;
             }
         }
 
-        public override void OnGrounded()
+        protected IEnumerator Co_Reset()
         {
-            Essentials.AudioSource().PlayOneShot(landClip, 1f);
+            Essentials.SetCrouching(false);
 
-            var squishPoints = 0f - lastLinearVelocityY;
+            var minPosY = 0f;
+            var posY = minPosY;
+            float elapsedTime = 0f;
 
-            if (squishPoints > 0f)
+            var p1 = spriteShapeController.spline.GetPosition(1);
+            var p2 = spriteShapeController.spline.GetPosition(2);
+
+            while (posY < topY)
             {
-                StartCoroutine(Co_Squish(Mathf.Clamp(SQUISH_PER_POINT * squishPoints, 0f, 1f)));
+                elapsedTime += Time.deltaTime;
+                posY = Mathf.Lerp(minPosY, topY, elapsedTime * deformationSpeed);
+                spriteShapeController.spline.SetPosition(1, new Vector3(p1.x, posY, p1.z));
+                spriteShapeController.spline.SetPosition(2, new Vector3(p2.x, posY, p2.z));
+                yield return null;
             }
         }
 
         // Update is called once per frame
-        void Update()
+        protected virtual void Update()
         {
             if (spriteShapeController == null)
             {
                 spriteShapeController = Essentials.SpriteShapeController();
+                topY = spriteShapeController.spline.GetPosition(1).y;
             }
         }
-
-        void FixedUpdate() => lastLinearVelocityY = Essentials.RigidBody().linearVelocityY;
     }
 }

@@ -45,6 +45,7 @@ namespace Tests.State
 
         private void ApplyShift()
         {
+            Debug.Log($"ApplyShift");
             // cachedMoveVector = Vector2.SmoothDamp(cachedMoveVector, moveValue, ref smoothInputVelocity, smoothInputSpeed);
             // Essentials.RigidBody().linearVelocityX = cachedMoveVector.x * speed;
             Essentials.RigidBody().linearVelocityX = moveValue.x * speed;
@@ -54,6 +55,8 @@ namespace Tests.State
         void FixedUpdate()
         {
             if (!canExec) return;
+
+            if (Essentials.IsInputSuspended()) return;
 
             if (execShift)
             {

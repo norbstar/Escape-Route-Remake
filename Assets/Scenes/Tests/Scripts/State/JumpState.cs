@@ -33,6 +33,8 @@ namespace Tests.State
         {
             if (!canExec) return;
 
+            if (Essentials.IsInputSuspended()) return;
+
             if (jumpCount == 0 && !Essentials.IsGrounded()) return;
 
             if (canDoubleJump && jumpCount > 1 || !canDoubleJump && jumpCount > 0) return;
@@ -46,6 +48,8 @@ namespace Tests.State
         void FixedUpdate()
         {
             if (!canExec) return;
+
+            if (Essentials.IsInputSuspended()) return;
 
             if (execJump)
             {

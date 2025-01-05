@@ -5,7 +5,7 @@ namespace Tests.State
     public class RunState : State
     {
         [Range(1f, 10f)]
-        [SerializeField] float speed = 5f;
+        [SerializeField] float speed = 10f;
         // [SerializeField] float smoothInputSpeed = 0.2f;
 
         private InputSystem_Actions inputActions;
@@ -32,7 +32,7 @@ namespace Tests.State
             // }
 
             moveValue = inputActions.Player.Move.ReadValue<Vector2>();
-            execRun = Essentials.IsGrounded() && Mathf.Abs(moveValue.x) != 0f; 
+            execRun = Essentials.IsGrounded() && !Essentials.IsCrouching() && Mathf.Abs(moveValue.x) != 0f; 
         }
 
         // Update is called once per frame
@@ -42,12 +42,18 @@ namespace Tests.State
 
             if (canExec)
             {
+                canExec = !Essentials.IsCrouching();
+            }
+
+            if (canExec)
+            {
                 Evaluate();
             }
         }
 
         private void ApplyRun()
         {
+            // Debug.Log($"ApplyRun");
             // cachedMoveVector = Vector2.SmoothDamp(cachedMoveVector, moveValue, ref smoothInputVelocity, smoothInputSpeed);
             // Essentials.RigidBody().linearVelocityX = cachedMoveVector.x * speed;
             Essentials.RigidBody().linearVelocityX = moveValue.x * speed;
@@ -57,6 +63,8 @@ namespace Tests.State
         void FixedUpdate()
         {
             if (!canExec) return;
+
+            if (Essentials.IsInputSuspended()) return;
 
             if (execRun)
             {

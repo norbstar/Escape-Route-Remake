@@ -52,7 +52,7 @@ namespace Tests
         private InputSystem_Actions inputActions;
         private bool execRun, execJump, execPowerJump;
         private Vector2 moveValue;
-        private bool isBlockedTop, isBlockedRight, isGrounded, isBlockedLeft, isHolding, isDashing, isGripping, isTraversing;
+        private bool isBlockedTop, isBlockedRight, isGrounded, isBlockedLeft, isHolding, isDashing, isGripping, isTraversing, isCrouching, isSliding;
         private float jumpPressStartTime;
         private bool jumpReleased;
         private float lastLinearVelocityY;
@@ -119,6 +119,14 @@ namespace Tests
         public void SetTraversable(bool isTraversing) => this.isTraversing = isTraversing;
 
         public bool IsTraversable() => isTraversing;
+
+        public void SetCrouching(bool isCrouching) => this.isCrouching = isCrouching;
+        
+        public bool IsCrouching() => isCrouching;
+
+        public void SetSliding(bool isSliding) => this.isSliding = isSliding;
+        
+        public bool IsSliding() => isSliding;
 
         public bool IsGravityEnabled() => rigidBody.gravityScale != 0f;
 

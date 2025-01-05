@@ -19,6 +19,7 @@ public class AttributesUI : MonoBehaviour
     [SerializeField] AttributeUI isDashingUI;
     [SerializeField] AttributeUI isGrabbableUI;
     [SerializeField] AttributeUI isTraversableUI;
+    [SerializeField] AttributeUI isCrouchingUI;
     [SerializeField] AttributeUI isGravityEnabledUI;
     [SerializeField] AttributeUI moveBearingUI;
     [SerializeField] AttributeUI moveAngleUI;
@@ -108,6 +109,13 @@ public class AttributesUI : MonoBehaviour
             var isTraversable = essentials.IsTraversable();
             isTraversableUI.Value = isTraversable ? "True" : "False";
             isTraversableUI.Color = isTraversable ? Color.white : Color.grey;
+        }
+
+        if (isCrouchingUI != null)
+        {
+            var isCrouching = essentials.IsCrouching();
+            isCrouchingUI.Value = isCrouching ? "True" : "False";
+            isCrouchingUI.Color = isCrouching ? Color.white : Color.grey;
         }
 
         if (isGravityEnabledUI != null)

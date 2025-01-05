@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Tests.State
 {
-    public class TraversableState : State
+    public class TraverseState : State
     {
         [Range(5f, 25f)]
         [SerializeField] float speed = 15f;
@@ -39,11 +39,17 @@ namespace Tests.State
             }
         }
 
-        private void ApplyTraverse() => Essentials.Transform().Translate(new Vector3(moveValue.x, moveValue.y, 0f) * speed * Time.deltaTime);
+        private void ApplyTraverse()
+        {
+            Debug.Log($"ApplyTraverse");
+            Essentials.Transform().Translate(new Vector3(moveValue.x, moveValue.y, 0f) * speed * Time.deltaTime);
+        }
 
         void FixedUpdate()
         {
             if (!canExec) return;
+
+            if (Essentials.IsInputSuspended()) return;
 
             if (execTraverse)
             {
