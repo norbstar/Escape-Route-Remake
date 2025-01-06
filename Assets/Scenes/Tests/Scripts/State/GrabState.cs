@@ -53,7 +53,6 @@ namespace Tests.State
 
         private void ApplyLeap()
         {
-            Debug.Log($"ApplyLeap");
             var gameObject = Essentials.GrabbableGameObject();
 
             if (gameObject.TryGetComponent<Grabbable>(out var grabbable))

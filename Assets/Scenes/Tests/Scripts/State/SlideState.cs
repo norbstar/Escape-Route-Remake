@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tests.State
 {
-    public class SlideState : AbstractCrouchState
+    public class SlideState : BaseCrouchState
     {
         [Range(1f, 10f)]
         [SerializeField] float speed = 5f;
@@ -49,7 +49,6 @@ namespace Tests.State
 
         private IEnumerator Co_Slide()
         {
-            // Debug.Log($"Co_Slide Start");
             Essentials.SetSuspendInput(true);
             Essentials.SetSliding(true);
             isSliding = true;
@@ -62,20 +61,13 @@ namespace Tests.State
             isSliding = false;
             Essentials.SetSliding(false);
             Essentials.SetSuspendInput(false);
-            // Debug.Log($"Co_Slide End");
         }
 
-        private void ApplyCrouch()
-        {
-            if (Essentials.IsCrouching()) return;
-            // Debug.Log($"ApplyCrouch");
-            StartCoroutine(Co_Crouch());
-        }
+        private void ApplyCrouch() => Crouch();
 
         private void ApplySlide()
         {
             if (isSliding) return;
-            // Debug.Log($"ApplySlide");
             StartCoroutine(Co_Slide());
         }
 

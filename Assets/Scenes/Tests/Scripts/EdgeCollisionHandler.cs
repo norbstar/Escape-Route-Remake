@@ -2,8 +2,12 @@ using UnityEngine;
 
 namespace Tests
 {
+    [RequireComponent(typeof(BaseEdgeModifier))]
     public class EdgeCollisionHandler : MonoBehaviour
     {
+        public delegate void HasContactWithEdge(EdgeCollisionHandler instance, Collision2D collision, Edge edge);
+        public delegate void HasLostContactWithEdge(EdgeCollisionHandler instance, Collision2D collision, Edge edge);
+
         public enum Edge
         {
             Top,
@@ -11,15 +15,6 @@ namespace Tests
             Bottom,
             Left
         }
-
-        [Header("Components")]
-        [SerializeField] OnCollision2DHandler topEdgeCollider;
-        [SerializeField] OnCollision2DHandler rightEdgeCollider;
-        [SerializeField] OnCollision2DHandler bottomEdgeCollider;
-        [SerializeField] OnCollision2DHandler leftEdgeCollider;
-
-        public delegate void HasContactWithEdge(EdgeCollisionHandler instance, Collision2D collision, Edge edge);
-        public delegate void HasLostContactWithEdge(EdgeCollisionHandler instance, Collision2D collision, Edge edge);
 
         public class Events
         {
@@ -30,31 +25,50 @@ namespace Tests
 
         private Events events;
         private LayerMask layerMask;
+        private BaseEdgeModifier baseEdgeModifier;
+        private OnCollision2DHandler topEdgeHandler, rightEdgeHandler, bottomEdgeHandler, leftEdgeHandler;
+        private EdgeCollider2D topEdgeCollider, rightEdgeCollider, bottomEdgeCollider, leftEdgeCollider;
 
-        void Awake() => layerMask = LayerMask.GetMask("Player");
+        void Awake()
+        {
+            layerMask = LayerMask.GetMask("Player");
+            baseEdgeModifier = GetComponent<BaseEdgeModifier>();
+            
+            topEdgeCollider = baseEdgeModifier.TopEdgeCollider;
+            topEdgeHandler = topEdgeCollider.GetComponent<OnCollision2DHandler>();
+
+            rightEdgeCollider = baseEdgeModifier.RightEdgeCollider;
+            rightEdgeHandler = rightEdgeCollider.GetComponent<OnCollision2DHandler>();
+
+            bottomEdgeCollider = baseEdgeModifier.BottomEdgeCollider;
+            bottomEdgeHandler = bottomEdgeCollider.GetComponent<OnCollision2DHandler>();
+
+            leftEdgeCollider = baseEdgeModifier.LeftEdgeCollider;
+            leftEdgeHandler = leftEdgeCollider.GetComponent<OnCollision2DHandler>();
+        }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            topEdgeCollider.Register(new OnCollision2DHandler.Events
+            topEdgeHandler.Register(new OnCollision2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge
             }, layerMask);
 
-            rightEdgeCollider.Register(new OnCollision2DHandler.Events
+            rightEdgeHandler.Register(new OnCollision2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge
             }, layerMask);
 
-            bottomEdgeCollider.Register(new OnCollision2DHandler.Events
+            bottomEdgeHandler.Register(new OnCollision2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge
             }, layerMask);
 
-            leftEdgeCollider.Register(new OnCollision2DHandler.Events
+            leftEdgeHandler.Register(new OnCollision2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge

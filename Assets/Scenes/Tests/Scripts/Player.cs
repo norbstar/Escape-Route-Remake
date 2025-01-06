@@ -376,8 +376,6 @@ namespace Tests
 
         private void ApplyDash()
         {
-            // Debug.Log("ApplyDash");
-
             if (scene.EnergyBar.Value > POWER_MOVE_MIN_ENERGY_VALUE)
             {
                 var direction = Mathf.Sign(rigidBody.linearVelocityX);

@@ -8,7 +8,8 @@ namespace Tests
         Transform Transform();
         Rigidbody2D RigidBody();
         float OriginalGravityScale();
-        SpriteShapeController SpriteShapeController();
+        // SpriteShapeController SpriteShapeController();
+        SpriteShapeModifier SpriteShapeModifier();
         AudioSource AudioSource();
         PlayerStateEnum PlayerState();
         bool IsBlockedTop();

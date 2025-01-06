@@ -44,7 +44,6 @@ namespace Tests.State
 
         private void ApplyDash()
         {
-            Debug.Log($"ApplyDash");
             var direction = Mathf.Sign(Essentials.RigidBody().linearVelocityX);
             Essentials.RigidBody().linearVelocityX = direction * speed;
             Essentials.AudioSource().PlayOneShot(clip, 1f);

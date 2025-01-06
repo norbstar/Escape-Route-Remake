@@ -53,7 +53,6 @@ namespace Tests.State
 
         private void ApplyRun()
         {
-            // Debug.Log($"ApplyRun");
             // cachedMoveVector = Vector2.SmoothDamp(cachedMoveVector, moveValue, ref smoothInputVelocity, smoothInputSpeed);
             // Essentials.RigidBody().linearVelocityX = cachedMoveVector.x * speed;
             Essentials.RigidBody().linearVelocityX = moveValue.x * speed;

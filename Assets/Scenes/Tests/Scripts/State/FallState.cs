@@ -1,47 +1,44 @@
 using System.Collections;
 
 using UnityEngine;
-using UnityEngine.U2D;
 
 namespace Tests.State
 {
     public class FallState : State
     {
         [SerializeField] AudioClip landClip;
-        [SerializeField] float deformationSpeed = 2.5f;
+        [SerializeField] float deformationSpeed = 12f;
 
         public static float SQUISH_PER_POINT = 0.1f;
 
-        private SpriteShapeController spriteShapeController;
+        private SpriteShapeModifier spriteShapeModifier;
         private float lastLinearVelocityY;
+        private float topY;
 
         private IEnumerator Co_Squish(float squishFactor)
         {
-            var minPosY = 0.425f - 0.425f * squishFactor;
-            var posY = 0.425f;
+            var minPosY = topY - topY * squishFactor;
+            var posY = topY;
             float elapsedTime = 0f;
-
-            var p1 = spriteShapeController.spline.GetPosition(1);
-            var p2 = spriteShapeController.spline.GetPosition(2);
 
             while (posY > minPosY)
             {
                 elapsedTime += Time.deltaTime;
-                posY = Mathf.Lerp(0.425f, minPosY, elapsedTime * deformationSpeed);
-                spriteShapeController.spline.SetPosition(1, new Vector3(p1.x, posY, p1.z));
-                spriteShapeController.spline.SetPosition(2, new Vector3(p2.x, posY, p2.z));
+                posY = Mathf.Lerp(topY, minPosY, elapsedTime * deformationSpeed);
+                spriteShapeModifier.ModifySplineYValue(1, posY);
+                spriteShapeModifier.ModifySplineYValue(2, posY);
                 yield return null;
             }
 
             posY = minPosY;
             elapsedTime = 0f;
 
-            while (posY < 0.425f)
+            while (posY < topY)
             {
                 elapsedTime += Time.deltaTime;
-                posY = Mathf.Lerp(minPosY, 0.425f, elapsedTime * deformationSpeed);
-                spriteShapeController.spline.SetPosition(1, new Vector3(p1.x, posY, p1.z));
-                spriteShapeController.spline.SetPosition(2, new Vector3(p2.x, posY, p2.z));
+                posY = Mathf.Lerp(minPosY, topY, elapsedTime * deformationSpeed);
+                spriteShapeModifier.ModifySplineYValue(1, posY);
+                spriteShapeModifier.ModifySplineYValue(2, posY);
                 yield return null;
             }
         }
@@ -61,9 +58,10 @@ namespace Tests.State
         // Update is called once per frame
         void Update()
         {
-            if (spriteShapeController == null)
+            if (spriteShapeModifier == null)
             {
-                spriteShapeController = Essentials.SpriteShapeController();
+                spriteShapeModifier = Essentials.SpriteShapeModifier();
+                topY = spriteShapeModifier.GetSplinePosition(1).y;
             }
         }
 

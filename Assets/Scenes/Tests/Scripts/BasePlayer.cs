@@ -17,7 +17,9 @@ namespace Tests
 
         public abstract float OriginalGravityScale();
 
-        public abstract SpriteShapeController SpriteShapeController();
+        // public abstract SpriteShapeController SpriteShapeController();
+
+        public abstract SpriteShapeModifier SpriteShapeModifier();
 
         public abstract AudioSource AudioSource();
 

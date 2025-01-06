@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Tests.State;
+
 using UnityEngine;
 using UnityEngine.U2D;
 
@@ -7,8 +7,8 @@ namespace Tests
 {
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(Collider2D))]
-    [RequireComponent(typeof(SpriteShapeRenderer))]
-    [RequireComponent(typeof(SpriteShapeController))]
+    // [RequireComponent(typeof(SpriteShapeController))]
+    [RequireComponent(typeof(SpriteShapeModifier))]
     [RequireComponent(typeof(EdgeCollider2D))]
     [RequireComponent(typeof(AudioSource))]
     public class AbstractedStatePlayer : BasePlayer, PlayerEssentials
@@ -21,7 +21,8 @@ namespace Tests
         [SerializeField] Transform arrowBaseUI;
 
         private Rigidbody2D rigidBody;
-        private SpriteShapeController spriteShapeController;
+        // private SpriteShapeController spriteShapeController;
+        private SpriteShapeModifier spriteShapeModifier;
         private AudioSource audioSource;
         private InputSystem_Actions inputActions;
         private bool isBlockedTop, isBlockedRight, isGrounded, isBlockedLeft, isHolding, isDashing, isGrabbable, isTraversable, isCrouching, isSliding;
@@ -37,7 +38,9 @@ namespace Tests
 
         public override float OriginalGravityScale() => originalGravityScale;
 
-        public override SpriteShapeController SpriteShapeController() => spriteShapeController;
+        // public override SpriteShapeController SpriteShapeController() => spriteShapeController;
+
+        public override SpriteShapeModifier SpriteShapeModifier() => spriteShapeModifier;
 
         public override AudioSource AudioSource() => audioSource;
 
@@ -89,7 +92,8 @@ namespace Tests
         {
             rigidBody = GetComponent<Rigidbody2D>();
             originalGravityScale = rigidBody.gravityScale;
-            spriteShapeController = GetComponent<SpriteShapeController>();
+            // spriteShapeController = GetComponent<SpriteShapeController>();
+            spriteShapeModifier = GetComponent<SpriteShapeModifier>();
             audioSource = GetComponent<AudioSource>();
             inputActions = new InputSystem_Actions();
             states = GetComponents<State.State>();

@@ -39,11 +39,7 @@ namespace Tests.State
             }
         }
 
-        private void ApplyTraverse()
-        {
-            Debug.Log($"ApplyTraverse");
-            Essentials.Transform().Translate(new Vector3(moveValue.x, moveValue.y, 0f) * speed * Time.deltaTime);
-        }
+        private void ApplyTraverse() => Essentials.Transform().Translate(new Vector3(moveValue.x, moveValue.y, 0f) * speed * Time.deltaTime);
 
         void FixedUpdate()
         {

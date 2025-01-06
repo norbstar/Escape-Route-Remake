@@ -2,8 +2,12 @@ using UnityEngine;
 
 namespace Tests
 {
+    [RequireComponent(typeof(BaseEdgeModifier))]
     public class EdgeTriggerHandler : MonoBehaviour
     {
+        public delegate void HasContactWithEdge(EdgeTriggerHandler instance, Collider2D collider, Edge edge);
+        public delegate void HasLostContactWithEdge(EdgeTriggerHandler instance, Collider2D collider, Edge edge);
+
         public enum Edge
         {
             Top,
@@ -11,15 +15,6 @@ namespace Tests
             Bottom,
             Left
         }
-
-        [Header("Components")]
-        [SerializeField] OnTrigger2DHandler topEdgeTrigger;
-        [SerializeField] OnTrigger2DHandler rightEdgeTrigger;
-        [SerializeField] OnTrigger2DHandler bottomEdgeTrigger;
-        [SerializeField] OnTrigger2DHandler leftEdgeTrigger;
-
-        public delegate void HasContactWithEdge(EdgeTriggerHandler instance, Collider2D collider, Edge edge);
-        public delegate void HasLostContactWithEdge(EdgeTriggerHandler instance, Collider2D collider, Edge edge);
 
         public class Events
         {
@@ -30,31 +25,50 @@ namespace Tests
 
         private Events events;
         private LayerMask layerMask;
+        private BaseEdgeModifier baseEdgeModifier;
+        private OnTrigger2DHandler topEdgeHandler, rightEdgeHandler, bottomEdgeHandler, leftEdgeHandler;
+        private EdgeCollider2D topEdgeCollider, rightEdgeCollider, bottomEdgeCollider, leftEdgeCollider;
 
-        void Awake() => layerMask = LayerMask.GetMask("Player");
+        void Awake()
+        {
+            layerMask = LayerMask.GetMask("Player");
+            baseEdgeModifier = GetComponent<BaseEdgeModifier>();
+            
+            topEdgeCollider = baseEdgeModifier.TopEdgeCollider;
+            topEdgeHandler = topEdgeCollider.GetComponent<OnTrigger2DHandler>();
+
+            rightEdgeCollider = baseEdgeModifier.RightEdgeCollider;
+            rightEdgeHandler = rightEdgeCollider.GetComponent<OnTrigger2DHandler>();
+
+            bottomEdgeCollider = baseEdgeModifier.BottomEdgeCollider;
+            bottomEdgeHandler = bottomEdgeCollider.GetComponent<OnTrigger2DHandler>();
+
+            leftEdgeCollider = baseEdgeModifier.LeftEdgeCollider;
+            leftEdgeHandler = leftEdgeCollider.GetComponent<OnTrigger2DHandler>();
+        }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            topEdgeTrigger.Register(new OnTrigger2DHandler.Events
+            topEdgeHandler.Register(new OnTrigger2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge
             }, layerMask);
 
-            rightEdgeTrigger.Register(new OnTrigger2DHandler.Events
+            rightEdgeHandler.Register(new OnTrigger2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge
             }, layerMask);
 
-            bottomEdgeTrigger.Register(new OnTrigger2DHandler.Events
+            bottomEdgeHandler.Register(new OnTrigger2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge
             }, layerMask);
 
-            leftEdgeTrigger.Register(new OnTrigger2DHandler.Events
+            leftEdgeHandler.Register(new OnTrigger2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge
@@ -65,19 +79,19 @@ namespace Tests
 
         public void OnContactWithEdge(OnTrigger2DHandler instance, Collider2D collider)
         {
-            if (instance == topEdgeTrigger)
+            if (instance == topEdgeHandler)
             {
                 events?.OnContact?.Invoke(this, collider, Edge.Top);
             }
-            else if (instance == rightEdgeTrigger)
+            else if (instance == rightEdgeHandler)
             {
                 events?.OnContact?.Invoke(this, collider, Edge.Right);
             }
-            else if (instance == bottomEdgeTrigger)
+            else if (instance == bottomEdgeHandler)
             {
                 events?.OnContact?.Invoke(this, collider, Edge.Bottom);
             }
-            else if (instance == leftEdgeTrigger)
+            else if (instance == leftEdgeHandler)
             {
                 events?.OnContact?.Invoke(this, collider, Edge.Left);
             }
@@ -85,19 +99,19 @@ namespace Tests
 
         public void OnLostContactWithEdge(OnTrigger2DHandler instance, Collider2D collider)
         {
-            if (instance == topEdgeTrigger)
+            if (instance == topEdgeHandler)
             {
                 events?.OnLostContact?.Invoke(this, collider, Edge.Top);
             }
-            else if (instance == rightEdgeTrigger)
+            else if (instance == rightEdgeHandler)
             {
                 events?.OnLostContact?.Invoke(this, collider, Edge.Right);
             }
-            else if (instance == bottomEdgeTrigger)
+            else if (instance == bottomEdgeHandler)
             {
                 events?.OnLostContact?.Invoke(this, collider, Edge.Bottom);
             }
-            else if (instance == leftEdgeTrigger)
+            else if (instance == leftEdgeHandler)
             {
                 events?.OnLostContact?.Invoke(this, collider, Edge.Left);
             }

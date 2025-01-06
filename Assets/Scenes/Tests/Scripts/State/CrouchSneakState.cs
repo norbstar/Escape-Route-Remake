@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Tests.State
 {
-    public class CrouchSneakState : AbstractCrouchState
+    public class CrouchSneakState : BaseCrouchState
     {
         [Range(1f, 5f)]
         [SerializeField] float speed = 5f;
@@ -44,23 +44,12 @@ namespace Tests.State
             }
         }
 
-        private void ApplyCrouch()
-        {
-            if (Essentials.IsCrouching()) return;
-            // Debug.Log($"ApplyCrouch");
-            StartCoroutine(Co_Crouch());
-        }
+        private void ApplyCrouch() => Crouch();
 
-        private void ApplyReset()
-        {
-            if (!Essentials.IsCrouching()) return;
-            // Debug.Log($"ApplyReset");
-            StartCoroutine(Co_Reset());
-        }
+        private void ApplyReset() => Reset();
 
         private void ApplyMove()
         {
-            // Debug.Log($"ApplyMove");
             Essentials.RigidBody().linearVelocityX = moveValue.x * speed;
             // execMove = false;
         }

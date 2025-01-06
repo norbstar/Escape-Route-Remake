@@ -48,6 +48,8 @@ namespace Tests
 
         private Rigidbody2D rigidBody;
         private SpriteShapeController spriteShapeController;
+        private SpriteShapeModifier spriteShapeModifier;
+
         private AudioSource audioSource;
         private InputSystem_Actions inputActions;
         private bool execRun, execJump, execPowerJump;
@@ -86,7 +88,9 @@ namespace Tests
 
         public float OriginalGravityScale() => originalGravityScale;
 
-        public SpriteShapeController SpriteShapeController() => spriteShapeController;
+        // public SpriteShapeController SpriteShapeController() => spriteShapeController;
+
+        public SpriteShapeModifier SpriteShapeModifier() => spriteShapeModifier;
 
         public AudioSource AudioSource() => audioSource;
 
