@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Tests.State
+namespace Tests.States
 {
     public class CrouchSneakState : BaseCrouchState
     {
@@ -31,7 +31,7 @@ namespace Tests.State
         {
             base.Update();
 
-            canExec = !((Essentials.IsGrabbable() || Essentials.IsTraversable()) && Essentials.IsHolding());
+            canExec = !(Essentials.IsContactable() && Essentials.IsHolding());
 
             if (canExec)
             {

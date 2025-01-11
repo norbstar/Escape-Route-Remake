@@ -54,7 +54,7 @@ namespace Tests
         private InputSystem_Actions inputActions;
         private bool execRun, execJump, execPowerJump;
         private Vector2 moveValue;
-        private bool isBlockedTop, isBlockedRight, isGrounded, isBlockedLeft, isHolding, isDashing, isGripping, isTraversing, isCrouching, isSliding;
+        private bool isBlockedTop, isBlockedRight, isGrounded, isBlockedLeft, isHolding, isDashing, isGrabbable, isTraversable, isContactable, isCrouching, isSliding;
         private float jumpPressStartTime;
         private bool jumpReleased;
         private float lastLinearVelocityY;
@@ -73,7 +73,7 @@ namespace Tests
             inputActions = new InputSystem_Actions();
             layerMask = LayerMask.GetMask("Player");
             
-            var states = GetComponents<State.State>();
+            var states = GetComponents<States.State>();
 
             foreach (var state in states)
             {
@@ -114,15 +114,19 @@ namespace Tests
 
         public bool IsHolding() => isHolding;
 
-        public void SetGrabbable(bool isGripping) => this.isGripping = isGripping;
+        public void SetGrabbable(bool isGrabbable) => this.isGrabbable = isGrabbable;
 
-        public bool IsGrabbable() => isGripping;
+        public bool IsGrabbable() => isGrabbable;
 
         public GameObject GrabbableGameObject() => grabbable;
 
-        public void SetTraversable(bool isTraversing) => this.isTraversing = isTraversing;
+        public void SetTraversable(bool isTraversing) => this.isTraversable = isTraversing;
 
-        public bool IsTraversable() => isTraversing;
+        public bool IsTraversable() => isTraversable;
+
+        public void SetContactable(bool isContactable) => this.isContactable = isContactable;
+
+        public bool IsContactable() => isContactable;
 
         public void SetCrouching(bool isCrouching) => this.isCrouching = isCrouching;
         

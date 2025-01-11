@@ -1,9 +1,10 @@
 using UnityEngine;
 
-namespace Tests.State
+namespace Tests.States
 {
     public class ShiftState : State
     {
+        [Header("Configuration")]
         [Range(1f, 10f)]
         [SerializeField] float speed = 5f;
         // [SerializeField] float smoothInputSpeed = 0.2f;
@@ -35,7 +36,7 @@ namespace Tests.State
         // Update is called once per frame
         void Update()
         {
-            canExec = !((Essentials.IsGrabbable() || Essentials.IsTraversable()) && Essentials.IsHolding());
+            canExec = !(Essentials.IsContactable() && Essentials.IsHolding());
 
             if (canExec)
             {

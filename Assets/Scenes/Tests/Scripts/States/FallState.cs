@@ -2,10 +2,11 @@ using System.Collections;
 
 using UnityEngine;
 
-namespace Tests.State
+namespace Tests.States
 {
     public class FallState : State
     {
+        [Header("Configuration")]
         [SerializeField] AudioClip landClip;
         [SerializeField] float deformationSpeed = 12f;
 

@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Tests.State
+namespace Tests.States
 {
     public class JumpState : State
     {
+        [Header("Configuration")]
         [Range(400f, 800f)]
         [SerializeField] float jumpForce = 600f;
         [SerializeField] AudioClip jumpClip;
@@ -43,7 +44,7 @@ namespace Tests.State
         }
 
         // Update is called once per frame
-        void Update() => canExec = !((Essentials.IsGrabbable() || Essentials.IsTraversable()) && Essentials.IsHolding());
+        void Update() => canExec = !(Essentials.IsContactable() && Essentials.IsHolding());
 
         void FixedUpdate()
         {

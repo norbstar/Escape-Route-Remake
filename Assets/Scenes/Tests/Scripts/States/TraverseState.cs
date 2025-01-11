@@ -1,9 +1,10 @@
 using UnityEngine;
 
-namespace Tests.State
+namespace Tests.States
 {
     public class TraverseState : State
     {
+        [Header("Configuration")]
         [Range(5f, 25f)]
         [SerializeField] float speed = 15f;
 

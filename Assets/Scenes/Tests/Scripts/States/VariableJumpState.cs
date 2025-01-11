@@ -3,10 +3,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Tests.State
+namespace Tests.States
 {
     public class VariableJumpState : State
     {
+        [Header("Configuration")]
         [Range(400f, 800f)]
         [SerializeField] float jumpForce = 600f;
         [SerializeField] AudioClip jumpClip;

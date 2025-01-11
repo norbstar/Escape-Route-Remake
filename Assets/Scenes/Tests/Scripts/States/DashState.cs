@@ -3,10 +3,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Tests.State
+namespace Tests.States
 {
     public class DashState : State
     {
+        [Header("Configuration")]
         [Range(10f, 100f)]
         [SerializeField] float speed = 50f;
         [SerializeField] float duration = 0.05f;
@@ -79,7 +80,7 @@ namespace Tests.State
         // Update is called once per frame
         void Update()
         {
-            canExec = !((Essentials.IsGrabbable() || Essentials.IsTraversable()) && Essentials.IsHolding());
+            canExec = !(Essentials.IsContactable() && Essentials.IsHolding());
 
             if (canExec)
             {

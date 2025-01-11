@@ -596,7 +596,6 @@ GameObject:
   - component: {fileID: 3050863159272802792}
   - component: {fileID: 3197676824381738250}
   - component: {fileID: 2492654755538693766}
-  - component: {fileID: 616482937669625311}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -1030,7 +1029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leapForce: 600
-  leapClip: {fileID: 0}
+  leapClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
 --- !u!114 &866190008849597548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1087,19 +1086,6 @@ MonoBehaviour:
   contactMap: {fileID: 6543963185860037140}
   edgeTriggerHandler: {fileID: 1564858219368971033}
   arrowBaseUI: {fileID: 254104720836281314}
---- !u!114 &616482937669625311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76804298d1a6e0344a99120d5d007750, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseEdgeModifier: {fileID: 0}
 --- !u!1 &3954563937439435231
 GameObject:
   m_ObjectHideFlags: 0

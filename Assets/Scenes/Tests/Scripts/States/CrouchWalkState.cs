@@ -1,9 +1,10 @@
 using UnityEngine;
 
-namespace Tests.State
+namespace Tests.States
 {
     public class CrouchWalkState : State
     {
+        [Header("Configuration")]
         [Range(1f, 5f)]
         [SerializeField] float speed = 2.5f;
 
@@ -26,7 +27,7 @@ namespace Tests.State
         // Update is called once per frame
         void Update()
         {
-            canExec = !((Essentials.IsGrabbable() || Essentials.IsTraversable()) && Essentials.IsHolding());
+            canExec = !(Essentials.IsContactable() && Essentials.IsHolding());
 
             if (canExec)
             {

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.U2D;
 
 namespace Tests
 {
@@ -8,7 +7,6 @@ namespace Tests
         Transform Transform();
         Rigidbody2D RigidBody();
         float OriginalGravityScale();
-        // SpriteShapeController SpriteShapeController();
         SpriteShapeModifier SpriteShapeModifier();
         AudioSource AudioSource();
         PlayerStateEnum PlayerState();
@@ -25,6 +23,8 @@ namespace Tests
         GameObject GrabbableGameObject();
         void SetTraversable(bool isTraversable);
         bool IsTraversable();
+        void SetContactable(bool isContactable);
+        bool IsContactable();
         void SetCrouching(bool isCrouched);
         bool IsCrouching();
         void SetSliding(bool isSliding);

@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.U2D;
 
 namespace Tests
 {
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(Collider2D))]
-    // [RequireComponent(typeof(SpriteShapeController))]
     [RequireComponent(typeof(SpriteShapeModifier))]
     [RequireComponent(typeof(EdgeCollider2D))]
     [RequireComponent(typeof(AudioSource))]
@@ -21,12 +19,11 @@ namespace Tests
         [SerializeField] Transform arrowBaseUI;
 
         private Rigidbody2D rigidBody;
-        // private SpriteShapeController spriteShapeController;
         private SpriteShapeModifier spriteShapeModifier;
         private AudioSource audioSource;
         private InputSystem_Actions inputActions;
-        private bool isBlockedTop, isBlockedRight, isGrounded, isBlockedLeft, isHolding, isDashing, isGrabbable, isTraversable, isCrouching, isSliding;
-        private State.State[] states;
+        private bool isBlockedTop, isBlockedRight, isGrounded, isBlockedLeft, isHolding, isDashing, isGrabbable, isTraversable, isContactable, isCrouching, isSliding;
+        private States.State[] states;
         private PlayerStateEnum playerState;
         private bool suspendInput, showArrow;
         private float originalGravityScale;
@@ -37,8 +34,6 @@ namespace Tests
         public override Rigidbody2D RigidBody() => rigidBody;
 
         public override float OriginalGravityScale() => originalGravityScale;
-
-        // public override SpriteShapeController SpriteShapeController() => spriteShapeController;
 
         public override SpriteShapeModifier SpriteShapeModifier() => spriteShapeModifier;
 
@@ -72,6 +67,10 @@ namespace Tests
 
         public override bool IsTraversable() => isTraversable;
 
+        public override void SetContactable(bool isContactable) => this.isContactable = isContactable;
+
+        public override bool IsContactable() => isContactable;
+
         public override void SetCrouching(bool isCrouching) => this.isCrouching = isCrouching;
         
         public override bool IsCrouching() => isCrouching;
@@ -92,11 +91,10 @@ namespace Tests
         {
             rigidBody = GetComponent<Rigidbody2D>();
             originalGravityScale = rigidBody.gravityScale;
-            // spriteShapeController = GetComponent<SpriteShapeController>();
             spriteShapeModifier = GetComponent<SpriteShapeModifier>();
             audioSource = GetComponent<AudioSource>();
             inputActions = new InputSystem_Actions();
-            states = GetComponents<State.State>();
+            states = GetComponents<States.State>();
 
             foreach (var state in states)
             {
@@ -108,20 +106,8 @@ namespace Tests
 
         void OnDisable() => inputActions.Disable();
 
-#if false
-        private void OnContact(Collider2D collider)
-        {
-            Debug.Log($"OnContact {collider.gameObject.name}");
-
-            if (collider.gameObject.TryGetComponent<ObjectProperties>(out var objectProperties))
-            {
-                Debug.Log($"OnContact {collider.gameObject.name} {objectProperties}");
-            }
-        }
-#endif
         private void OnContactWithMap(ContactMap contactMap, Collider2D collider, List<ContactMap.ContactInfo> contacts)
         {
-
             isGrabbable = isTraversable = false;
 
             if (contacts.Count > 0)
@@ -131,14 +117,10 @@ namespace Tests
                 isTraversable = contact.properties.Contains(ObjectPropertyEnum.Traversable);
             }
 
-            // Debug.Log($"OnContactWithMap Collider: {collider.gameObject} Contacts Count: {contacts.Count} Is Grabbable: {isGrabbable} Is Traversable: {isTraversable}");
-            
             if (isGrabbable)
             {
                 grabbable = collider.gameObject;
             }
-
-            // OnContact(collider);
         }
 
         private void OnContactWithEdge(EdgeTriggerHandler instance, Collider2D collider, EdgeTriggerHandler.Edge edge)
@@ -181,20 +163,8 @@ namespace Tests
                     }
                     break;
             }
-
-            // OnContact(collider);
         }
-#if false
-        private void OnLostContact(Collider2D collider)
-        {
-            Debug.Log($"OnLostContact {collider.gameObject.name}");
 
-            if (collider.gameObject.TryGetComponent<ObjectProperties>(out var objectProperties))
-            {
-                Debug.Log($"OnLostContact {collider.gameObject.name} {objectProperties}");
-            }
-        }
-#endif
         private void OnLostContactWithMap(ContactMap contactMap, Collider2D collider, List<ContactMap.ContactInfo> contacts)
         {
             isGrabbable = isTraversable = false;
@@ -205,15 +175,11 @@ namespace Tests
                 isGrabbable = contact.properties.Contains(ObjectPropertyEnum.Grabbable);
                 isTraversable = contact.properties.Contains(ObjectPropertyEnum.Traversable);
             }
-
-            // Debug.Log($"OnLostContactWithMap Collider: {collider.gameObject} Contacts Count: {contacts.Count} Is Grabbable: {isGrabbable} Is Traversable: {isTraversable}");
             
             if (!isGrabbable)
             {
                 grabbable = null;
             }
-
-            // OnContact(collider);
         }
 
         private void OnLostContactWithEdge(EdgeTriggerHandler instance, Collider2D collider, EdgeTriggerHandler.Edge edge)
@@ -256,8 +222,6 @@ namespace Tests
                     }
                     break;
             }
-
-            // OnLostContact(collider);
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -357,6 +321,8 @@ namespace Tests
         {
             var diasableGravity = (isGrabbable || isTraversable) && isHolding;
             rigidBody.gravityScale = diasableGravity ? 0f : originalGravityScale;
+
+            isContactable = isGrabbable || isTraversable;
 
             UpdatePlayerUI();
             AscertStatus();

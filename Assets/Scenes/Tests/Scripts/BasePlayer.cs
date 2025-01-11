@@ -17,8 +17,6 @@ namespace Tests
 
         public abstract float OriginalGravityScale();
 
-        // public abstract SpriteShapeController SpriteShapeController();
-
         public abstract SpriteShapeModifier SpriteShapeModifier();
 
         public abstract AudioSource AudioSource();
@@ -50,7 +48,11 @@ namespace Tests
         public abstract void SetTraversable(bool isTraversing);
 
         public abstract bool IsTraversable();
-        
+
+        public abstract void SetContactable(bool isContactable);
+
+        public abstract bool IsContactable();
+
         public abstract void SetCrouching(bool isCrouched);
         
         public abstract bool IsCrouching();

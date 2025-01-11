@@ -2,10 +2,11 @@ using System.Collections;
 
 using UnityEngine;
 
-namespace Tests.State
+namespace Tests.States
 {
     public abstract class BaseCrouchState : State
     {
+        [Header("Configuration")]
         [SerializeField] float deformationSpeed = 12f;
 
         private SpriteShapeModifier spriteShapeModifier;

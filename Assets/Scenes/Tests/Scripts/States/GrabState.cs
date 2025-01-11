@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Tests.State
+namespace Tests.States
 {
     public class GrapState : State
     {
+        [Header("Configuration")]
         [Range(400f, 800f)]
         [SerializeField] float leapForce = 600f;
         [SerializeField] AudioClip leapClip;
