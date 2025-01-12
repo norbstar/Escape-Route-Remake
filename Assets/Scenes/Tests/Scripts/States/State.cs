@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 namespace Tests.States
@@ -69,14 +69,14 @@ namespace Tests.States
         }
 
         [Serializable]
-        public abstract class InputCondition
+        public abstract class PropertyCondition
         {
             public enum InputEnum
             {
                 Move
             }
 
-            public InputCondition(InputEnum @enum) => this.@enum = @enum;
+            public PropertyCondition(InputEnum @enum) => this.@enum = @enum;
 
             private InputEnum @enum;
             
@@ -84,7 +84,7 @@ namespace Tests.States
         }
 
         [Serializable]
-        public class MoveCondition : InputCondition
+        public class MoveCondition : PropertyCondition
         {
             public enum SignEnum
             {
@@ -108,21 +108,21 @@ namespace Tests.States
         }
 
         [Serializable]
-        public class InputConditions
+        public class PropertyConditions
         {
-            private List<InputCondition> conditions;
+            private List<PropertyCondition> conditions;
 
-            public InputCondition.InputEnum @enum;
+            public PropertyCondition.InputEnum @enum;
             
-            public InputCondition.InputEnum Enum { get => @enum; set => @enum = value; }
+            public PropertyCondition.InputEnum Enum { get => @enum; set => @enum = value; }
 
-            public List<InputCondition> Conditions
+            public List<PropertyCondition> Conditions
             {
                 get
                 {
                     if (conditions == null)
                     {
-                        conditions = new List<InputCondition>();
+                        conditions = new List<PropertyCondition>();
                     }
 
                     return conditions.ToList();
@@ -131,24 +131,24 @@ namespace Tests.States
                 set => conditions = value;
             }
 
-            public void AddCondition(InputCondition.InputEnum condition)
+            public void AddCondition(PropertyCondition.InputEnum condition)
             {
                 if (conditions.Exists(c => c.Enum == condition)) return;
 
                 switch (condition)
                 {
-                    case InputCondition.InputEnum.Move:
+                    case PropertyCondition.InputEnum.Move:
                         conditions.Add(new MoveCondition(condition));
                         break;
                 }
             }
 
-            public void RevokeCondition(InputCondition.InputEnum condition) => conditions.RemoveAll(c => c.Enum == condition);
+            public void RevokeCondition(PropertyCondition.InputEnum condition) => conditions.RemoveAll(c => c.Enum == condition);
         }
 
         public StateConditions StateCollection { get; set; } = new StateConditions();
 
-        public InputConditions InputCollection { get; set; } = new InputConditions();
+        public PropertyConditions PropertyCollection { get; set; } = new PropertyConditions();
         
         public PlayerEssentials Essentials { get; set; }
 
@@ -233,13 +233,13 @@ namespace Tests.States
                 canExecute = TestBooleanCondition(condition.Enum, condition.boolean);
             }
 
-            foreach (var condition in InputCollection.Conditions)
+            foreach (var condition in PropertyCollection.Conditions)
             {
                 if (!canExecute) break;
 
                 switch (condition.Enum)
                 {
-                    case InputCondition.InputEnum.Move:
+                    case PropertyCondition.InputEnum.Move:
                         canExecute = TestMoveCondition((MoveCondition) condition);
                         break;
                 }

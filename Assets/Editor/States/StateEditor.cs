@@ -1,6 +1,4 @@
 #if (UNITY_EDITOR) 
-using System.Collections.Generic;
-
 using UnityEditor;
 using UnityEngine;
 
@@ -59,14 +57,14 @@ public abstract class StateEditor : Editor
 
         float originalValue = EditorGUIUtility.labelWidth;
         EditorGUIUtility.labelWidth = 70;
-        state.InputCollection.Enum = (State.InputCondition.InputEnum) EditorGUILayout.EnumPopup("Inputs", state.InputCollection.Enum, GUILayout.Width(210));
+        state.PropertyCollection.Enum = (State.PropertyCondition.InputEnum) EditorGUILayout.EnumPopup("Inputs", state.PropertyCollection.Enum, GUILayout.Width(210));
         EditorGUIUtility.labelWidth = originalValue;
 
         GUILayout.FlexibleSpace();
 
         if (GUILayout.Button("Add Condition", EditorStyles.miniButtonLeft, GUILayout.Width(95)))
         {
-            state.InputCollection.AddCondition(state.InputCollection.Enum);
+            state.PropertyCollection.AddCondition(state.PropertyCollection.Enum);
         }
 
         EditorGUILayout.EndHorizontal();
@@ -116,7 +114,7 @@ public abstract class StateEditor : Editor
 
     private void AddInputConfiguration()
     {
-        foreach (var condition in state.InputCollection.Conditions)
+        foreach (var condition in state.PropertyCollection.Conditions)
         {
             EditorGUILayout.BeginVertical("Box");
 
@@ -125,7 +123,7 @@ public abstract class StateEditor : Editor
 
             switch (condition.Enum)
             {
-                case State.InputCondition.InputEnum.Move:
+                case State.PropertyCondition.InputEnum.Move:
                     EmbedMoveConfiguration((State.MoveCondition) condition);
                     break;
             }
@@ -136,7 +134,7 @@ public abstract class StateEditor : Editor
         
             if (GUILayout.Button("Delete", EditorStyles.miniButtonLeft, GUILayout.Width(50)))
             {
-                state.InputCollection.RevokeCondition(condition.Enum);
+                state.PropertyCollection.RevokeCondition(condition.Enum);
             }
 
             EditorGUILayout.EndHorizontal();
