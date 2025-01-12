@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Tests.States
@@ -23,7 +23,7 @@ namespace Tests.States
                 IsBlockedTop,
                 IsBlockedRight,
                 IsGrounded,
-                IsBlockedLeft,
+                IsBlockedLeft
             }
 
             public StateCondition(StateEnum @enum) => this.@enum = @enum;
@@ -32,7 +32,7 @@ namespace Tests.States
             
             public StateEnum Enum { get => @enum; set => @enum = value; }
 
-            public bool trueFalse;
+            public bool boolean;
         }
 
         [Serializable]
@@ -44,7 +44,20 @@ namespace Tests.States
             
             public StateCondition.StateEnum Enum { get => @enum; set => @enum = value; }
 
-            public List<StateCondition> Conditions { get => conditions.ToList(); set => conditions = value; }
+            public List<StateCondition> Conditions
+            {
+                get
+                {
+                    if (conditions == null)
+                    {
+                        conditions = new List<StateCondition>();
+                    }
+
+                    return conditions.ToList();
+                }
+                
+                set => conditions = value;
+            }
 
             public void AddCondition(StateCondition.StateEnum condition)
             {
@@ -56,13 +69,23 @@ namespace Tests.States
         }
 
         [Serializable]
-        public class InputCondition
+        public abstract class InputCondition
         {
             public enum InputEnum
             {
                 Move
             }
 
+            public InputCondition(InputEnum @enum) => this.@enum = @enum;
+
+            private InputEnum @enum;
+            
+            public InputEnum Enum { get => @enum; set => @enum = value; }
+        }
+
+        [Serializable]
+        public class MoveCondition : InputCondition
+        {
             public enum SignEnum
             {
                 Positive,
@@ -78,11 +101,7 @@ namespace Tests.States
                 public SignEnum sign;
             }
             
-            public InputCondition(InputEnum @enum) => this.@enum = @enum;
-
-            private InputEnum @enum;
-            
-            public InputEnum Enum { get => @enum; set => @enum = value; }
+            public MoveCondition(InputEnum @enum) : base(@enum) { }
 
             public MoveAxisValue xAxis;
             public MoveAxisValue yAxis;
@@ -97,31 +116,134 @@ namespace Tests.States
             
             public InputCondition.InputEnum Enum { get => @enum; set => @enum = value; }
 
-            public List<InputCondition> Conditions { get => conditions.ToList(); set => conditions = value; }
+            public List<InputCondition> Conditions
+            {
+                get
+                {
+                    if (conditions == null)
+                    {
+                        conditions = new List<InputCondition>();
+                    }
+
+                    return conditions.ToList();
+                }
+                
+                set => conditions = value;
+            }
 
             public void AddCondition(InputCondition.InputEnum condition)
             {
                 if (conditions.Exists(c => c.Enum == condition)) return;
-                conditions.Add(new InputCondition(condition));
+
+                switch (condition)
+                {
+                    case InputCondition.InputEnum.Move:
+                        conditions.Add(new MoveCondition(condition));
+                        break;
+                }
             }
 
             public void RevokeCondition(InputCondition.InputEnum condition) => conditions.RemoveAll(c => c.Enum == condition);
         }
 
-        public StateConditions StateCollection { get; set; }
+        public StateConditions StateCollection { get; set; } = new StateConditions();
 
-        public InputConditions InputCollection { get; set; }
+        public InputConditions InputCollection { get; set; } = new InputConditions();
         
         public PlayerEssentials Essentials { get; set; }
+
+        private bool TestBooleanCondition(StateCondition.StateEnum stateEnum, bool trueFalse) => trueFalse && Essentials.IsCrouching() || !trueFalse && !Essentials.IsCrouching();
+
+        private bool TestMoveCondition(MoveCondition condition)
+        {
+            if (condition.xAxis.include)
+            {
+                var isNonZero = condition.xAxis.isNonZero;
+
+                if ((isNonZero && Mathf.Abs(Essentials.RigidBody().linearVelocityX) == 0f) || (!isNonZero && Mathf.Abs(Essentials.RigidBody().linearVelocityX) > 0f))
+                {
+                    return false;
+                }
+
+                if (isNonZero)
+                {
+                    bool canExecute = true;
+
+                    switch (condition.xAxis.sign)
+                    {
+                        case MoveCondition.SignEnum.Positive:
+                            canExecute = Essentials.RigidBody().linearVelocityX > 0f;
+                            break;
+
+                        case MoveCondition.SignEnum.Negative:
+                            canExecute = Essentials.RigidBody().linearVelocityX < 0f;
+                            break;
+
+                        case MoveCondition.SignEnum.Either:
+                            canExecute = Mathf.Abs(Essentials.RigidBody().linearVelocityX) > 0f;
+                            break;
+                    }
+
+                    if (!canExecute) return false;
+                }
+            }
+
+            if (condition.yAxis.include)
+            {
+                var isNonZero = condition.yAxis.isNonZero;
+
+                if ((isNonZero && Mathf.Abs(Essentials.RigidBody().linearVelocityY) == 0f) || (!isNonZero && Mathf.Abs(Essentials.RigidBody().linearVelocityY) > 0f))
+                {
+                    return false;
+                }
+
+                if (isNonZero)
+                {
+                    bool canExecute = true;
+
+                    switch (condition.yAxis.sign)
+                    {
+                        case MoveCondition.SignEnum.Positive:
+                            canExecute = Essentials.RigidBody().linearVelocityY > 0f;
+                            break;
+
+                        case MoveCondition.SignEnum.Negative:
+                            canExecute = Essentials.RigidBody().linearVelocityY < 0f;
+                            break;
+
+                        case MoveCondition.SignEnum.Either:
+                            canExecute = Mathf.Abs(Essentials.RigidBody().linearVelocityY) > 0f;
+                            break;
+                    }
+
+                    if (!canExecute) return false;
+                }
+            }
+
+            return true;
+        }
 
         public bool CanExecute()
         {
             bool canExecute = true;
 
-            // foreach (var condition in StateConditions)
-            // {
+            foreach (var condition in StateCollection.Conditions)
+            {
+                if (!canExecute) break;
+                canExecute = TestBooleanCondition(condition.Enum, condition.boolean);
+            }
 
-            // }
+            foreach (var condition in InputCollection.Conditions)
+            {
+                if (!canExecute) break;
+
+                switch (condition.Enum)
+                {
+                    case InputCondition.InputEnum.Move:
+                        canExecute = TestMoveCondition((MoveCondition) condition);
+                        break;
+                }
+            }
 
             return canExecute;
         }

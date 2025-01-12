@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace Tests.States
 {
-    public class GrapState : State
+    public class GrabState : State
     {
         [Header("Configuration")]
         [Range(400f, 800f)]

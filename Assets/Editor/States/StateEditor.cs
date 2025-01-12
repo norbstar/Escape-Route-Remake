@@ -10,6 +10,7 @@ using Tests.States;
 public abstract class StateEditor : Editor
 {
     private State state;
+    private bool showExecutionRules;
 
     private void AddStateDropdown()
     {
@@ -39,7 +40,7 @@ public abstract class StateEditor : Editor
             var label = condition.Enum.ToString();
             EditorGUILayout.LabelField(label, EditorStyles.boldLabel, GUILayout.Width(122));
 
-            condition.trueFalse = EditorGUILayout.Toggle(condition.trueFalse);
+            condition.boolean = EditorGUILayout.Toggle(condition.boolean);
 
             GUILayout.FlexibleSpace();
             
@@ -71,11 +72,11 @@ public abstract class StateEditor : Editor
         EditorGUILayout.EndHorizontal();
     }
 
-    private void EmbedMoveConfiguration(State.InputCondition condition)
+    private void EmbedMoveConfiguration(State.MoveCondition condition)
     {
         if (condition.xAxis == null)
         {
-            condition.xAxis = new State.InputCondition.MoveAxisValue();
+            condition.xAxis = new State.MoveCondition.MoveAxisValue();
         }
 
         condition.xAxis.include = EditorGUILayout.BeginToggleGroup("X Axis", condition.xAxis.include);
@@ -86,7 +87,7 @@ public abstract class StateEditor : Editor
 
             if (condition.xAxis.isNonZero)
             {
-                condition.xAxis.sign = (State.InputCondition.SignEnum) EditorGUILayout.EnumPopup("Sign", condition.xAxis.sign, GUILayout.Width(225));
+                condition.xAxis.sign = (State.MoveCondition.SignEnum) EditorGUILayout.EnumPopup("Sign", condition.xAxis.sign, GUILayout.Width(225));
             }
         }
 
@@ -95,7 +96,7 @@ public abstract class StateEditor : Editor
 
         if (condition.yAxis == null)
         {
-            condition.yAxis = new State.InputCondition.MoveAxisValue();
+            condition.yAxis = new State.MoveCondition.MoveAxisValue();
         }
 
         condition.yAxis.include = EditorGUILayout.BeginToggleGroup("Y Axis", condition.yAxis.include);
@@ -106,7 +107,7 @@ public abstract class StateEditor : Editor
 
             if (condition.yAxis.isNonZero)
             {
-                condition.yAxis.sign = (State.InputCondition.SignEnum) EditorGUILayout.EnumPopup("Sign", condition.yAxis.sign, GUILayout.Width(225));
+                condition.yAxis.sign = (State.MoveCondition.SignEnum) EditorGUILayout.EnumPopup("Sign", condition.yAxis.sign, GUILayout.Width(225));
             }
         }
 
@@ -122,9 +123,11 @@ public abstract class StateEditor : Editor
             var label = condition.Enum.ToString();
             EditorGUILayout.LabelField(label, EditorStyles.boldLabel, GUILayout.Width(110));
 
-            if (condition.Enum == State.InputCondition.InputEnum.Move)
+            switch (condition.Enum)
             {
-                EmbedMoveConfiguration(condition);
+                case State.InputCondition.InputEnum.Move:
+                    EmbedMoveConfiguration((State.MoveCondition) condition);
+                    break;
             }
 
             EditorGUILayout.Space();
@@ -149,32 +152,41 @@ public abstract class StateEditor : Editor
         EditorGUI.DrawRect(rect, new Color(0.5f, 0.5f, 0.5f, 1f));
     }
 
+    private bool CanExecute() => state.Essentials != null ? state.CanExecute() : false;
+
     protected void RenderUI()
     {
         state = (State) target;
 
-        EditorGUILayout.LabelField("Conditionality", EditorStyles.boldLabel);
+        showExecutionRules = EditorGUILayout.Foldout(showExecutionRules, "Execution Rules");
+
+        if (!showExecutionRules) return;
 
         AddStateDropdown();
-
-        if (state.StateCollection.Conditions == null)
-        {
-            state.StateCollection.Conditions = new List<State.StateCondition>();
-        }
-
         AddStateConfiguration();
         
         EditorGUILayout.Space();
         AddLine();
         EditorGUILayout.Space();
-        AddInputDropdown();
 
-        if (state.InputCollection.Conditions == null)
-        {
-            state.InputCollection.Conditions = new List<State.InputCondition>();
-        }
-        
+        AddInputDropdown();
         AddInputConfiguration();
+
+        EditorGUILayout.Space();
+        AddLine();
+        EditorGUILayout.Space();
+
+        float originalValue = EditorGUIUtility.labelWidth;
+        EditorGUIUtility.labelWidth = 75;
+        // FontStyle originalFontStyle = EditorStyles.label.fontStyle;
+        // EditorStyles.label.fontStyle = FontStyle.Bold;
+        // EditorGUI.BeginDisabledGroup(true);
+        GUI.enabled = false;
+        EditorGUILayout.TextField("Execute", CanExecute().ToString(), GUILayout.Width(210));
+        // EditorGUI.EndDisabledGroup();
+        GUI.enabled = true;
+        // EditorStyles.label.fontStyle = originalFontStyle;
+        EditorGUIUtility.labelWidth = originalValue;
 
         EditorGUILayout.Space();
         AddLine();
