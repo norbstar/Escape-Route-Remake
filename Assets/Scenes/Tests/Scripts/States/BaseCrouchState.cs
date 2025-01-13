@@ -78,8 +78,10 @@ namespace Tests.States
         }
 
         // Update is called once per frame
-        protected virtual void Update()
+        public override void Update()
         {
+            base.Update();
+            
             if (spriteShapeModifier == null)
             {
                 spriteShapeModifier = Essentials.SpriteShapeModifier();

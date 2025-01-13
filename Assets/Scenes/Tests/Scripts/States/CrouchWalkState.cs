@@ -25,8 +25,10 @@ namespace Tests.States
         }
 
         // Update is called once per frame
-        void Update()
+        public override void Update()
         {
+            base.Update();
+            
             canExec = !(Essentials.IsContactable() && Essentials.IsHolding());
 
             if (canExec)

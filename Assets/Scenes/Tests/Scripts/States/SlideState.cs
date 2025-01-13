@@ -27,7 +27,7 @@ namespace Tests.States
         }
 
         // Update is called once per frame
-        protected override void Update()
+        public override void Update()
         {
             base.Update();
 

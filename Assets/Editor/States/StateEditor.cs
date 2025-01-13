@@ -142,7 +142,7 @@ public abstract class StateEditor : Editor
         }
     }
 
-    void AddLine(int height = 1)
+    private void AddLine(int height = 1)
     {
         var rect = EditorGUILayout.GetControlRect(false, height);
         rect.height = height;
@@ -150,12 +150,11 @@ public abstract class StateEditor : Editor
         EditorGUI.DrawRect(rect, new Color(0.5f, 0.5f, 0.5f, 1f));
     }
 
-    private bool CanExecute() => state.Essentials != null ? state.CanExecute() : false;
+    // private bool CanExecute() => state.Essentials != null ? state.TestConditions() : false;
 
     protected void RenderUI()
     {
         state = (State) target;
-
         showExecutionRules = EditorGUILayout.Foldout(showExecutionRules, "Execution Rules");
 
         if (!showExecutionRules) return;
@@ -180,7 +179,7 @@ public abstract class StateEditor : Editor
         // EditorStyles.label.fontStyle = FontStyle.Bold;
         // EditorGUI.BeginDisabledGroup(true);
         GUI.enabled = false;
-        EditorGUILayout.TextField("Execute", CanExecute().ToString(), GUILayout.Width(210));
+        EditorGUILayout.TextField("Execute", state.CanExecute.ToString(), GUILayout.Width(210));
         // EditorGUI.EndDisabledGroup();
         GUI.enabled = true;
         // EditorStyles.label.fontStyle = originalFontStyle;

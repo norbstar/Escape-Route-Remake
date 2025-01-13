@@ -41,8 +41,10 @@ namespace Tests.States
         }
 
         // Update is called once per frame
-        void Update()
+        public override void Update()
         {
+            base.Update();
+            
             canExec = Essentials.IsGrabbable() && Essentials.IsHolding();
             Essentials.ShowArrow(canExec);
 

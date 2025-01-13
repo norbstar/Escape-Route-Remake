@@ -146,13 +146,69 @@ namespace Tests.States
             public void RevokeCondition(PropertyCondition.InputEnum condition) => conditions.RemoveAll(c => c.Enum == condition);
         }
 
+        private bool canExecute;
+
+        public bool CanExecute => canExecute;
+
         public StateConditions StateCollection { get; set; } = new StateConditions();
 
         public PropertyConditions PropertyCollection { get; set; } = new PropertyConditions();
         
         public PlayerEssentials Essentials { get; set; }
 
-        private bool TestBooleanCondition(StateCondition.StateEnum stateEnum, bool trueFalse) => trueFalse && Essentials.IsCrouching() || !trueFalse && !Essentials.IsCrouching();
+        private bool TestBooleanCondition(StateCondition.StateEnum state, bool value)
+        {
+            bool result = false;
+
+            switch (state)
+            {
+                case StateCondition.StateEnum.IsCrouching:
+                    result = value && Essentials.IsCrouching() || !value && !Essentials.IsCrouching();
+                    break;
+
+                case StateCondition.StateEnum.IsGrabbable:
+                    result = value && Essentials.IsGrabbable() || !value && !Essentials.IsGrabbable();
+                    break;
+
+                case StateCondition.StateEnum.IsTraversable:
+                    result = value && Essentials.IsTraversable() || !value && !Essentials.IsTraversable();
+                    break;
+
+                case StateCondition.StateEnum.IsHolding:
+                    result = value && Essentials.IsHolding() || !value && !Essentials.IsHolding();
+                    break;
+
+                case StateCondition.StateEnum.IsDashing:
+                    result = value && Essentials.IsDashing() || !value && !Essentials.IsDashing();
+                    break;
+
+                case StateCondition.StateEnum.IsSliding:
+                    result = value && Essentials.IsSliding() || !value && !Essentials.IsSliding();
+                    break;
+
+                case StateCondition.StateEnum.IsInputSuspended:
+                    result = value && Essentials.IsInputSuspended() || !value && !Essentials.IsInputSuspended();
+                    break;
+
+                case StateCondition.StateEnum.IsBlockedTop:
+                    result = value && Essentials.IsBlockedTop() || !value && !Essentials.IsBlockedTop();
+                    break;
+
+                case StateCondition.StateEnum.IsBlockedRight:
+                    result = value && Essentials.IsBlockedRight() || !value && !Essentials.IsBlockedRight();
+                    break;
+
+                case StateCondition.StateEnum.IsGrounded:
+                    result = value && Essentials.IsGrounded() || !value && !Essentials.IsGrounded();
+                    break;
+
+                case StateCondition.StateEnum.IsBlockedLeft:
+                    result = value && Essentials.IsBlockedLeft() || !value && !Essentials.IsBlockedLeft();
+                    break;
+            }
+
+            return result;
+        }
 
         private bool TestMoveCondition(MoveCondition condition)
         {
@@ -222,31 +278,35 @@ namespace Tests.States
 
             return true;
         }
-
-        public bool CanExecute()
+        
+        public bool TestConditions()
         {
-            bool canExecute = true;
+            var canExecute = true;
 
             foreach (var condition in StateCollection.Conditions)
             {
-                if (!canExecute) break;
                 canExecute = TestBooleanCondition(condition.Enum, condition.boolean);
+                if (!canExecute) break;
             }
 
             foreach (var condition in PropertyCollection.Conditions)
             {
-                if (!canExecute) break;
-
                 switch (condition.Enum)
                 {
                     case PropertyCondition.InputEnum.Move:
                         canExecute = TestMoveCondition((MoveCondition) condition);
                         break;
                 }
+
+                if (!canExecute) break;
             }
 
+            this.canExecute = canExecute;
             return canExecute;
         }
+
+        // Update is called once per frame
+        public virtual void Update() => TestConditions();
 
         public virtual void OnBlockedTop() { }
 
