@@ -155,7 +155,7 @@ public abstract class StateEditor : Editor
     protected void RenderUI()
     {
         state = (State) target;
-        showExecutionRules = EditorGUILayout.Foldout(showExecutionRules, "Execution Rules");
+        showExecutionRules = EditorGUILayout.Foldout(showExecutionRules, "Validation Rules");
 
         if (!showExecutionRules) return;
 
@@ -179,9 +179,12 @@ public abstract class StateEditor : Editor
         // EditorStyles.label.fontStyle = FontStyle.Bold;
         // EditorGUI.BeginDisabledGroup(true);
         GUI.enabled = false;
+        var defaultColor = GUI.color;
+        GUI.color = state.CanExecute ? Color.green : Color.red;
         EditorGUILayout.TextField("Execute", state.CanExecute.ToString(), GUILayout.Width(210));
-        // EditorGUI.EndDisabledGroup();
+        GUI.color = defaultColor;
         GUI.enabled = true;
+        // EditorGUI.EndDisabledGroup();
         // EditorStyles.label.fontStyle = originalFontStyle;
         EditorGUIUtility.labelWidth = originalValue;
 

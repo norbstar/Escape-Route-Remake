@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Tests
 {
-    public class BaseEdgeModifier : MonoBehaviour
+    public class EdgeModifier : MonoBehaviour
     {
         protected class Coords
         {

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Tests
 {
-    [RequireComponent(typeof(BaseEdgeModifier))]
+    [RequireComponent(typeof(EdgeModifier))]
     public class EdgeTriggerHandler : MonoBehaviour
     {
         public delegate void HasContactWithEdge(EdgeTriggerHandler instance, Collider2D collider, Edge edge);
@@ -25,25 +25,25 @@ namespace Tests
 
         private Events events;
         private LayerMask layerMask;
-        private BaseEdgeModifier baseEdgeModifier;
+        private EdgeModifier edgeModifier;
         private OnTrigger2DHandler topEdgeHandler, rightEdgeHandler, bottomEdgeHandler, leftEdgeHandler;
         private EdgeCollider2D topEdgeCollider, rightEdgeCollider, bottomEdgeCollider, leftEdgeCollider;
 
         void Awake()
         {
             layerMask = LayerMask.GetMask("Player");
-            baseEdgeModifier = GetComponent<BaseEdgeModifier>();
+            edgeModifier = GetComponent<EdgeModifier>();
             
-            topEdgeCollider = baseEdgeModifier.TopEdgeCollider;
+            topEdgeCollider = edgeModifier.TopEdgeCollider;
             topEdgeHandler = topEdgeCollider.GetComponent<OnTrigger2DHandler>();
 
-            rightEdgeCollider = baseEdgeModifier.RightEdgeCollider;
+            rightEdgeCollider = edgeModifier.RightEdgeCollider;
             rightEdgeHandler = rightEdgeCollider.GetComponent<OnTrigger2DHandler>();
 
-            bottomEdgeCollider = baseEdgeModifier.BottomEdgeCollider;
+            bottomEdgeCollider = edgeModifier.BottomEdgeCollider;
             bottomEdgeHandler = bottomEdgeCollider.GetComponent<OnTrigger2DHandler>();
 
-            leftEdgeCollider = baseEdgeModifier.LeftEdgeCollider;
+            leftEdgeCollider = edgeModifier.LeftEdgeCollider;
             leftEdgeHandler = leftEdgeCollider.GetComponent<OnTrigger2DHandler>();
         }
 

@@ -9,33 +9,60 @@ public class StateReportEditor : Editor
 {
     private StateReport stateReport;
 
-    private void AddActiveList()
+    private void AddExecutingIndicators()
     {
-        EditorGUILayout.LabelField("Active States", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Executing", EditorStyles.boldLabel);
+
+        var defaultColor = GUI.color;
+        GUI.color = Color.green;
 
         foreach (var state in stateReport.States)
         {
             if (state.CanExecute)
             {
                 EditorGUILayout.BeginVertical("Box");
-                EditorGUILayout.LabelField(state.GetType().ToString());
+                EditorGUILayout.LabelField(state.GetType().Name);
                 EditorGUILayout.EndVertical();
             }
         }
+
+        GUI.color = defaultColor;
     }
 
-    private void AddInactiveList()
+    private void AddNonExecutingIndicators()
     {
-        EditorGUILayout.LabelField("Inactive States", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Non Executing", EditorStyles.boldLabel);
+
+        var defaultColor = GUI.color;
+        GUI.color = Color.red;
 
         foreach (var state in stateReport.States)
         {
             if (!state.CanExecute)
             {
                 EditorGUILayout.BeginVertical("Box");
-                EditorGUILayout.LabelField(state.GetType().ToString());
+                EditorGUILayout.LabelField(state.GetType().Name);
                 EditorGUILayout.EndVertical();
             }
+        }
+
+        GUI.color = defaultColor;
+    }
+
+    private void AddExecutionIndicators()
+    {
+        EditorGUILayout.LabelField("Execution States", EditorStyles.boldLabel);
+
+        foreach (var state in stateReport.States)
+        {
+            EditorGUILayout.BeginVertical("Box");
+            GUI.enabled = false;
+            var defaultColor = GUI.color;
+            GUI.color = state.CanExecute ? Color.green : Color.red;
+            EditorGUILayout.TextField(state.GetType().Name, state.CanExecute.ToString(), GUILayout.Width(210));
+            GUI.color = defaultColor;
+            GUI.enabled = true;
+            EditorGUILayout.EndVertical();
         }
     }
 
@@ -53,13 +80,14 @@ public class StateReportEditor : Editor
 
         if (stateReport.States == null) return;
 
-        AddActiveList();
+        // AddExecutingIndicators();
 
-        EditorGUILayout.Space();
-        AddLine();
-        EditorGUILayout.Space();
+        // EditorGUILayout.Space();
+        // AddLine();
+        // EditorGUILayout.Space();
 
-        AddInactiveList();
+        // AddNonExecutingIndicators();
+        AddExecutionIndicators();
     }
 }
 #endif

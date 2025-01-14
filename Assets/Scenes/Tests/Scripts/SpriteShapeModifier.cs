@@ -6,7 +6,7 @@ namespace Tests
     [RequireComponent(typeof(SpriteShapeController))]
     public class SpriteShapeModifier : MonoBehaviour
     {
-        [SerializeField] BaseEdgeModifier baseEdgeModifier;
+        [SerializeField] EdgeModifier edgeModifier;
 
         private SpriteShapeController spriteShapeController;
         private float topY;
@@ -23,7 +23,7 @@ namespace Tests
         {
             var position = GetSplinePosition(index);
             spriteShapeController.spline.SetPosition(index, new Vector3(position.x, value, position.z));
-            baseEdgeModifier.SetTopOffset(value - topY);
+            edgeModifier.SetTopOffset(value - topY);
         }
     }
 }
