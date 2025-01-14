@@ -276,15 +276,15 @@ namespace Tests
                 {
                     playerState = playerState.Set(PlayerStateEnum.Shifting);
                 }
+            }
 
-                if (rigidBody.linearVelocity.y > 0)
-                {
-                    playerState = playerState.Set(PlayerStateEnum.Jumping);
-                }
-                else if (rigidBody.linearVelocity.y < 0)
-                {
-                    playerState = playerState.Set(PlayerStateEnum.Falling);
-                }
+            if (rigidBody.linearVelocity.y > 0)
+            {
+                playerState = playerState.Set(PlayerStateEnum.Jumping);
+            }
+            else if (rigidBody.linearVelocity.y < 0)
+            {
+                playerState = playerState.Set(PlayerStateEnum.Falling);
             }
 
             if (isGrabbable && isHolding)
@@ -322,11 +322,11 @@ namespace Tests
             var diasableGravity = (isGrabbable || isTraversable) && isHolding;
             rigidBody.gravityScale = diasableGravity ? 0f : originalGravityScale;
 
-            isContactable = isGrabbable || isTraversable;
-
             UpdatePlayerUI();
             AscertStatus();
             AscertState();
+            
+            isContactable = isGrabbable || isTraversable;
         }
     }
 }

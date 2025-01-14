@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Tests.States
 {
-    public class CrouchSneakState : BaseCrouchState
+    public class CrouchSneakState : AbstractCrouchState
     {
         [Range(1f, 5f)]
         [SerializeField] float speed = 5f;

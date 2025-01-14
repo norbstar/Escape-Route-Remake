@@ -73,7 +73,7 @@ namespace Tests.States
         {
             public enum InputEnum
             {
-                Move
+                Velocity
             }
 
             public PropertyCondition(InputEnum @enum) => this.@enum = @enum;
@@ -84,7 +84,7 @@ namespace Tests.States
         }
 
         [Serializable]
-        public class MoveCondition : PropertyCondition
+        public class VelocityCondition : PropertyCondition
         {
             public enum SignEnum
             {
@@ -94,17 +94,17 @@ namespace Tests.States
             }
 
             [Serializable]
-            public class MoveAxisValue
+            public class AxisValue
             {
                 public bool include;
                 public bool isNonZero;
                 public SignEnum sign;
             }
             
-            public MoveCondition(InputEnum @enum) : base(@enum) { }
+            public VelocityCondition(InputEnum @enum) : base(@enum) { }
 
-            public MoveAxisValue xAxis;
-            public MoveAxisValue yAxis;
+            public AxisValue xAxis;
+            public AxisValue yAxis;
         }
 
         [Serializable]
@@ -137,8 +137,8 @@ namespace Tests.States
 
                 switch (condition)
                 {
-                    case PropertyCondition.InputEnum.Move:
-                        conditions.Add(new MoveCondition(condition));
+                    case PropertyCondition.InputEnum.Velocity:
+                        conditions.Add(new VelocityCondition(condition));
                         break;
                 }
             }
@@ -210,7 +210,7 @@ namespace Tests.States
             return result;
         }
 
-        private bool TestMoveCondition(MoveCondition condition)
+        private bool TestMoveCondition(VelocityCondition condition)
         {
             if (condition.xAxis.include)
             {
@@ -227,15 +227,15 @@ namespace Tests.States
 
                     switch (condition.xAxis.sign)
                     {
-                        case MoveCondition.SignEnum.Positive:
+                        case VelocityCondition.SignEnum.Positive:
                             canExecute = Essentials.RigidBody().linearVelocityX > 0f;
                             break;
 
-                        case MoveCondition.SignEnum.Negative:
+                        case VelocityCondition.SignEnum.Negative:
                             canExecute = Essentials.RigidBody().linearVelocityX < 0f;
                             break;
 
-                        case MoveCondition.SignEnum.Either:
+                        case VelocityCondition.SignEnum.Either:
                             canExecute = Mathf.Abs(Essentials.RigidBody().linearVelocityX) > 0f;
                             break;
                     }
@@ -259,15 +259,15 @@ namespace Tests.States
 
                     switch (condition.yAxis.sign)
                     {
-                        case MoveCondition.SignEnum.Positive:
+                        case VelocityCondition.SignEnum.Positive:
                             canExecute = Essentials.RigidBody().linearVelocityY > 0f;
                             break;
 
-                        case MoveCondition.SignEnum.Negative:
+                        case VelocityCondition.SignEnum.Negative:
                             canExecute = Essentials.RigidBody().linearVelocityY < 0f;
                             break;
 
-                        case MoveCondition.SignEnum.Either:
+                        case VelocityCondition.SignEnum.Either:
                             canExecute = Mathf.Abs(Essentials.RigidBody().linearVelocityY) > 0f;
                             break;
                     }
@@ -293,8 +293,8 @@ namespace Tests.States
             {
                 switch (condition.Enum)
                 {
-                    case PropertyCondition.InputEnum.Move:
-                        canExecute = TestMoveCondition((MoveCondition) condition);
+                    case PropertyCondition.InputEnum.Velocity:
+                        canExecute = TestMoveCondition((VelocityCondition) condition);
                         break;
                 }
 

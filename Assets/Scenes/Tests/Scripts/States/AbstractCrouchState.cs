@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tests.States
 {
-    public abstract class BaseCrouchState : State
+    public abstract class AbstractCrouchState : State
     {
         [Header("Configuration")]
         [SerializeField] float deformationSpeed = 12f;

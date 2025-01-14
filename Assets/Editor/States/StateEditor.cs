@@ -51,13 +51,13 @@ public abstract class StateEditor : Editor
         }
     }
 
-    private void AddInputDropdown()
+    private void AddPropertyDropdown()
     {
         var rect = EditorGUILayout.BeginHorizontal("Box");
 
         float originalValue = EditorGUIUtility.labelWidth;
         EditorGUIUtility.labelWidth = 70;
-        state.PropertyCollection.Enum = (State.PropertyCondition.InputEnum) EditorGUILayout.EnumPopup("Inputs", state.PropertyCollection.Enum, GUILayout.Width(210));
+        state.PropertyCollection.Enum = (State.PropertyCondition.InputEnum) EditorGUILayout.EnumPopup("Properties", state.PropertyCollection.Enum, GUILayout.Width(210));
         EditorGUIUtility.labelWidth = originalValue;
 
         GUILayout.FlexibleSpace();
@@ -70,11 +70,11 @@ public abstract class StateEditor : Editor
         EditorGUILayout.EndHorizontal();
     }
 
-    private void EmbedMoveConfiguration(State.MoveCondition condition)
+    private void EmbedVelocityConfiguration(State.VelocityCondition condition)
     {
         if (condition.xAxis == null)
         {
-            condition.xAxis = new State.MoveCondition.MoveAxisValue();
+            condition.xAxis = new State.VelocityCondition.AxisValue();
         }
 
         condition.xAxis.include = EditorGUILayout.BeginToggleGroup("X Axis", condition.xAxis.include);
@@ -85,7 +85,7 @@ public abstract class StateEditor : Editor
 
             if (condition.xAxis.isNonZero)
             {
-                condition.xAxis.sign = (State.MoveCondition.SignEnum) EditorGUILayout.EnumPopup("Sign", condition.xAxis.sign, GUILayout.Width(225));
+                condition.xAxis.sign = (State.VelocityCondition.SignEnum) EditorGUILayout.EnumPopup("Sign", condition.xAxis.sign, GUILayout.Width(225));
             }
         }
 
@@ -94,7 +94,7 @@ public abstract class StateEditor : Editor
 
         if (condition.yAxis == null)
         {
-            condition.yAxis = new State.MoveCondition.MoveAxisValue();
+            condition.yAxis = new State.VelocityCondition.AxisValue();
         }
 
         condition.yAxis.include = EditorGUILayout.BeginToggleGroup("Y Axis", condition.yAxis.include);
@@ -105,14 +105,14 @@ public abstract class StateEditor : Editor
 
             if (condition.yAxis.isNonZero)
             {
-                condition.yAxis.sign = (State.MoveCondition.SignEnum) EditorGUILayout.EnumPopup("Sign", condition.yAxis.sign, GUILayout.Width(225));
+                condition.yAxis.sign = (State.VelocityCondition.SignEnum) EditorGUILayout.EnumPopup("Sign", condition.yAxis.sign, GUILayout.Width(225));
             }
         }
 
         EditorGUILayout.EndToggleGroup();
     }
 
-    private void AddInputConfiguration()
+    private void AddPropertyConfiguration()
     {
         foreach (var condition in state.PropertyCollection.Conditions)
         {
@@ -123,8 +123,8 @@ public abstract class StateEditor : Editor
 
             switch (condition.Enum)
             {
-                case State.PropertyCondition.InputEnum.Move:
-                    EmbedMoveConfiguration((State.MoveCondition) condition);
+                case State.PropertyCondition.InputEnum.Velocity:
+                    EmbedVelocityConfiguration((State.VelocityCondition) condition);
                     break;
             }
 
@@ -166,8 +166,8 @@ public abstract class StateEditor : Editor
         AddLine();
         EditorGUILayout.Space();
 
-        AddInputDropdown();
-        AddInputConfiguration();
+        AddPropertyDropdown();
+        AddPropertyConfiguration();
 
         EditorGUILayout.Space();
         AddLine();
