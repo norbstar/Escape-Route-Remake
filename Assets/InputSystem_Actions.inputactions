@@ -181,6 +181,17 @@
                 },
                 {
                     "name": "",
+                    "id": "d0dd0a62-86d7-417b-8986-ce4cd3168b94",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "F4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "20a18ab9-f219-44ab-879d-749978e178a6",
                     "path": "<Keyboard>/f5",
                     "interactions": "",

@@ -8,30 +8,30 @@ using Tests.States;
 public abstract class StateEditor : Editor
 {
     private State state;
-    private bool showExecutionRules;
+    private bool showExclusionRules;
 
-    private void AddStateDropdown()
+    private void AddBinaryDropdown()
     {
         var rect = EditorGUILayout.BeginHorizontal("Box");
 
         float originalValue = EditorGUIUtility.labelWidth;
         EditorGUIUtility.labelWidth = 70;
-        state.StateCollection.Enum = (State.StateCondition.StateEnum) EditorGUILayout.EnumPopup("States", state.StateCollection.Enum, GUILayout.Width(210));
+        state.BinaryCollection.Enum = (State.BinaryCondition.BinaryEnum) EditorGUILayout.EnumPopup("Binaries", state.BinaryCollection.Enum, GUILayout.Width(210));
         EditorGUIUtility.labelWidth = originalValue;
 
         GUILayout.FlexibleSpace();
 
         if (GUILayout.Button("Add Condition", EditorStyles.miniButtonLeft, GUILayout.Width(95)))
         {
-            state.StateCollection.AddCondition(state.StateCollection.Enum);
+            state.BinaryCollection.AddCondition(state.BinaryCollection.Enum);
         }
 
         EditorGUILayout.EndHorizontal();
     }
 
-    private void AddStateConfiguration()
+    private void AddBinaryConfiguration()
     {
-        foreach (var condition in state.StateCollection.Conditions)
+        foreach (var condition in state.BinaryCollection.Conditions)
         {
             EditorGUILayout.BeginHorizontal("Box");
 
@@ -44,7 +44,7 @@ public abstract class StateEditor : Editor
             
             if (GUILayout.Button("Delete", EditorStyles.miniButtonLeft, GUILayout.Width(50)))
             {
-                state.StateCollection.RevokeCondition(condition.Enum);
+                state.BinaryCollection.RevokeCondition(condition.Enum);
             }
 
             EditorGUILayout.EndHorizontal();
@@ -57,7 +57,7 @@ public abstract class StateEditor : Editor
 
         float originalValue = EditorGUIUtility.labelWidth;
         EditorGUIUtility.labelWidth = 70;
-        state.PropertyCollection.Enum = (State.PropertyCondition.InputEnum) EditorGUILayout.EnumPopup("Properties", state.PropertyCollection.Enum, GUILayout.Width(210));
+        state.PropertyCollection.Enum = (State.PropertyCondition.PropertyEnum) EditorGUILayout.EnumPopup("Properties", state.PropertyCollection.Enum, GUILayout.Width(210));
         EditorGUIUtility.labelWidth = originalValue;
 
         GUILayout.FlexibleSpace();
@@ -123,7 +123,7 @@ public abstract class StateEditor : Editor
 
             switch (condition.Enum)
             {
-                case State.PropertyCondition.InputEnum.Velocity:
+                case State.PropertyCondition.PropertyEnum.Velocity:
                     EmbedVelocityConfiguration((State.VelocityCondition) condition);
                     break;
             }
@@ -155,12 +155,17 @@ public abstract class StateEditor : Editor
     protected void RenderUI()
     {
         state = (State) target;
-        showExecutionRules = EditorGUILayout.Foldout(showExecutionRules, "Validation Rules");
+        
+        EditorGUILayout.Space();
+        
+        showExclusionRules = EditorGUILayout.Foldout(showExclusionRules, "Exclusion Rules");
 
-        if (!showExecutionRules) return;
+        if (!showExclusionRules) return;
 
-        AddStateDropdown();
-        AddStateConfiguration();
+        EditorGUILayout.Space();
+
+        AddBinaryDropdown();
+        AddBinaryConfiguration();
         
         EditorGUILayout.Space();
         AddLine();
@@ -181,16 +186,13 @@ public abstract class StateEditor : Editor
         GUI.enabled = false;
         var defaultColor = GUI.color;
         GUI.color = state.CanExecute ? Color.green : Color.red;
-        EditorGUILayout.TextField("Execute", state.CanExecute.ToString(), GUILayout.Width(210));
+        var status = state.CanExecute ? "Active" : "Inactive";
+        EditorGUILayout.TextField("Status", status, GUILayout.Width(210));
         GUI.color = defaultColor;
         GUI.enabled = true;
         // EditorGUI.EndDisabledGroup();
         // EditorStyles.label.fontStyle = originalFontStyle;
         EditorGUIUtility.labelWidth = originalValue;
-
-        EditorGUILayout.Space();
-        AddLine();
-        EditorGUILayout.Space();
     }
 }
 #endif

@@ -8,8 +8,8 @@ public class GrabStateEditor : StateEditor
 {
     public override void OnInspectorGUI()
     {
-        RenderUI();
         base.OnInspectorGUI();
+        RenderUI();
     }
 }
 #endif

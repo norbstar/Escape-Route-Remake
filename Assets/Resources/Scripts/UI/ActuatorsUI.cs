@@ -107,7 +107,7 @@ public class ActuatorsUI : MonoBehaviour
     // Update is called once per frame
     void Update() => UpdateUI();
 
-    public void SetActive(bool active) => viewUI.gameObject.SetActive(active);
+    public bool Active { get => viewUI.gameObject.activeSelf; set => viewUI.gameObject.SetActive(value); }
 
-    public void FlipView() => SetActive(!viewUI.gameObject.activeSelf);
+    public void FlipView() => Active = !viewUI.gameObject.activeSelf;
 }

@@ -26,7 +26,7 @@ namespace Tests.States
             {
                 moveValue = inputActions.Player.Move.ReadValue<Vector2>();
 
-                if (Mathf.Abs(moveValue.x) != 0f)
+                if (Mathf.Abs(moveValue.x) != AbstractedStatePlayer.MIN_REGISTERED_VALUE)
                 {
                     execShift = true;
                 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tests.States
 {
-    public class SlideState : AbstractCrouchState
+    public class SlideState : CrouchState
     {
         [Range(1f, 10f)]
         [SerializeField] float speed = 5f;

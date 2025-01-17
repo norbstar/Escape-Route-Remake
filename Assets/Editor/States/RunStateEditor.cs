@@ -8,8 +8,8 @@ public class RunStateEditor : StateEditor
 {
     public override void OnInspectorGUI()
     {
-        RenderUI();
         base.OnInspectorGUI();
+        RenderUI();
     }
 }
 #endif

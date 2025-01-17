@@ -18,6 +18,8 @@ namespace Tests
         [Header("Player UI")]
         [SerializeField] Transform arrowBaseUI;
 
+        public static float MIN_REGISTERED_VALUE = 0.01f;
+
         private Rigidbody2D rigidBody;
         private SpriteShapeModifier spriteShapeModifier;
         private AudioSource audioSource;
@@ -246,7 +248,7 @@ namespace Tests
 
             if (isGrounded)
             {
-                if (Mathf.Abs(rigidBody.linearVelocity.x) != 0)
+                if (Mathf.Abs(rigidBody.linearVelocity.x) != MIN_REGISTERED_VALUE)
                 {
                     if (isDashing)
                     {
@@ -272,17 +274,17 @@ namespace Tests
             }
             else
             {
-                if (Mathf.Abs(rigidBody.linearVelocity.x) != 0)
+                if (Mathf.Abs(rigidBody.linearVelocity.x) != MIN_REGISTERED_VALUE)
                 {
                     playerState = playerState.Set(PlayerStateEnum.Shifting);
                 }
             }
 
-            if (rigidBody.linearVelocity.y > 0)
+            if (rigidBody.linearVelocity.y > MIN_REGISTERED_VALUE)
             {
                 playerState = playerState.Set(PlayerStateEnum.Jumping);
             }
-            else if (rigidBody.linearVelocity.y < 0)
+            else if (rigidBody.linearVelocity.y < -MIN_REGISTERED_VALUE)
             {
                 playerState = playerState.Set(PlayerStateEnum.Falling);
             }

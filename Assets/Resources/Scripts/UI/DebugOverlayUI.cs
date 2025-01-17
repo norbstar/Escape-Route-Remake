@@ -23,7 +23,7 @@ public class DebugOverlayUI : MonoBehaviour
         inputActions.Game.F2.performed += OnF2Intent;
         inputActions.Game.F3.performed += OnF3Intent;
         inputActions.Game.F4.performed += OnF4Intent;
-        inputActions.Game.F5.performed += OnF5Intent;
+        // inputActions.Game.F5.performed += OnF5Intent;
     }
 
     void OnDisable() => inputActions.Disable();
@@ -46,27 +46,73 @@ public class DebugOverlayUI : MonoBehaviour
         scene.Analytics.FlipView();
     }
 
-    private void OnF4Intent(InputAction.CallbackContext context)
+    private void ShowAll()
     {
         if (scene.Attributes == null) return;
         scene.Attributes.SetView(AttributesUI.ViewEnum.All);
 
         if (scene.Actuators == null) return;
-        scene.Actuators.SetActive(true);
+        scene.Actuators.Active = true;
 
         if (scene.Analytics == null) return;
-        scene.Analytics.SetActive(true);
+        scene.Analytics.Active = true;
     }
 
-    private void OnF5Intent(InputAction.CallbackContext context)
+    private bool AnyActive()
+    {
+        bool active = false;
+
+        if (scene.Attributes != null)
+        {
+            active = scene.Attributes.Active;
+        }
+
+        if (!active)
+        {
+            if (scene.Actuators != null)
+            {
+                active = scene.Actuators.Active;
+            }
+        }
+
+        if (!active)
+        {
+            if (scene.Analytics != null)
+            {
+                active = scene.Analytics.Active;
+            }
+        }
+
+        return active;
+    }
+
+    // private void OnF4Intent(InputAction.CallbackContext context) => ShowAll();
+
+    private void OnF4Intent(InputAction.CallbackContext context)
+    {
+        var anyActive = AnyActive();
+
+        if (anyActive)
+        {
+            HideAll();
+        }
+        else
+        {
+            ShowAll();
+        }
+    }
+
+    private void HideAll()
     {
         if (scene.Attributes == null) return;
         scene.Attributes.SetView(AttributesUI.ViewEnum.None);
 
         if (scene.Actuators == null) return;
-        scene.Actuators.SetActive(false);
+        scene.Actuators.Active = false;
 
         if (scene.Analytics == null) return;
-        scene.Analytics.SetActive(false);
+        scene.Analytics.Active = false;
     }
+
+    // private void OnF5Intent(InputAction.CallbackContext context) => HideAll();
 }

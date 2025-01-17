@@ -8,8 +8,8 @@ public class FallStateEditor : StateEditor
 {
     public override void OnInspectorGUI()
     {
-        RenderUI();
         base.OnInspectorGUI();
+        RenderUI();
     }
 }
 #endif

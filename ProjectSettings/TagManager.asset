@@ -53,11 +53,14 @@ TagManager:
   - name: Player Layer
     uniqueID: 69002591
     locked: 0
-  - name: Mid Foregroud Layer
+  - name: Non Shadow Player Layer
     uniqueID: 1016510463
     locked: 0
-  - name: Foreground Layer
+  - name: Mid Foregroud Layer
     uniqueID: 2118473393
+    locked: 0
+  - name: Foregroud Layer
+    uniqueID: 3224076535
     locked: 0
   m_RenderingLayers:
   - Default

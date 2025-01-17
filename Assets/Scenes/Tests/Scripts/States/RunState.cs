@@ -33,7 +33,7 @@ namespace Tests.States
             // }
 
             moveValue = inputActions.Player.Move.ReadValue<Vector2>();
-            execRun = Essentials.IsGrounded() && !Essentials.IsCrouching() && Mathf.Abs(moveValue.x) != 0f; 
+            execRun = Essentials.IsGrounded() && !Essentials.IsCrouching() && Mathf.Abs(moveValue.x) != AbstractedStatePlayer.MIN_REGISTERED_VALUE; 
         }
 
         // Update is called once per frame

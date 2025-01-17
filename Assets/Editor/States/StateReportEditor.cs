@@ -49,9 +49,9 @@ public class StateReportEditor : Editor
         GUI.color = defaultColor;
     }
 
-    private void AddExecutionIndicators()
+    private void AddStatusReport()
     {
-        EditorGUILayout.LabelField("Execution States", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Status Overview", EditorStyles.boldLabel);
 
         foreach (var state in stateReport.States)
         {
@@ -59,7 +59,8 @@ public class StateReportEditor : Editor
             GUI.enabled = false;
             var defaultColor = GUI.color;
             GUI.color = state.CanExecute ? Color.green : Color.red;
-            EditorGUILayout.TextField(state.GetType().Name, state.CanExecute.ToString(), GUILayout.Width(210));
+            var status = state.CanExecute ? "Active" : "Inactive";
+            EditorGUILayout.TextField(state.GetType().Name, status, GUILayout.Width(210));
             GUI.color = defaultColor;
             GUI.enabled = true;
             EditorGUILayout.EndVertical();
@@ -87,7 +88,7 @@ public class StateReportEditor : Editor
         // EditorGUILayout.Space();
 
         // AddNonExecutingIndicators();
-        AddExecutionIndicators();
+        AddStatusReport();
     }
 }
 #endif

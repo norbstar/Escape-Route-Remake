@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Tests.States
 {
-    public class CrouchSneakState : AbstractCrouchState
+    public class SneakState : CrouchState
     {
         [Range(1f, 5f)]
         [SerializeField] float speed = 5f;
@@ -23,7 +23,7 @@ namespace Tests.States
             execCrouch = Essentials.IsGrounded() && crouchValue;
 
             moveValue = inputActions.Player.Move.ReadValue<Vector2>();
-            execMove = Essentials.IsGrounded() && Essentials.IsCrouching() && Mathf.Abs(moveValue.x) != 0f;
+            execMove = Essentials.IsGrounded() && Essentials.IsCrouching() && Mathf.Abs(moveValue.x) != AbstractedStatePlayer.MIN_REGISTERED_VALUE;
         }
 
         // Update is called once per frame

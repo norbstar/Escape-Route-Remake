@@ -9,9 +9,9 @@ namespace Tests.States
     public abstract class State : MonoBehaviour
     {
         [Serializable]
-        public class StateCondition
+        public class BinaryCondition
         {
-            public enum StateEnum
+            public enum BinaryEnum
             {
                 IsCrouching,
                 IsGrabbable,
@@ -26,31 +26,31 @@ namespace Tests.States
                 IsBlockedLeft
             }
 
-            public StateCondition(StateEnum @enum) => this.@enum = @enum;
+            public BinaryCondition(BinaryEnum @enum) => this.@enum = @enum;
 
-            private StateEnum @enum;
+            private BinaryEnum @enum;
             
-            public StateEnum Enum { get => @enum; set => @enum = value; }
+            public BinaryEnum Enum { get => @enum; set => @enum = value; }
 
             public bool boolean;
         }
 
         [Serializable]
-        public class StateConditions
+        public class BinaryConditions
         {
-            private List<StateCondition> conditions;
+            private List<BinaryCondition> conditions;
 
-            private StateCondition.StateEnum @enum;
+            private BinaryCondition.BinaryEnum @enum;
             
-            public StateCondition.StateEnum Enum { get => @enum; set => @enum = value; }
+            public BinaryCondition.BinaryEnum Enum { get => @enum; set => @enum = value; }
 
-            public List<StateCondition> Conditions
+            public List<BinaryCondition> Conditions
             {
                 get
                 {
                     if (conditions == null)
                     {
-                        conditions = new List<StateCondition>();
+                        conditions = new List<BinaryCondition>();
                     }
 
                     return conditions.ToList();
@@ -59,28 +59,28 @@ namespace Tests.States
                 set => conditions = value;
             }
 
-            public void AddCondition(StateCondition.StateEnum condition)
+            public void AddCondition(BinaryCondition.BinaryEnum condition)
             {
                 if (conditions.Exists(c => c.Enum == condition)) return;
-                conditions.Add(new StateCondition(condition));
+                conditions.Add(new BinaryCondition(condition));
             }
 
-            public void RevokeCondition(StateCondition.StateEnum condition) => conditions.RemoveAll(c => c.Enum == condition);
+            public void RevokeCondition(BinaryCondition.BinaryEnum condition) => conditions.RemoveAll(c => c.Enum == condition);
         }
 
         [Serializable]
         public abstract class PropertyCondition
         {
-            public enum InputEnum
+            public enum PropertyEnum
             {
                 Velocity
             }
 
-            public PropertyCondition(InputEnum @enum) => this.@enum = @enum;
+            public PropertyCondition(PropertyEnum @enum) => this.@enum = @enum;
 
-            private InputEnum @enum;
+            private PropertyEnum @enum;
             
-            public InputEnum Enum { get => @enum; set => @enum = value; }
+            public PropertyEnum Enum { get => @enum; set => @enum = value; }
         }
 
         [Serializable]
@@ -101,7 +101,7 @@ namespace Tests.States
                 public SignEnum sign;
             }
             
-            public VelocityCondition(InputEnum @enum) : base(@enum) { }
+            public VelocityCondition(PropertyEnum @enum) : base(@enum) { }
 
             public AxisValue xAxis;
             public AxisValue yAxis;
@@ -112,9 +112,9 @@ namespace Tests.States
         {
             private List<PropertyCondition> conditions;
 
-            public PropertyCondition.InputEnum @enum;
+            public PropertyCondition.PropertyEnum @enum;
             
-            public PropertyCondition.InputEnum Enum { get => @enum; set => @enum = value; }
+            public PropertyCondition.PropertyEnum Enum { get => @enum; set => @enum = value; }
 
             public List<PropertyCondition> Conditions
             {
@@ -131,78 +131,78 @@ namespace Tests.States
                 set => conditions = value;
             }
 
-            public void AddCondition(PropertyCondition.InputEnum condition)
+            public void AddCondition(PropertyCondition.PropertyEnum condition)
             {
                 if (conditions.Exists(c => c.Enum == condition)) return;
 
                 switch (condition)
                 {
-                    case PropertyCondition.InputEnum.Velocity:
+                    case PropertyCondition.PropertyEnum.Velocity:
                         conditions.Add(new VelocityCondition(condition));
                         break;
                 }
             }
 
-            public void RevokeCondition(PropertyCondition.InputEnum condition) => conditions.RemoveAll(c => c.Enum == condition);
+            public void RevokeCondition(PropertyCondition.PropertyEnum condition) => conditions.RemoveAll(c => c.Enum == condition);
         }
 
         private bool canExecute;
 
         public bool CanExecute => canExecute;
 
-        public StateConditions StateCollection { get; set; } = new StateConditions();
+        public BinaryConditions BinaryCollection { get; set; } = new BinaryConditions();
 
         public PropertyConditions PropertyCollection { get; set; } = new PropertyConditions();
         
         public PlayerEssentials Essentials { get; set; }
 
-        private bool TestBooleanCondition(StateCondition.StateEnum state, bool value)
+        private bool TestBinaryCondition(BinaryCondition.BinaryEnum state, bool value)
         {
             bool result = false;
 
             switch (state)
             {
-                case StateCondition.StateEnum.IsCrouching:
+                case BinaryCondition.BinaryEnum.IsCrouching:
                     result = value && Essentials.IsCrouching() || !value && !Essentials.IsCrouching();
                     break;
 
-                case StateCondition.StateEnum.IsGrabbable:
+                case BinaryCondition.BinaryEnum.IsGrabbable:
                     result = value && Essentials.IsGrabbable() || !value && !Essentials.IsGrabbable();
                     break;
 
-                case StateCondition.StateEnum.IsTraversable:
+                case BinaryCondition.BinaryEnum.IsTraversable:
                     result = value && Essentials.IsTraversable() || !value && !Essentials.IsTraversable();
                     break;
 
-                case StateCondition.StateEnum.IsHolding:
+                case BinaryCondition.BinaryEnum.IsHolding:
                     result = value && Essentials.IsHolding() || !value && !Essentials.IsHolding();
                     break;
 
-                case StateCondition.StateEnum.IsDashing:
+                case BinaryCondition.BinaryEnum.IsDashing:
                     result = value && Essentials.IsDashing() || !value && !Essentials.IsDashing();
                     break;
 
-                case StateCondition.StateEnum.IsSliding:
+                case BinaryCondition.BinaryEnum.IsSliding:
                     result = value && Essentials.IsSliding() || !value && !Essentials.IsSliding();
                     break;
 
-                case StateCondition.StateEnum.IsInputSuspended:
+                case BinaryCondition.BinaryEnum.IsInputSuspended:
                     result = value && Essentials.IsInputSuspended() || !value && !Essentials.IsInputSuspended();
                     break;
 
-                case StateCondition.StateEnum.IsBlockedTop:
+                case BinaryCondition.BinaryEnum.IsBlockedTop:
                     result = value && Essentials.IsBlockedTop() || !value && !Essentials.IsBlockedTop();
                     break;
 
-                case StateCondition.StateEnum.IsBlockedRight:
+                case BinaryCondition.BinaryEnum.IsBlockedRight:
                     result = value && Essentials.IsBlockedRight() || !value && !Essentials.IsBlockedRight();
                     break;
 
-                case StateCondition.StateEnum.IsGrounded:
+                case BinaryCondition.BinaryEnum.IsGrounded:
                     result = value && Essentials.IsGrounded() || !value && !Essentials.IsGrounded();
                     break;
 
-                case StateCondition.StateEnum.IsBlockedLeft:
+                case BinaryCondition.BinaryEnum.IsBlockedLeft:
                     result = value && Essentials.IsBlockedLeft() || !value && !Essentials.IsBlockedLeft();
                     break;
             }
@@ -283,9 +283,9 @@ namespace Tests.States
         {
             var canExecute = true;
 
-            foreach (var condition in StateCollection.Conditions)
+            foreach (var condition in BinaryCollection.Conditions)
             {
-                canExecute = TestBooleanCondition(condition.Enum, condition.boolean);
+                canExecute = TestBinaryCondition(condition.Enum, condition.boolean);
                 if (!canExecute) break;
             }
 
@@ -293,7 +293,7 @@ namespace Tests.States
             {
                 switch (condition.Enum)
                 {
-                    case PropertyCondition.InputEnum.Velocity:
+                    case PropertyCondition.PropertyEnum.Velocity:
                         canExecute = TestMoveCondition((VelocityCondition) condition);
                         break;
                 }

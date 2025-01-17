@@ -8,8 +8,8 @@ public class JumpStateEditor : StateEditor
 {
     public override void OnInspectorGUI()
     {
-        RenderUI();
         base.OnInspectorGUI();
+        RenderUI();
     }
 }
 #endif

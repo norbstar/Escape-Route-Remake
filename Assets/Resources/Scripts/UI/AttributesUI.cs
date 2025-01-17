@@ -21,6 +21,7 @@ public class AttributesUI : MonoBehaviour
     [SerializeField] AttributeUI isTraversableUI;
     [SerializeField] AttributeUI isCrouchingUI;
     [SerializeField] AttributeUI isGravityEnabledUI;
+    [SerializeField] AttributeUI positionUI;
     [SerializeField] AttributeUI moveBearingUI;
     [SerializeField] AttributeUI moveAngleUI;
     [SerializeField] AttributeUI lookBearingUI;
@@ -125,6 +126,12 @@ public class AttributesUI : MonoBehaviour
             isGravityEnabledUI.Color = isGravityEnabled ? Color.white : Color.grey;
         }
 
+        if (positionUI != null)
+        {
+            var position = essentials.Transform().position;
+            positionUI.Value = $"[{position.x.ToString("0.00")}, {position.y.ToString("0.00")}]";
+        }
+
         var moveValue = inputActions.Player.Move.ReadValue<Vector2>();
 
         if (moveBearingUI != null)
@@ -176,6 +183,8 @@ public class AttributesUI : MonoBehaviour
     // Update is called once per frame
     void Update() => UpdateUI();
 
+    public bool Active { get => viewUI.gameObject.activeSelf; set => viewUI.gameObject.SetActive(value); }
+
     public void SetView(ViewEnum view)
     {
         switch (view)
@@ -201,7 +210,7 @@ public class AttributesUI : MonoBehaviour
                 break;
         }
 
-        viewUI.gameObject.SetActive(boolAttributesUI.gameObject.activeSelf || numericalAttributesUI.gameObject.activeSelf);
+        Active = boolAttributesUI.gameObject.activeSelf || numericalAttributesUI.gameObject.activeSelf;
         
         this.view = view;
     }

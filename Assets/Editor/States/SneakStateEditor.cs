@@ -3,13 +3,13 @@ using Tests.States;
 
 using UnityEditor;
 
-[CustomEditor(typeof(CrouchSneakState))]
-public class CrouchSneakStateEditor : StateEditor
+[CustomEditor(typeof(SneakState))]
+public class SneakStateEditor : StateEditor
 {
     public override void OnInspectorGUI()
     {
-        RenderUI();
         base.OnInspectorGUI();
+        RenderUI();
     }
 }
 #endif
