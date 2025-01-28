@@ -25,7 +25,7 @@ public class ShadowCaster2DCreator : MonoBehaviour
 		DestroyOldShadowCasters();
 		tilemapCollider = GetComponent<CompositeCollider2D>();
 
-        Debug.Log($"Path Count: {tilemapCollider.pathCount}");
+        // Debug.Log($"Path Count: {tilemapCollider.pathCount}");
 
 		for (int i = 0; i < tilemapCollider.pathCount; i++)
 		{

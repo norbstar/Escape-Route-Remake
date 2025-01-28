@@ -54,6 +54,7 @@ namespace Tests
         private AudioSource audioSource;
         private ModeEnum mode, lastMode;
         private RotationEnum rotation;
+        private float forwardAngle;
         private int layerMask;
 
         void Awake()
@@ -61,8 +62,9 @@ namespace Tests
             spriteRenderer = lightBase.GetComponent<SpriteRenderer>();
             audioSource = GetComponent<AudioSource>();
             mode = lastMode = ModeEnum.Sweep;
-            layerMask = LayerMask.GetMask("Player");
             rotation = startRotation;
+            forwardAngle = light.transform.eulerAngles.z;
+            layerMask = LayerMask.GetMask("Player");
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -117,7 +119,7 @@ namespace Tests
                 {
                     light.transform.Rotate(new Vector3(0f, 0f, -1f), sweepSpeed * Time.deltaTime);
 
-                    if (light.transform.eulerAngles.z < 180f - rightSweepAngle)
+                    if (light.transform.eulerAngles.z < forwardAngle - rightSweepAngle)
                     {
                         rotation = RotationEnum.AntiClockwise;
                     }
@@ -126,7 +128,7 @@ namespace Tests
                 {
                     light.transform.Rotate(new Vector3(0f, 0f, 1f), sweepSpeed * Time.deltaTime);
 
-                    if (light.transform.eulerAngles.z > 180f + leftSweepAngle)
+                    if (light.transform.eulerAngles.z > forwardAngle + leftSweepAngle)
                     {
                         rotation = RotationEnum.Clockwise;
                     }

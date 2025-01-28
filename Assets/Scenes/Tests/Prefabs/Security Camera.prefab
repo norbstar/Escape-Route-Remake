@@ -297,7 +297,6 @@ MonoBehaviour:
   maxRange: 7.5
   sweepColor: {r: 1, g: 1, b: 1, a: 1}
   trackingColor: {r: 1, g: 0, b: 0, a: 1}
-  searchColor: {r: 1, g: 0.65932864, b: 0.015686274, a: 1}
   angle: 0
   withinCone: 0
   withinRange: 0
