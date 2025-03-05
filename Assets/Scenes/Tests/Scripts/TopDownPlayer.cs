@@ -12,7 +12,7 @@ namespace Tests
         [SerializeField] float speed = 10f;
         [Range(1f, 10f)]
         [SerializeField] float cameraTransitionSensitivity = 1f;
-        // [SerializeField] bool applyDynamicPOV;
+        [SerializeField] bool enableDynamicCamera;
 
         // private new Camera camera;
         private CinemachineVirtualCamera virtualCamera;
@@ -67,7 +67,7 @@ namespace Tests
         // Update is called once per frame
         // void Update()
         // {
-        //     if (!applyDynamicPOV) return;
+        //     if (!enableDynamicCamera) return;
 
         //     if (lastLinearVelocity != null)
         //     {
@@ -87,10 +87,12 @@ namespace Tests
         // Update is called once per frame
         void Update()
         {
-            // if (!applyDynamicPOV) return;
-            
             moveValue = inputActions.Player.Move.ReadValue<Vector2>();
-            framingTransposer.m_CameraDistance = defaultCameraDistance + moveValue.magnitude * cameraTransitionSensitivity;
+
+            if (enableDynamicCamera)
+            {
+                framingTransposer.m_CameraDistance = defaultCameraDistance + moveValue.magnitude * cameraTransitionSensitivity;
+            }
         }
 
         void FixedUpdate() => rigidBody.linearVelocity = moveValue * speed;

@@ -20,10 +20,16 @@ public class OnTrigger2DHandler : MonoBehaviour
 
     public void Awake() => collider = GetComponent<Collider2D>();
 
-    public void Register(Events events, LayerMask layerMask)
+    public void Subscribe(Events events, LayerMask layerMask)
     {
         this.events = events;
         this.layerMask = layerMask;
+    }
+
+    public void Unsubscribe()
+    {
+        events = null;
+        layerMask = new LayerMask();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

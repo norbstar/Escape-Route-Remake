@@ -50,25 +50,25 @@ namespace Tests
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            topEdgeHandler.Register(new OnTrigger2DHandler.Events
+            topEdgeHandler.Subscribe(new OnTrigger2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge
             }, layerMask);
 
-            rightEdgeHandler.Register(new OnTrigger2DHandler.Events
+            rightEdgeHandler.Subscribe(new OnTrigger2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge
             }, layerMask);
 
-            bottomEdgeHandler.Register(new OnTrigger2DHandler.Events
+            bottomEdgeHandler.Subscribe(new OnTrigger2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge
             }, layerMask);
 
-            leftEdgeHandler.Register(new OnTrigger2DHandler.Events
+            leftEdgeHandler.Subscribe(new OnTrigger2DHandler.Events
             {
                 Gained = OnContactWithEdge,
                 Lost = OnLostContactWithEdge

@@ -178,6 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  cameraTransitionSensitivity: 5
 --- !u!114 &3566943555131608822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,12 +279,12 @@ MonoBehaviour:
   m_ComponentVersion: 2
   m_LightType: 3
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.25
+  m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2.5
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000c74f46d76f4693ad5fe51c04ffb7963cb156457ef7802bc0
+  m_ApplyToSortingLayers: c74f46d75fe51c04
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0

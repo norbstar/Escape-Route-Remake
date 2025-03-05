@@ -108,7 +108,7 @@ namespace Tests
             inputActions.Player.JumpRelease.performed += OnJumpReleaseIntent;
             inputActions.Player.Dash.performed += OnDashIntent;
 
-            groundTrigger.Register(new OnTrigger2DHandler.Events
+            groundTrigger.Subscribe(new OnTrigger2DHandler.Events
             {
                 Gained = OnGround,
                 Lost = OffGround

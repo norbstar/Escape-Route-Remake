@@ -9,8 +9,12 @@ namespace Tests
     [RequireComponent(typeof(SpriteShapeController))]
     [RequireComponent(typeof(EdgeCollider2D))]
     [RequireComponent(typeof(AudioSource))]
-    public abstract class BasePlayer : MonoBehaviour, PlayerEssentials
+    public abstract class BasePlayer : SingletonMonoBehaviour<BasePlayer>, PlayerEssentials
     {
+        public virtual void Activate() { }
+
+        public virtual void Deactivate() { }
+
         public abstract Transform Transform();
 
         public abstract Rigidbody2D RigidBody();

@@ -42,17 +42,7 @@ public class AttributesUI : MonoBehaviour
     private PlayerEssentials essentials;
     private ViewEnum view;
 
-    void Awake()
-    {
-        inputActions = new InputSystem_Actions();
-        
-        var basePlayer = FindFirstObjectByType<BasePlayer>();
-
-        if (basePlayer != null)
-        {
-            essentials = basePlayer;
-        }
-    }
+    void Awake() => inputActions = new InputSystem_Actions();
 
     void OnEnable() => inputActions.Enable();
 
@@ -63,6 +53,18 @@ public class AttributesUI : MonoBehaviour
 
     private void UpdateUI()
     {
+        if (essentials == null)
+        {
+            var basePlayer = FindFirstObjectByType<BasePlayer>();
+
+            if (basePlayer != null)
+            {
+                essentials = basePlayer;
+            }
+        }
+
+        if (essentials == null) return;
+
         if (isBlockedTopUI != null)
         {
             var isBlockedTop = essentials.IsBlockedTop();

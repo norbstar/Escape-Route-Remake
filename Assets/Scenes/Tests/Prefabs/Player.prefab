@@ -1098,6 +1098,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contactMap: {fileID: 6543963185860037140}
   edgeTriggerHandler: {fileID: 1564858219368971033}
+  spotLight: {fileID: 4842975783025376491}
   arrowBaseUI: {fileID: 254104720836281314}
 --- !u!1 &3954563937439435231
 GameObject:

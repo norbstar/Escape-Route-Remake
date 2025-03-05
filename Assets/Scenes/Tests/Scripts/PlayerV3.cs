@@ -154,25 +154,25 @@ namespace Tests
             inputActions.Game.F2.performed += OnF2Intent;
             inputActions.Game.F3.performed += OnF3Intent;
 
-            topEdgeTrigger.Register(new OnTrigger2DHandler.Events
+            topEdgeTrigger.Subscribe(new OnTrigger2DHandler.Events
             {
                 Gained = OnGainedContactWithEdge,
                 Lost = OnLostContactWithEdge
             }, layerMask);
 
-            rightEdgeTrigger.Register(new OnTrigger2DHandler.Events
+            rightEdgeTrigger.Subscribe(new OnTrigger2DHandler.Events
             {
                 Gained = OnGainedContactWithEdge,
                 Lost = OnLostContactWithEdge
             }, layerMask);
 
-            bottomEdgeTrigger.Register(new OnTrigger2DHandler.Events
+            bottomEdgeTrigger.Subscribe(new OnTrigger2DHandler.Events
             {
                 Gained = OnGainedContactWithEdge,
                 Lost = OnLostContactWithEdge
             }, layerMask);
 
-            leftEdgeTrigger.Register(new OnTrigger2DHandler.Events
+            leftEdgeTrigger.Subscribe(new OnTrigger2DHandler.Events
             {
                 Gained = OnGainedContactWithEdge,
                 Lost = OnLostContactWithEdge

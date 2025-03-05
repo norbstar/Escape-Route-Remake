@@ -1,6 +1,8 @@
 using System.Collections.Generic;
-
+using Cinemachine;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.U2D;
 
 namespace Tests
 {
@@ -14,13 +16,18 @@ namespace Tests
         [Header("Components")]
         [SerializeField] ContactMap contactMap;
         [SerializeField] EdgeTriggerHandler edgeTriggerHandler;
+        [SerializeField] Light2D spotLight;
 
         [Header("Player UI")]
         [SerializeField] Transform arrowBaseUI;
 
+        [Header("Analytics")]
+        [SerializeField] int instanceID;
+
         public static float MIN_REGISTERED_VALUE = 0.01f;
 
         private Rigidbody2D rigidBody;
+        // private SpriteShapeRenderer spriteShapeRenderer;
         private SpriteShapeModifier spriteShapeModifier;
         private AudioSource audioSource;
         private InputSystem_Actions inputActions;
@@ -89,8 +96,10 @@ namespace Tests
 
         public override void ShowArrow(bool showArrow) => this.showArrow = showArrow;
 
-        void Awake()
+        public override void Awake()
         {
+            base.Awake();
+
             rigidBody = GetComponent<Rigidbody2D>();
             originalGravityScale = rigidBody.gravityScale;
             spriteShapeModifier = GetComponent<SpriteShapeModifier>();
@@ -102,11 +111,23 @@ namespace Tests
             {
                 state.Essentials = this;
             }
+
+            instanceID = gameObject.GetInstanceID();
         }
 
-        void OnEnable() => inputActions.Enable();
+        void OnEnable()
+        {
+            var virtualCamera = FindFirstObjectByType<CinemachineVirtualCamera>();
 
-        void OnDisable() => inputActions.Disable();
+            if (virtualCamera != null)
+            {
+                virtualCamera.Follow = transform;
+            }
+            
+            inputActions.Enable();
+        }
+
+        void OnDisable() => inputActions?.Disable();
 
         private void OnContactWithMap(ContactMap contactMap, Collider2D collider, List<ContactMap.ContactInfo> contacts)
         {
@@ -224,6 +245,30 @@ namespace Tests
                     }
                     break;
             }
+        }
+
+        public override void Activate()
+        {
+            // if (spriteShapeRenderer == null)
+            // {
+            //     spriteShapeRenderer = GetComponent<SpriteShapeRenderer>();
+            // }
+            
+            // spriteShapeRenderer.enabled = spotLight.enabled = true;
+
+            gameObject.SetActive(true);
+        }
+
+        public override void Deactivate()
+        {
+            // if (spriteShapeRenderer == null)
+            // {
+            //     spriteShapeRenderer = GetComponent<SpriteShapeRenderer>();
+            // }
+
+            // spriteShapeRenderer.enabled = spotLight.enabled = false;
+
+            gameObject.SetActive(false);
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created

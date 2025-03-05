@@ -23,7 +23,6 @@ public class DebugOverlayUI : MonoBehaviour
         inputActions.Game.F2.performed += OnF2Intent;
         inputActions.Game.F3.performed += OnF3Intent;
         inputActions.Game.F4.performed += OnF4Intent;
-        // inputActions.Game.F5.performed += OnF5Intent;
     }
 
     void OnDisable() => inputActions.Disable();
@@ -86,8 +85,6 @@ public class DebugOverlayUI : MonoBehaviour
         return active;
     }
 
-    // private void OnF4Intent(InputAction.CallbackContext context) => ShowAll();
-
     private void OnF4Intent(InputAction.CallbackContext context)
     {
         var anyActive = AnyActive();
@@ -113,6 +110,4 @@ public class DebugOverlayUI : MonoBehaviour
         if (scene.Analytics == null) return;
         scene.Analytics.Active = false;
     }
-
-    // private void OnF5Intent(InputAction.CallbackContext context) => HideAll();
 }
