@@ -4,7 +4,7 @@ namespace Tests.States
 {
     public class StateReport : MonoBehaviour
     {
-        private State[] states;
+        [SerializeField] State[] states;
         
         public State[] States => states;
 

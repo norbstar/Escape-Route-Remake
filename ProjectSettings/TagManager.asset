@@ -57,10 +57,10 @@ TagManager:
   - name: Boundary Player Layer
     uniqueID: 1016510463
     locked: 0
-  - name: Mid Foregroud Layer
+  - name: Mid Foreground Layer
     uniqueID: 2118473393
     locked: 0
-  - name: Foregroud Layer
+  - name: Foreground Layer
     uniqueID: 3224076535
     locked: 0
   - name: Overlay Layer

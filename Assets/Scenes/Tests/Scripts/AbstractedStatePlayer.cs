@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using Cinemachine;
+
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.U2D;
+
+using Cinemachine;
 
 namespace Tests
 {
@@ -49,6 +50,10 @@ namespace Tests
         public override AudioSource AudioSource() => audioSource;
 
         public override PlayerStateEnum PlayerState() => playerState;
+
+        public override bool IsMoving() => Mathf.Abs(rigidBody.linearVelocity.x) != MIN_REGISTERED_VALUE;
+
+        public override bool IsJumping() => rigidBody.linearVelocity.y > MIN_REGISTERED_VALUE;
 
         public override bool IsBlockedTop() => isBlockedTop;
 
@@ -121,7 +126,12 @@ namespace Tests
 
             if (virtualCamera != null)
             {
-                virtualCamera.Follow = transform;
+                // var follow = new GameObject("Follow");
+                // follow.transform.position = Vector3.zero;
+                // follow.transform.SetParent(transform);
+                // virtualCamera.Follow = follow.transform;
+
+                // virtualCamera.Follow = transform;
             }
             
             inputActions.Enable();
@@ -293,7 +303,7 @@ namespace Tests
 
             if (isGrounded)
             {
-                if (Mathf.Abs(rigidBody.linearVelocity.x) != MIN_REGISTERED_VALUE)
+                if (Mathf.Abs(rigidBody.linearVelocity.x) > MIN_REGISTERED_VALUE)
                 {
                     if (isDashing)
                     {
@@ -319,7 +329,7 @@ namespace Tests
             }
             else
             {
-                if (Mathf.Abs(rigidBody.linearVelocity.x) != MIN_REGISTERED_VALUE)
+                if (Mathf.Abs(rigidBody.linearVelocity.x) > MIN_REGISTERED_VALUE)
                 {
                     playerState = playerState.Set(PlayerStateEnum.Shifting);
                 }

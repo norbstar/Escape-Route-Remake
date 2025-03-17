@@ -4,7 +4,7 @@ namespace Tests
 {
     public class BasePlayerStub : BasePlayer
     {
-        public override Transform Transform() => transform;
+        public override UnityEngine.Transform Transform() => transform;
 
             public override Rigidbody2D RigidBody() => null;
 
@@ -15,6 +15,10 @@ namespace Tests
             public override AudioSource AudioSource() => null;
 
             public override PlayerStateEnum PlayerState() => PlayerStateEnum.Idle;
+
+            public override bool IsMoving() => false;
+
+            public override bool IsJumping() => false;
 
             public override bool IsBlockedTop() => false;
 

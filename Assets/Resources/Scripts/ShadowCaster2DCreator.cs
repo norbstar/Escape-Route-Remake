@@ -52,11 +52,11 @@ public class ShadowCaster2DCreator : MonoBehaviour
 
 	public void DestroyOldShadowCasters()
 	{
-		var tempList = transform.Cast<Transform>().ToList();
+		var tempList = transform.Cast<GameObject>().ToList();
 
 		foreach (var child in tempList)
 		{
-			DestroyImmediate(child.gameObject);
+			DestroyImmediate(child);
 		}
 	}
 }

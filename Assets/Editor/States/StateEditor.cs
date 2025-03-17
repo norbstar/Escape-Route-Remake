@@ -8,11 +8,11 @@ using Tests.States;
 public abstract class StateEditor : Editor
 {
     private State state;
-    private bool showExclusionRules;
+    private bool showQualificationRules;
 
     private void AddBinaryDropdown()
     {
-        var rect = EditorGUILayout.BeginHorizontal("Box");
+        EditorGUILayout.BeginHorizontal("Box");
 
         float originalValue = EditorGUIUtility.labelWidth;
         EditorGUIUtility.labelWidth = 70;
@@ -158,9 +158,9 @@ public abstract class StateEditor : Editor
         
         EditorGUILayout.Space();
         
-        showExclusionRules = EditorGUILayout.Foldout(showExclusionRules, "Exclusion Rules");
+        showQualificationRules = EditorGUILayout.Foldout(showQualificationRules, "Qualification Rules");
 
-        if (!showExclusionRules) return;
+        if (!showQualificationRules) return;
 
         EditorGUILayout.Space();
 

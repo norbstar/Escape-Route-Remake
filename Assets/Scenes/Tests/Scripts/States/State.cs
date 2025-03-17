@@ -13,6 +13,8 @@ namespace Tests.States
         {
             public enum BinaryEnum
             {
+                IsMoving,
+                IsJumping,
                 IsCrouching,
                 IsGrabbable,
                 IsTraversable,
@@ -146,7 +148,7 @@ namespace Tests.States
             public void RevokeCondition(PropertyCondition.PropertyEnum condition) => conditions.RemoveAll(c => c.Enum == condition);
         }
 
-        private bool canExecute;
+        protected bool canExecute;
 
         public bool CanExecute => canExecute;
 
@@ -162,6 +164,14 @@ namespace Tests.States
 
             switch (state)
             {
+                case BinaryCondition.BinaryEnum.IsMoving:
+                    result = value && Essentials.IsMoving() || !value && !Essentials.IsMoving();
+                    break;
+
+                case BinaryCondition.BinaryEnum.IsJumping:
+                    result = value && Essentials.IsJumping() || !value && !Essentials.IsJumping();
+                    break;
+
                 case BinaryCondition.BinaryEnum.IsCrouching:
                     result = value && Essentials.IsCrouching() || !value && !Essentials.IsCrouching();
                     break;
@@ -210,7 +220,7 @@ namespace Tests.States
             return result;
         }
 
-        private bool TestMoveCondition(VelocityCondition condition)
+        private bool TestVelocityCondition(VelocityCondition condition)
         {
             if (condition.xAxis.include)
             {
@@ -279,7 +289,7 @@ namespace Tests.States
             return true;
         }
         
-        public bool TestConditions()
+        public void TestConditions()
         {
             var canExecute = true;
 
@@ -289,24 +299,25 @@ namespace Tests.States
                 if (!canExecute) break;
             }
 
-            foreach (var condition in PropertyCollection.Conditions)
+            if (canExecute)
             {
-                switch (condition.Enum)
+                foreach (var condition in PropertyCollection.Conditions)
                 {
-                    case PropertyCondition.PropertyEnum.Velocity:
-                        canExecute = TestMoveCondition((VelocityCondition) condition);
-                        break;
+                    switch (condition.Enum)
+                    {
+                        case PropertyCondition.PropertyEnum.Velocity:
+                            canExecute = TestVelocityCondition((VelocityCondition) condition);
+                            break;
+                    }
+
+                    if (!canExecute) break;
                 }
-
-                if (!canExecute) break;
             }
-
+            
             this.canExecute = canExecute;
-            return canExecute;
         }
 
-        // Update is called once per frame
-        public virtual void Update() => TestConditions();
+        public virtual void FixedUpdate() => TestConditions();
 
         public virtual void OnBlockedTop() { }
 

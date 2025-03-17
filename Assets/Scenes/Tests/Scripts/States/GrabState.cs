@@ -41,10 +41,8 @@ namespace Tests.States
         }
 
         // Update is called once per frame
-        public override void Update()
+        void Update()
         {
-            base.Update();
-            
             canExec = Essentials.IsGrabbable() && Essentials.IsHolding();
             Essentials.ShowArrow(canExec);
 
@@ -68,8 +66,10 @@ namespace Tests.States
             execLeap = false;
         }
 
-        void FixedUpdate()
+        public override void FixedUpdate()
         {
+            base.FixedUpdate();
+            
             if (!canExec) return;
 
             if (Essentials.IsInputSuspended()) return;

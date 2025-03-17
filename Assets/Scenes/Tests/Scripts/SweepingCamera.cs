@@ -22,7 +22,7 @@ namespace Tests
         }
 
         [Header("Components")]
-        [SerializeField] Transform lightBase;
+        [SerializeField] UnityEngine.Transform lightBase;
         [SerializeField] new Light2D light;
 
         [Header("Config")]

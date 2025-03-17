@@ -57,10 +57,8 @@ namespace Tests.States
         }
 
         // Update is called once per frame
-        public override void Update()
+        void Update()
         {
-            base.Update();
-            
             if (spriteShapeModifier == null)
             {
                 spriteShapeModifier = Essentials.SpriteShapeModifier();
@@ -68,6 +66,10 @@ namespace Tests.States
             }
         }
 
-        void FixedUpdate() => lastLinearVelocityY = Essentials.RigidBody().linearVelocityY;
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
+            lastLinearVelocityY = Essentials.RigidBody().linearVelocityY;
+        }
     }
 }

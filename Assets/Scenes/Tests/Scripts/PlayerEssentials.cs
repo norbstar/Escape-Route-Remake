@@ -10,6 +10,9 @@ namespace Tests
         SpriteShapeModifier SpriteShapeModifier();
         AudioSource AudioSource();
         PlayerStateEnum PlayerState();
+        PlayerStateActivation PlayerStateActivation();
+        bool IsMoving();
+        bool IsJumping();
         bool IsBlockedTop();
         bool IsBlockedRight();
         bool IsGrounded();

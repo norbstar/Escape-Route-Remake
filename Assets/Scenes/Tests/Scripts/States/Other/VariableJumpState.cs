@@ -20,54 +20,68 @@ namespace Tests.States
         void OnEnable()
         {
             inputActions.Enable();
-            inputActions.Player.JumpPress.performed += OnJumpPressIntent;
-            inputActions.Player.JumpRelease.performed += OnJumpReleaseIntent;
+            inputActions.Player.JumpPress.performed += OnPressIntent;
+            inputActions.Player.JumpRelease.performed += OnReleaseIntent;
         }
 
         void OnDisable()
         {
-            inputActions.Player.JumpPress.performed -= OnJumpPressIntent;
-            inputActions.Player.JumpRelease.performed -= OnJumpReleaseIntent;
+            inputActions.Player.JumpPress.performed -= OnPressIntent;
+            inputActions.Player.JumpRelease.performed -= OnReleaseIntent;
             inputActions.Disable();
         }
 
         private IEnumerator Co_MonitorJumpIntent()
         {
-            // Debug.Log($"Co_MonitorJumpIntent State: {Essentials.PlayerState()}");
-
             execJump = true;
             jumpReleased = false;
 
-            while (Essentials.PlayerState() != PlayerStateEnum.Falling)
+            while (!jumpReleased)
             {
-                if (jumpReleased && !execJump) Essentials.RigidBody().linearVelocityY = 0f;
                 yield return null;
             }
-
-            // while (!jumpReleased)
-            // {
-            //     if (Essentials.PlayerState() == PlayerStateEnum.Jumping) Essentials.RigidBody().linearVelocityY = 0f;
-            //     yield return null;
-            // }
+            
+            if (Essentials.PlayerState().HasFlag(PlayerStateEnum.Jumping))
+            {
+                Essentials.RigidBody().linearVelocityY = 0f;
+                // Essentials.RigidBody().AddForce(Vector2.down * jumpForce);
+            }
         }
 
-        private void OnJumpPressIntent(InputAction.CallbackContext context)
+        private void OnPressIntent(InputAction.CallbackContext context)
         {
+            if (!Essentials.PlayerStateActivation().CanJump) return;
+
+            if (Essentials.IsInputSuspended()) return;
+
+            var canExec = !(Essentials.IsContactable() && Essentials.IsHolding());
+
+            if (!canExec) return;
+
             if (!Essentials.IsGrounded()) return;
+
             StartCoroutine(Co_MonitorJumpIntent());
         }
 
-        private void OnJumpReleaseIntent(InputAction.CallbackContext context) => jumpReleased = true;
+        private void OnReleaseIntent(InputAction.CallbackContext context) => jumpReleased = true;
 
-        void FixedUpdate()
+        private void ExecuteIntent()
         {
-            if (Essentials.IsInputSuspended()) return;
+            var rigidBody = Essentials.RigidBody();
+            rigidBody.AddForce(Vector2.up * jumpForce);
+            var audioSource = Essentials.AudioSource();
+            audioSource.PlayOneShot(jumpClip, 1f);
+            
+            execJump = false;
+        }
+
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
 
             if (execJump)
             {
-                Essentials.RigidBody().AddForce(Vector2.up * jumpForce);
-                Essentials.AudioSource().PlayOneShot(jumpClip, 1f);
-                execJump = false;
+                ExecuteIntent();
             }
         }
     }

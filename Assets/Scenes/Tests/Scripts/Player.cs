@@ -13,7 +13,7 @@ namespace Tests
     {
         [Header("Components")]
         [SerializeField] OnTrigger2DHandler groundTrigger;
-        [SerializeField] Transform minEnergyThreshold;
+        [SerializeField] UnityEngine.Transform minEnergyThreshold;
 
         [Header("Audio")]
         [SerializeField] AudioClip jumpClip;
@@ -71,7 +71,7 @@ namespace Tests
         public static float POWER_MOVE_MIN_ENERGY_VALUE = 0.5f;
         public static float MIN_INPUT_VALUE = 0.1f;
 
-        private SceneObjectMapping scene;
+        private CanvasManager canvasManager;
         private InputSystem_Actions inputActions;
         private Rigidbody2D rigidBody;
         // private new Collider2D collider;
@@ -88,7 +88,7 @@ namespace Tests
 
         void Awake()
         {
-            scene = FindAnyObjectByType<SceneObjectMapping>();
+            canvasManager = FindAnyObjectByType<CanvasManager>();
             rigidBody = GetComponent<Rigidbody2D>();
             // collider = GetComponent<Collider2D>();
             audioSource = GetComponent<AudioSource>();
@@ -260,7 +260,7 @@ namespace Tests
             velocityYUI.Value = velocityY.ToString("0.00");
             stateUI.Value = state.ToString();
 
-            minEnergyThreshold.gameObject.SetActive(scene.EnergyBar.Value >= POWER_MOVE_MIN_ENERGY_VALUE);
+            minEnergyThreshold.gameObject.SetActive(canvasManager.EnergyBar.Value >= POWER_MOVE_MIN_ENERGY_VALUE);
         }
 
         // Update is called once per frame
@@ -302,10 +302,10 @@ namespace Tests
         {
             // Debug.Log($"ApplyJump Held Duration: {heldDuration}");
 
-            if (scene.EnergyBar.Value > POWER_MOVE_MIN_ENERGY_VALUE && heldDuration > 0.2f)
+            if (canvasManager.EnergyBar.Value > POWER_MOVE_MIN_ENERGY_VALUE && heldDuration > 0.2f)
             {
                 rigidBody.AddForce(Vector2.up * powerJumpForce);
-                scene.EnergyBar.Value -= POWER_MOVE_MIN_ENERGY_VALUE;
+                canvasManager.EnergyBar.Value -= POWER_MOVE_MIN_ENERGY_VALUE;
             }
             else
             {
@@ -376,11 +376,11 @@ namespace Tests
 
         private void ApplyDash()
         {
-            if (scene.EnergyBar.Value > POWER_MOVE_MIN_ENERGY_VALUE)
+            if (canvasManager.EnergyBar.Value > POWER_MOVE_MIN_ENERGY_VALUE)
             {
                 var direction = Mathf.Sign(rigidBody.linearVelocityX);
                 rigidBody.linearVelocityX = direction * dashSpeed;
-                scene.EnergyBar.Value -= POWER_MOVE_MIN_ENERGY_VALUE;
+                canvasManager.EnergyBar.Value -= POWER_MOVE_MIN_ENERGY_VALUE;
                 audioSource.PlayOneShot(dashClip, 1f);
             }
 

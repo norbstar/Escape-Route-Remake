@@ -13,7 +13,7 @@ namespace Tests.States
         // [SerializeField] int maxJumps = 2;
 
         private InputSystem_Actions inputActions;
-        private bool execJump, canExec;
+        private bool execJump;
         private int jumpCount;
         
         void Awake() => inputActions = new InputSystem_Actions();
@@ -21,49 +21,58 @@ namespace Tests.States
         void OnEnable()
         {
             inputActions.Enable();
-            inputActions.Player.JumpPress.performed += OnJumpPressIntent;
+            inputActions.Player.JumpPress.performed += OnIntent;
         }
 
         void OnDisable()
         {
-            inputActions.Player.JumpPress.performed -= OnJumpPressIntent;
+            inputActions.Player.JumpPress.performed -= OnIntent;
             inputActions.Disable();
         }
 
-        private void OnJumpPressIntent(InputAction.CallbackContext context)
+        private void OnIntent(InputAction.CallbackContext context)
         {
-            if (!canExec) return;
+            if (!Essentials.PlayerStateActivation().CanJump) return;
 
             if (Essentials.IsInputSuspended()) return;
+
+            var canExec = !(Essentials.IsContactable() && Essentials.IsHolding());
+
+            if (!canExec) return;
 
             if (jumpCount == 0 && !Essentials.IsGrounded()) return;
 
             if (canDoubleJump && jumpCount > 1 || !canDoubleJump && jumpCount > 0) return;
+
             // if (jumpCount == maxJumps) return;
+
             execJump = true;
         }
-
-        // Update is called once per frame
-        public override void Update()
+        
+        private void ExecuteIntent()
         {
-            base.Update();
-            
-            canExec = !(Essentials.IsContactable() && Essentials.IsHolding());
-        }   
+            var rigidBody = Essentials.RigidBody();
+            rigidBody.linearVelocityY = 0f;
+            rigidBody.AddForce(Vector2.up * jumpForce);
+            var audioSource = Essentials.AudioSource();
+            audioSource.PlayOneShot(jumpClip, 1f);
+            ++jumpCount;
 
-        void FixedUpdate()
+            execJump = false;
+        }
+
+        public override void FixedUpdate()
         {
-            if (!canExec) return;
+            base.FixedUpdate();
 
-            if (Essentials.IsInputSuspended()) return;
+            // if (canExecute)
+            // {
+            //     ExecuteIntent();
+            // }
 
             if (execJump)
             {
-                Essentials.RigidBody().linearVelocityY = 0f;
-                Essentials.RigidBody().AddForce(Vector2.up * jumpForce);
-                Essentials.AudioSource().PlayOneShot(jumpClip, 1f);
-                ++jumpCount;
-                execJump = false;
+                ExecuteIntent();
             }
         }
 

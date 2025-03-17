@@ -82,7 +82,7 @@ namespace Tests
             }
         }
 
-        public Transform Transform() => transform;
+        public UnityEngine.Transform Transform() => transform;
 
         public Rigidbody2D RigidBody() => rigidBody;
 
@@ -97,6 +97,12 @@ namespace Tests
         public InputSystem_Actions InputActions() => inputActions;
 
         public PlayerStateEnum PlayerState() => playerState;
+
+        public PlayerStateActivation PlayerStateActivation() => null;
+
+        public bool IsMoving() => Mathf.Abs(rigidBody.linearVelocity.x) > 0f;
+
+        public bool IsJumping() => rigidBody.linearVelocity.y > 0f;
 
         public bool IsBlockedTop() => isBlockedTop;
 

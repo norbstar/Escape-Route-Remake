@@ -4,6 +4,7 @@ using UnityEngine;
 
 using Tests.States;
 
+#if false
 [CustomEditor(typeof(StateReport))]
 public class StateReportEditor : Editor
 {
@@ -91,4 +92,5 @@ public class StateReportEditor : Editor
         AddStatusReport();
     }
 }
+#endif
 #endif

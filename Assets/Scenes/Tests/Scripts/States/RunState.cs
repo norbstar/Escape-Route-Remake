@@ -37,10 +37,10 @@ namespace Tests.States
         }
 
         // Update is called once per frame
-        public override void Update()
+        void Update()
         {
-            base.Update();
-            
+            if (!Essentials.PlayerStateActivation().CanMove) return;
+
             canExec = !(Essentials.IsContactable() && Essentials.IsHolding());
 
             if (canExec)
@@ -62,8 +62,10 @@ namespace Tests.States
             // execRun = false;
         }
 
-        void FixedUpdate()
+        public override void FixedUpdate()
         {
+            base.FixedUpdate();
+            
             if (!canExec) return;
 
             if (Essentials.IsInputSuspended()) return;

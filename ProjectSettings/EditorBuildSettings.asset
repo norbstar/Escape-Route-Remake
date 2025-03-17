@@ -6,17 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SceneLoader.unity
-    guid: 87dec8e7520a12c46a532949c97e73a8
-  - enabled: 1
-    path: Assets/Scenes/Tests/Scene A.unity
-    guid: 32efd9b2d5c6e8d419f66dc1c3bf2069
-  - enabled: 1
-    path: Assets/Scenes/Tests/Scene B.unity
-    guid: 2a226f9137499ca4cb8bc1573b7b03e6
-  - enabled: 1
-    path: Assets/Scenes/Tests/Scene C.unity
-    guid: 693866586115e4841b1e301c718f2b6d
+    path: Assets/Scenes/ZoneManager.unity
+    guid: f9647ee9871cf844cbe80a9a7841d2d2
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 0f694f959dfaebf45bad53ffb108e27e, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

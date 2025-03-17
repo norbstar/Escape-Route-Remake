@@ -30,10 +30,8 @@ namespace Tests.States
         }
 
         // Update is called once per frame
-        public override void Update()
+        void Update()
         {
-            base.Update();
-
             canExec = Essentials.IsTraversable() && Essentials.IsHolding();
             
             if (canExec)
@@ -44,8 +42,10 @@ namespace Tests.States
 
         private void ApplyTraverse() => Essentials.Transform().Translate(new Vector3(moveValue.x, moveValue.y, 0f) * speed * Time.deltaTime);
 
-        void FixedUpdate()
+        public override void FixedUpdate()
         {
+            base.FixedUpdate();
+
             if (!canExec) return;
 
             if (Essentials.IsInputSuspended()) return;

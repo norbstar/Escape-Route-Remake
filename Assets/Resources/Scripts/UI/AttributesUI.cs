@@ -7,9 +7,9 @@ using Tests;
 public class AttributesUI : MonoBehaviour
 {
     [Header("UI")]
-    [SerializeField] Transform viewUI;
-    [SerializeField] Transform boolAttributesUI;
-    [SerializeField] Transform numericalAttributesUI;
+    [SerializeField] UnityEngine.Transform viewUI;
+    [SerializeField] UnityEngine.Transform boolAttributesUI;
+    [SerializeField] UnityEngine.Transform numericalAttributesUI;
 
     [Header("UI Attributes")]
     [SerializeField] AttributeUI isBlockedTopUI;

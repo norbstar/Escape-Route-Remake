@@ -5,7 +5,7 @@ using UI;
 public class ActuatorsUI : MonoBehaviour
 {
     [Header("UI")]
-    [SerializeField] Transform viewUI;
+    [SerializeField] UnityEngine.Transform viewUI;
 
     [Header("UI Attributes")]
     [SerializeField] AttributeUI moveXUI;

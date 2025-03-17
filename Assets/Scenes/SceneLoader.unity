@@ -630,7 +630,7 @@ GameObject:
   - component: {fileID: 1283523599}
   - component: {fileID: 1283523601}
   m_Layer: 0
-  m_Name: Local (Persistent)
+  m_Name: Common
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

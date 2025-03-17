@@ -3,15 +3,15 @@ using UnityEngine.InputSystem;
 
 using Tests;
 
-[RequireComponent(typeof(SceneObjectMapping))]
+[RequireComponent(typeof(CanvasManager))]
 public class DebugOverlayUI : MonoBehaviour
 {
-    private SceneObjectMapping scene;
+    private CanvasManager canvasManager;
     private InputSystem_Actions inputActions;
 
     void Awake()
     {
-        scene = GetComponent<SceneObjectMapping>();
+        canvasManager = GetComponent<CanvasManager>();
         inputActions = new InputSystem_Actions();
     }
 
@@ -29,56 +29,56 @@ public class DebugOverlayUI : MonoBehaviour
 
     private void OnF1Intent(InputAction.CallbackContext context)
     {
-        if (scene.Attributes == null) return;
-        scene.Attributes.CycleView();
+        if (canvasManager.Attributes == null) return;
+        canvasManager.Attributes.CycleView();
     }
 
     private void OnF2Intent(InputAction.CallbackContext context)
     {
-        if (scene.Actuators == null) return;
-        scene.Actuators.FlipView();
+        if (canvasManager.Actuators == null) return;
+        canvasManager.Actuators.FlipView();
     }
 
     private void OnF3Intent(InputAction.CallbackContext context)
     {
-        if (scene.Analytics == null) return;
-        scene.Analytics.FlipView();
+        if (canvasManager.Analytics == null) return;
+        canvasManager.Analytics.FlipView();
     }
 
     private void ShowAll()
     {
-        if (scene.Attributes == null) return;
-        scene.Attributes.SetView(AttributesUI.ViewEnum.All);
+        if (canvasManager.Attributes == null) return;
+        canvasManager.Attributes.SetView(AttributesUI.ViewEnum.All);
 
-        if (scene.Actuators == null) return;
-        scene.Actuators.Active = true;
+        if (canvasManager.Actuators == null) return;
+        canvasManager.Actuators.Active = true;
 
-        if (scene.Analytics == null) return;
-        scene.Analytics.Active = true;
+        if (canvasManager.Analytics == null) return;
+        canvasManager.Analytics.Active = true;
     }
 
     private bool AnyActive()
     {
         bool active = false;
 
-        if (scene.Attributes != null)
+        if (canvasManager.Attributes != null)
         {
-            active = scene.Attributes.Active;
+            active = canvasManager.Attributes.Active;
         }
 
         if (!active)
         {
-            if (scene.Actuators != null)
+            if (canvasManager.Actuators != null)
             {
-                active = scene.Actuators.Active;
+                active = canvasManager.Actuators.Active;
             }
         }
 
         if (!active)
         {
-            if (scene.Analytics != null)
+            if (canvasManager.Analytics != null)
             {
-                active = scene.Analytics.Active;
+                active = canvasManager.Analytics.Active;
             }
         }
 
@@ -101,13 +101,13 @@ public class DebugOverlayUI : MonoBehaviour
 
     private void HideAll()
     {
-        if (scene.Attributes == null) return;
-        scene.Attributes.SetView(AttributesUI.ViewEnum.None);
+        if (canvasManager.Attributes == null) return;
+        canvasManager.Attributes.SetView(AttributesUI.ViewEnum.None);
 
-        if (scene.Actuators == null) return;
-        scene.Actuators.Active = false;
+        if (canvasManager.Actuators == null) return;
+        canvasManager.Actuators.Active = false;
 
-        if (scene.Analytics == null) return;
-        scene.Analytics.Active = false;
+        if (canvasManager.Analytics == null) return;
+        canvasManager.Analytics.Active = false;
     }
 }

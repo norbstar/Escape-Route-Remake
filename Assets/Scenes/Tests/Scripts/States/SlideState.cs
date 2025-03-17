@@ -18,7 +18,7 @@ namespace Tests.States
 
         void OnDisable() => inputActions.Disable();
 
-        private void Evaluate()
+        private void EvaluateIntent()
         {
             var crouchValue = inputActions.Player.Crouch.IsPressed();
             execCrouch = Essentials.IsGrounded() && !Essentials.IsCrouching() && crouchValue;
@@ -27,10 +27,8 @@ namespace Tests.States
         }
 
         // Update is called once per frame
-        public override void Update()
+        void Update()
         {
-            base.Update();
-
             canExec = !(Essentials.IsContactable() && Essentials.IsHolding());
 
             if (canExec)
@@ -40,11 +38,8 @@ namespace Tests.States
 
             if (canExec)
             {
-                // Debug.Log($"IsCrouching: {isCrouching}");
-                Evaluate();
+                EvaluateIntent();
             }
-                
-            // Debug.Log($"SlideState CanExec: {canExec} CanSlide: {execSlide}");
         }
 
         private IEnumerator Co_Slide()
@@ -63,28 +58,30 @@ namespace Tests.States
             Essentials.SetSuspendInput(false);
         }
 
-        private void ApplyCrouch() => Crouch();
+        private void ExecuteCrouch() => Crouch();
 
-        private void ApplySlide()
+        private void ExecuteSlide()
         {
             if (isSliding) return;
             StartCoroutine(Co_Slide());
         }
 
-        void FixedUpdate()
+        public override void FixedUpdate()
         {
+            base.FixedUpdate();
+
             if (!canExec) return;
 
             if (Essentials.IsInputSuspended()) return;
 
             if (execCrouch)
             {
-                ApplyCrouch();
+                ExecuteCrouch();
             }
 
             if (execSlide)
             {
-                ApplySlide();
+                ExecuteSlide();
             }
         }
     }

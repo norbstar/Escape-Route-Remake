@@ -7,12 +7,6 @@ public class Game : MonoBehaviour
 
     void Awake() => inputActions = new InputSystem_Actions();
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
     void OnEnable()
     {
         inputActions.Enable();
@@ -23,10 +17,4 @@ public class Game : MonoBehaviour
     void OnDisable() => inputActions.Disable();
 
     private void Callback_OnQuit(InputAction.CallbackContext context) => Application.Quit();
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

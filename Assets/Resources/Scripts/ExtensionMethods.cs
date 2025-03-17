@@ -8,7 +8,7 @@ public static class ExtensionMethods
         {
             public bool hasHit;
             public bool unchanged;
-            public Transform other;
+            public UnityEngine.Transform other;
             public Vector2 point;
             public float distance;
         }

@@ -66,8 +66,10 @@ namespace Tests.States
 
         private void OnJumpReleaseIntent(InputAction.CallbackContext context) => jumpReleased = true;
 
-        void FixedUpdate()
+        public override void FixedUpdate()
         {
+            base.FixedUpdate();
+            
             if (execJump)
             {
                 Essentials.RigidBody().AddForce(Vector2.up * jumpForce);

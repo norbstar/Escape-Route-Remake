@@ -17,8 +17,10 @@ namespace Tests.States
 
         void OnDisable() => inputActions.Disable();
 
-        private void Evaluate()
+        private void EvaluateIntent()
         {
+            if (!Essentials.PlayerStateActivation().CanSneak) return;
+
             var crouchValue = inputActions.Player.Crouch.IsPressed();
             execCrouch = Essentials.IsGrounded() && crouchValue;
 
@@ -27,10 +29,8 @@ namespace Tests.States
         }
 
         // Update is called once per frame
-        public override void Update()
+        void Update()
         {
-            base.Update();
-
             canExec = !(Essentials.IsContactable() && Essentials.IsHolding());
 
             if (canExec)
@@ -40,38 +40,37 @@ namespace Tests.States
 
             if (canExec)
             {
-                Evaluate();
+                EvaluateIntent();
             }
         }
 
-        private void ApplyCrouch() => Crouch();
+        private void ExecuteCrouch() => Crouch();
 
-        private void ApplyReset() => Reset();
-
-        private void ApplyMove()
+        private void ExecuteMove()
         {
             Essentials.RigidBody().linearVelocityX = moveValue.x * speed;
-            // execMove = false;
         }
 
-        void FixedUpdate()
+        public override void FixedUpdate()
         {
+            base.FixedUpdate();
+
             if (!canExec) return;
 
             if (Essentials.IsInputSuspended()) return;
 
             if (execCrouch)
             {
-                ApplyCrouch();
+                ExecuteCrouch();
             }
             else
             {
-                ApplyReset();
+                Reset();
             }
 
             if (execMove)
             {
-                ApplyMove();
+                ExecuteMove();
             }
             else if (Essentials.IsGrounded())
             {

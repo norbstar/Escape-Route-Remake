@@ -34,7 +34,7 @@ namespace Tests
         [SerializeField] ContactMap contactMap;
 
         [Header("Settings")]
-        [SerializeField] Transform minEnergyThreshold;
+        [SerializeField] UnityEngine.Transform minEnergyThreshold;
         // [SerializeField] DamageThresholds damageThresholds;
         // [SerializeField] AnimationCurve blendCurve;
 
@@ -64,7 +64,7 @@ namespace Tests
         [SerializeField] AttributeUI stateUI;
 
         [Header("Player UI")]
-        [SerializeField] Transform arrowBaseUI;
+        [SerializeField] UnityEngine.Transform arrowBaseUI;
 
         [Header("Move")]
         [Range(1f, 10f)]
@@ -145,7 +145,7 @@ namespace Tests
         // public static int STEPPED_ANGLE_DEGREES = 15;
         public static Color ORANGE;
 
-        private SceneObjectMapping scene;
+        private CanvasManager canvasManager;
         private InputSystem_Actions inputActions;
         private Rigidbody2D rigidBody;
         // private new Collider2D collider;
@@ -167,7 +167,7 @@ namespace Tests
 
         void Awake()
         {
-            scene = FindAnyObjectByType<SceneObjectMapping>();
+            canvasManager = FindAnyObjectByType<CanvasManager>();
             rigidBody = GetComponent<Rigidbody2D>();
             // collider = GetComponent<Collider2D>();
             spriteShapeController = GetComponent<SpriteShapeController>();
@@ -292,20 +292,20 @@ namespace Tests
 
         private void OnF1Intent(InputAction.CallbackContext context)
         {
-            if (scene.Attributes == null) return;
-            scene.Attributes.gameObject.SetActive(!scene.Attributes.gameObject.activeSelf);
+            if (canvasManager.Attributes == null) return;
+            canvasManager.Attributes.gameObject.SetActive(!canvasManager.Attributes.gameObject.activeSelf);
         }
 
         private void OnF2Intent(InputAction.CallbackContext context)
         {
-            if (scene.Actuators == null) return;
-            scene.Actuators.gameObject.SetActive(!scene.Actuators.gameObject.activeSelf);
+            if (canvasManager.Actuators == null) return;
+            canvasManager.Actuators.gameObject.SetActive(!canvasManager.Actuators.gameObject.activeSelf);
         }
 
         private void OnF3Intent(InputAction.CallbackContext context)
         {
-            if (scene.Analytics == null) return;
-            scene.Analytics.gameObject.SetActive(!scene.Analytics.gameObject.activeSelf);
+            if (canvasManager.Analytics == null) return;
+            canvasManager.Analytics.gameObject.SetActive(!canvasManager.Analytics.gameObject.activeSelf);
         }
 
         private void OnRunIntent()
@@ -557,7 +557,7 @@ namespace Tests
                 stateUI.Value = playerState.ToString();
             }
             
-            minEnergyThreshold.gameObject.SetActive(scene.EnergyBar.Value >= POWER_MOVE_MIN_ENERGY_VALUE);
+            minEnergyThreshold.gameObject.SetActive(canvasManager.EnergyBar.Value >= POWER_MOVE_MIN_ENERGY_VALUE);
 
             UpdatePlayerUI();
         }
@@ -737,8 +737,8 @@ namespace Tests
 
         private void DrainEnergyLevel(float value)
         {
-            if (scene.EnergyBar == null) return;
-            scene.EnergyBar.Value -= value;
+            if (canvasManager.EnergyBar == null) return;
+            canvasManager.EnergyBar.Value -= value;
         }
 
         private void ApplyPowerJump()
@@ -819,7 +819,7 @@ namespace Tests
 
         private void ApplyDash()
         {
-            if (scene.EnergyBar.Value > POWER_MOVE_MIN_ENERGY_VALUE)
+            if (canvasManager.EnergyBar.Value > POWER_MOVE_MIN_ENERGY_VALUE)
             {
                 var direction = Mathf.Sign(rigidBody.linearVelocityX);
                 rigidBody.linearVelocityX = direction * dashSpeed;
@@ -887,7 +887,7 @@ namespace Tests
             if (damagePoints > 0f)
             {
                 var damage = Mathf.Clamp(DAMAGE_PER_POINT * damagePoints, 0f, 1f);
-                scene.HealthBar.Value -= damage;
+                canvasManager.HealthBar.Value -= damage;
             }
         }
 

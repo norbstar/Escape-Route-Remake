@@ -153,7 +153,7 @@ MonoBehaviour:
   m_ComponentVersion: 2
   m_LightType: 3
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.5
+  m_FalloffIntensity: 0.75
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 5
   m_LightVolumeIntensity: 1
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
-  m_PointLightOuterRadius: 1.5
+  m_PointLightOuterRadius: 2.5
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
@@ -586,16 +586,18 @@ GameObject:
   - component: {fileID: 3880886106867080442}
   - component: {fileID: 8713613986000848162}
   - component: {fileID: 1825198590382261332}
-  - component: {fileID: 7861500509887436274}
-  - component: {fileID: 587907603067185212}
+  - component: {fileID: 4511952998995448507}
   - component: {fileID: 4292005443447469781}
+  - component: {fileID: 5308760679330401212}
   - component: {fileID: 3792087067580405508}
   - component: {fileID: 4351664096799953022}
-  - component: {fileID: 8106415712434088462}
-  - component: {fileID: 866190008849597548}
+  - component: {fileID: 587907603067185212}
   - component: {fileID: 3050863159272802792}
   - component: {fileID: 3197676824381738250}
+  - component: {fileID: 8106415712434088462}
+  - component: {fileID: 866190008849597548}
   - component: {fileID: 636368420702859729}
+  - component: {fileID: 4201907930334781997}
   - component: {fileID: 2492654755538693766}
   m_Layer: 6
   m_Name: Player
@@ -947,7 +949,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7861500509887436274
+--- !u!114 &4511952998995448507
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -956,25 +958,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3059291180111979932}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22e25725acc22384494d7c1ca59b0bb4, type: 3}
+  m_Script: {fileID: 11500000, guid: 95b42b4cb11b3954b9e6f3f9a3212690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
---- !u!114 &587907603067185212
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb687a77ed215824181cda390b04f182, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 50
-  duration: 0.05
-  clip: {fileID: 8300000, guid: 7e419102b4e8c8843a7c4cf006ff68cc, type: 3}
 --- !u!114 &4292005443447469781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -990,6 +977,20 @@ MonoBehaviour:
   jumpForce: 600
   jumpClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
   canDoubleJump: 1
+--- !u!114 &5308760679330401212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5bb646971e2dcc4b859258cb45cbad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpForce: 600
+  jumpClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
 --- !u!114 &3792087067580405508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -997,7 +998,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91ae37bb9ecf6364190b579da95b18c0, type: 3}
   m_Name: 
@@ -1010,40 +1011,28 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c04fd4a6736daac4986c0b20b054fb65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   landClip: {fileID: 8300000, guid: 8984265858e419943b06a62c338ccae9, type: 3}
   deformationSpeed: 12
---- !u!114 &8106415712434088462
+--- !u!114 &587907603067185212
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03629ab2ba09160488bdd40ff4aba391, type: 3}
+  m_Script: {fileID: 11500000, guid: eb687a77ed215824181cda390b04f182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leapForce: 600
-  leapClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
---- !u!114 &866190008849597548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1465d1ca89ac874583f4bd35e741193, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
+  speed: 50
+  duration: 0.05
+  clip: {fileID: 8300000, guid: 7e419102b4e8c8843a7c4cf006ff68cc, type: 3}
 --- !u!114 &3050863159272802792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1072,6 +1061,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deformationSpeed: 12
   speed: 5
+--- !u!114 &8106415712434088462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03629ab2ba09160488bdd40ff4aba391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leapForce: 600
+  leapClip: {fileID: 8300000, guid: 6d684ade49e589b4a89e68fead9befe1, type: 3}
+--- !u!114 &866190008849597548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1465d1ca89ac874583f4bd35e741193, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
 --- !u!114 &636368420702859729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1084,6 +1100,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0688d8f0110034398b2d1f0df38798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  states: []
+--- !u!114 &4201907930334781997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ab3712bc246be649b20bfa15be11764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canMove: 1
+  canJump: 1
+  canShift: 0
+  canFall: 0
+  canDash: 0
+  canSneak: 1
+  canSlide: 1
+  canGrab: 0
+  canTraverse: 0
 --- !u!114 &2492654755538693766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1100,6 +1138,7 @@ MonoBehaviour:
   edgeTriggerHandler: {fileID: 1564858219368971033}
   spotLight: {fileID: 4842975783025376491}
   arrowBaseUI: {fileID: 254104720836281314}
+  instanceID: 0
 --- !u!1 &3954563937439435231
 GameObject:
   m_ObjectHideFlags: 0

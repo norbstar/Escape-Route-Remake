@@ -4,7 +4,7 @@ namespace Tests
 {
     public class LookAtTest : MonoBehaviour
     {
-        [SerializeField] Transform target;
+        [SerializeField] UnityEngine.Transform target;
         
         // Update is called once per frame
         void Update()
