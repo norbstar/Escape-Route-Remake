@@ -73,16 +73,15 @@ namespace Tests
             inputActions = new InputSystem_Actions();
             layerMask = LayerMask.GetMask("Player");
             
-            var states = GetComponents<States.State>();
+            var actions = GetComponents<Actions.Action>();
 
-            foreach (var state in states)
+            foreach (var action in actions)
             {
-                state.Essentials = this;
-                // Debug.Log($"Registered State: {state.GetType()}");
+                action.Essentials = this;
             }
         }
 
-        public UnityEngine.Transform Transform() => transform;
+        public Transform Transform() => transform;
 
         public Rigidbody2D RigidBody() => rigidBody;
 
@@ -96,9 +95,11 @@ namespace Tests
 
         public InputSystem_Actions InputActions() => inputActions;
 
+        public CustomInputSystem InputSystem() => null;
+
         public PlayerStateEnum PlayerState() => playerState;
 
-        public PlayerStateActivation PlayerStateActivation() => null;
+        public PlayerActions PlayerStateActivation() => null;
 
         public bool IsMoving() => Mathf.Abs(rigidBody.linearVelocity.x) > 0f;
 

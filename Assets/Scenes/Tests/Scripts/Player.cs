@@ -181,7 +181,7 @@ namespace Tests
             
             if (suspendInput) return;
 
-            if (state == PlayerStateEnum.Running)
+            if (state == PlayerStateEnum.Moving)
             {
                 suspendInput = true;
                 execDash = true;
@@ -421,7 +421,7 @@ namespace Tests
                     }
                     else if (isGrounded)
                     {
-                        state = PlayerStateEnum.Running;
+                        state = PlayerStateEnum.Moving;
                     }
                 }
             }

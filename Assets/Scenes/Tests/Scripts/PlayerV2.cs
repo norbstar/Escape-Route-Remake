@@ -283,7 +283,7 @@ namespace Tests
         {
             if (suspendInput) return;
 
-            if (canDash && playerState == PlayerStateEnum.Running)
+            if (canDash && playerState == PlayerStateEnum.Moving)
             {
                 suspendInput = true;
                 execDash = true;
@@ -945,7 +945,7 @@ namespace Tests
             {
                 if (Mathf.Abs(rigidBody.linearVelocity.x) > MIN_INPUT_VALUE)
                 {
-                    playerState = isDashing ? PlayerStateEnum.Dashing : PlayerStateEnum.Running;
+                    playerState = isDashing ? PlayerStateEnum.Dashing : PlayerStateEnum.Moving;
                 }
             }
             else

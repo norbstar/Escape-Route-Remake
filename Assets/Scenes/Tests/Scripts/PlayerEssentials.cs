@@ -9,8 +9,9 @@ namespace Tests
         float OriginalGravityScale();
         SpriteShapeModifier SpriteShapeModifier();
         AudioSource AudioSource();
+        CustomInputSystem InputSystem();
         PlayerStateEnum PlayerState();
-        PlayerStateActivation PlayerStateActivation();
+        PlayerActions PlayerStateActivation();
         bool IsMoving();
         bool IsJumping();
         bool IsBlockedTop();

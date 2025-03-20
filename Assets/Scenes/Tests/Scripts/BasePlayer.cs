@@ -11,12 +11,12 @@ namespace Tests
     [RequireComponent(typeof(AudioSource))]
     public abstract class BasePlayer : SingletonMonoBehaviour<BasePlayer>, PlayerEssentials
     {
-        private PlayerStateActivation playerStateActivation;
+        private PlayerActions playerStateActivation;
 
         public override void Awake()
         {
             base.Awake();
-            playerStateActivation = GetComponent<PlayerStateActivation>();
+            playerStateActivation = GetComponent<PlayerActions>();
         }
 
         public virtual void Activate() { }
@@ -35,9 +35,11 @@ namespace Tests
 
         public abstract AudioSource AudioSource();
 
+        public abstract CustomInputSystem InputSystem();
+
         public abstract PlayerStateEnum PlayerState();
 
-        public PlayerStateActivation PlayerStateActivation() => playerStateActivation;
+        public PlayerActions PlayerStateActivation() => playerStateActivation;
 
         public abstract bool IsMoving();
 

@@ -14,6 +14,8 @@ namespace Tests
 
             public override AudioSource AudioSource() => null;
 
+            public override CustomInputSystem InputSystem() => null;
+
             public override PlayerStateEnum PlayerState() => PlayerStateEnum.Idle;
 
             public override bool IsMoving() => false;
