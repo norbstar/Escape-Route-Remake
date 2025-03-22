@@ -8,7 +8,15 @@ using Tests.Actions;
 public abstract class ActionEditor : Editor
 {
     private Action action;
-    private bool showPrerequisites;
+    private bool showPrerequisites = true;
+
+    private void AddLine(int height = 1)
+    {
+        var rect = EditorGUILayout.GetControlRect(false, height);
+        rect.height = height;
+        
+        EditorGUI.DrawRect(rect, new Color(0.5f, 0.5f, 0.5f, 1f));
+    }
 
     private void AddBinaryDropdown()
     {
@@ -16,14 +24,14 @@ public abstract class ActionEditor : Editor
 
         float originalValue = EditorGUIUtility.labelWidth;
         EditorGUIUtility.labelWidth = 70;
-        action.BinaryCollection.Enum = (Action.BinaryCondition.BinaryEnum) EditorGUILayout.EnumPopup("Binaries", action.BinaryCollection.Enum, GUILayout.Width(210));
+        action.BinaryConditions.Enum = (BinaryCondition.BinaryEnum) EditorGUILayout.EnumPopup("Binaries", action.BinaryConditions.Enum, GUILayout.Width(210));
         EditorGUIUtility.labelWidth = originalValue;
 
         GUILayout.FlexibleSpace();
 
-        if (GUILayout.Button("Add Condition", EditorStyles.miniButtonLeft, GUILayout.Width(95)))
+        if (GUILayout.Button("Add", EditorStyles.miniButtonLeft, GUILayout.Width(50)))
         {
-            action.BinaryCollection.AddCondition(action.BinaryCollection.Enum);
+            action.BinaryConditions.AddCondition(action.BinaryConditions.Enum);
         }
 
         EditorGUILayout.EndHorizontal();
@@ -31,20 +39,35 @@ public abstract class ActionEditor : Editor
 
     private void AddBinaryConfiguration()
     {
-        foreach (var condition in action.BinaryCollection.Conditions)
+        float originalFieldWidth = EditorGUIUtility.fieldWidth;
+        float originalLabelWidth = EditorGUIUtility.labelWidth;
+
+        foreach (var condition in action.BinaryConditions.Conditions)
         {
             EditorGUILayout.BeginHorizontal("Box");
 
             var label = condition.Enum.ToString();
-            EditorGUILayout.LabelField(label, EditorStyles.boldLabel, GUILayout.Width(122));
+            EditorGUILayout.LabelField(label, EditorStyles.boldLabel, GUILayout.Width(160));
 
-            condition.boolean = EditorGUILayout.Toggle(condition.boolean);
+            EditorGUIUtility.fieldWidth = 0;
+            condition.Boolean = EditorGUILayout.Toggle(condition.Boolean, GUILayout.Width(25));
+            EditorGUIUtility.fieldWidth = originalFieldWidth;
+
+            EditorGUIUtility.labelWidth = 0;
+            GUI.enabled = false;
+            var defaultColor = GUI.color;
+            GUI.color = action.CanAction ? Color.green : Color.red;
+            var status = action.CanAction ? "Active" : "Inactive";
+            EditorGUILayout.TextField("", status, GUILayout.Width(60));
+            GUI.color = defaultColor;
+            GUI.enabled = true;
+            EditorGUIUtility.labelWidth = originalLabelWidth;
 
             GUILayout.FlexibleSpace();
             
             if (GUILayout.Button("Delete", EditorStyles.miniButtonLeft, GUILayout.Width(50)))
             {
-                action.BinaryCollection.RevokeCondition(condition.Enum);
+                action.BinaryConditions.RevokeCondition(condition.Enum);
             }
 
             EditorGUILayout.EndHorizontal();
@@ -53,28 +76,28 @@ public abstract class ActionEditor : Editor
 
     private void AddPropertyDropdown()
     {
-        var rect = EditorGUILayout.BeginHorizontal("Box");
+        EditorGUILayout.BeginHorizontal("Box");
 
         float originalValue = EditorGUIUtility.labelWidth;
         EditorGUIUtility.labelWidth = 70;
-        action.PropertyCollection.Enum = (Action.PropertyCondition.PropertyEnum) EditorGUILayout.EnumPopup("Properties", action.PropertyCollection.Enum, GUILayout.Width(210));
+        action.PropertyConditions.Enum = (PropertyCondition.PropertyEnum) EditorGUILayout.EnumPopup("Properties", action.PropertyConditions.Enum, GUILayout.Width(210));
         EditorGUIUtility.labelWidth = originalValue;
 
         GUILayout.FlexibleSpace();
 
-        if (GUILayout.Button("Add Condition", EditorStyles.miniButtonLeft, GUILayout.Width(95)))
+        if (GUILayout.Button("Add", EditorStyles.miniButtonLeft, GUILayout.Width(50)))
         {
-            action.PropertyCollection.AddCondition(action.PropertyCollection.Enum);
+            action.PropertyConditions.AddCondition(action.PropertyConditions.Enum);
         }
 
         EditorGUILayout.EndHorizontal();
     }
 
-    private void EmbedVelocityConfiguration(Action.VelocityCondition condition)
+    private void EmbedVelocityConfiguration(VelocityCondition condition)
     {
         if (condition.xAxis == null)
         {
-            condition.xAxis = new Action.VelocityCondition.AxisValue();
+            condition.xAxis = new VelocityCondition.AxisValue();
         }
 
         condition.xAxis.include = EditorGUILayout.BeginToggleGroup("X Axis", condition.xAxis.include);
@@ -85,7 +108,7 @@ public abstract class ActionEditor : Editor
 
             if (condition.xAxis.isNonZero)
             {
-                condition.xAxis.sign = (Action.VelocityCondition.SignEnum) EditorGUILayout.EnumPopup("Sign", condition.xAxis.sign, GUILayout.Width(225));
+                condition.xAxis.sign = (VelocityCondition.SignEnum) EditorGUILayout.EnumPopup("Sign", condition.xAxis.sign, GUILayout.Width(225));
             }
         }
 
@@ -94,7 +117,7 @@ public abstract class ActionEditor : Editor
 
         if (condition.yAxis == null)
         {
-            condition.yAxis = new Action.VelocityCondition.AxisValue();
+            condition.yAxis = new VelocityCondition.AxisValue();
         }
 
         condition.yAxis.include = EditorGUILayout.BeginToggleGroup("Y Axis", condition.yAxis.include);
@@ -105,7 +128,7 @@ public abstract class ActionEditor : Editor
 
             if (condition.yAxis.isNonZero)
             {
-                condition.yAxis.sign = (Action.VelocityCondition.SignEnum) EditorGUILayout.EnumPopup("Sign", condition.yAxis.sign, GUILayout.Width(225));
+                condition.yAxis.sign = (VelocityCondition.SignEnum) EditorGUILayout.EnumPopup("Sign", condition.yAxis.sign, GUILayout.Width(225));
             }
         }
 
@@ -114,17 +137,20 @@ public abstract class ActionEditor : Editor
 
     private void AddPropertyConfiguration()
     {
-        foreach (var condition in action.PropertyCollection.Conditions)
+        float originalFieldWidth = EditorGUIUtility.fieldWidth;
+        float originalLabelWidth = EditorGUIUtility.labelWidth;
+
+        foreach (var condition in action.PropertyConditions.Conditions)
         {
             EditorGUILayout.BeginVertical("Box");
 
             var label = condition.Enum.ToString();
-            EditorGUILayout.LabelField(label, EditorStyles.boldLabel, GUILayout.Width(110));
+            EditorGUILayout.LabelField(label, EditorStyles.boldLabel, GUILayout.Width(100));
 
             switch (condition.Enum)
             {
-                case Action.PropertyCondition.PropertyEnum.Velocity:
-                    EmbedVelocityConfiguration((Action.VelocityCondition) condition);
+                case PropertyCondition.PropertyEnum.Velocity:
+                    EmbedVelocityConfiguration((VelocityCondition) condition);
                     break;
             }
 
@@ -134,20 +160,12 @@ public abstract class ActionEditor : Editor
         
             if (GUILayout.Button("Delete", EditorStyles.miniButtonLeft, GUILayout.Width(50)))
             {
-                action.PropertyCollection.RevokeCondition(condition.Enum);
+                action.PropertyConditions.RevokeCondition(condition.Enum);
             }
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
         }
-    }
-
-    private void AddLine(int height = 1)
-    {
-        var rect = EditorGUILayout.GetControlRect(false, height);
-        rect.height = height;
-        
-        EditorGUI.DrawRect(rect, new Color(0.5f, 0.5f, 0.5f, 1f));
     }
 
     // private bool CanExecute() => state.Essentials != null ? state.TestConditions() : false;
@@ -179,19 +197,22 @@ public abstract class ActionEditor : Editor
         EditorGUILayout.Space();
 
         float originalValue = EditorGUIUtility.labelWidth;
-        EditorGUIUtility.labelWidth = 75;
-        // FontStyle originalFontStyle = EditorStyles.label.fontStyle;
-        // EditorStyles.label.fontStyle = FontStyle.Bold;
+        EditorGUIUtility.labelWidth = 50;
+        
+        FontStyle originalFontStyle = EditorStyles.label.fontStyle;
+        EditorStyles.label.fontStyle = FontStyle.Bold;
+        
         // EditorGUI.BeginDisabledGroup(true);
         GUI.enabled = false;
         var defaultColor = GUI.color;
-        GUI.color = action.CanExecute ? Color.green : Color.red;
-        var status = action.CanExecute ? "Active" : "Inactive";
-        EditorGUILayout.TextField("Status", status, GUILayout.Width(210));
+        GUI.color = action.CanAction ? Color.green : Color.red;
+        var status = action.CanAction ? "Active" : "Inactive";
+        EditorGUILayout.TextField("Status", status, GUILayout.Width(110));
         GUI.color = defaultColor;
         GUI.enabled = true;
         // EditorGUI.EndDisabledGroup();
-        // EditorStyles.label.fontStyle = originalFontStyle;
+        
+        EditorStyles.label.fontStyle = originalFontStyle;
         EditorGUIUtility.labelWidth = originalValue;
     }
 }

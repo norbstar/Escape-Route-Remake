@@ -14,8 +14,8 @@ namespace Tests.Actions
 
         private InputSystem_Actions inputActions;
         private Rigidbody2D rigidBody;
-        private bool canDo;
         private int jumpCount;
+        private bool canDo;
         
         void Awake()
         {

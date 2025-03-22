@@ -24,23 +24,20 @@ namespace Tests
         [Header("Player UI")]
         [SerializeField] Transform arrowBaseUI;
 
-        [Header("Analytics")]
-        [SerializeField] int instanceID;
+        // [Header("Analytics")]
+        // [SerializeField] int instanceID;
 
         public static float MIN_REGISTERED_VALUE = 0.01f;
 
         private Rigidbody2D rigidBody;
-        // private SpriteShapeRenderer spriteShapeRenderer;
         private SpriteShapeModifier spriteShapeModifier;
         private AudioSource audioSource;
         private CustomInputSystem inputSystem;
         private InputSystem_Actions inputActions;
         private bool isBlockedTop, isBlockedRight, isGrounded, isBlockedLeft, isHolding, isDashing, isGrabbable, isTraversable, isContactable, isCrouching, isSliding;
-        // private Actions.Action[] actions;
-        // private Events.Event[] events;
         private Trigger[] triggers;
         private PlayerStateEnum playerState;
-        private bool /*suspendInput,*/ showArrow;
+        private bool showArrow;
         private float originalGravityScale;
         private GameObject grabbable;
         private Events.FallEvent fallEvent;
@@ -104,10 +101,6 @@ namespace Tests
 
         public override bool IsGravityEnabled() => rigidBody.gravityScale != 0f;
 
-        // public override void SetSuspendInput(bool suspendInput) => this.suspendInput = suspendInput;
-
-        // public override bool IsInputSuspended() => suspendInput;
-
         public override void SetSuspendInput(bool suspendInput) => inputSystem.Enable(!suspendInput);
 
         public override bool IsInputSuspended() => inputSystem.IsEnabled();
@@ -137,42 +130,8 @@ namespace Tests
                 }
             }
 
-            // actions = GetComponents<Actions.Action>();
-
-            // foreach (var action in actions)
-            // {
-            //     action.Essentials = this;
-            // }
-
-            // events = GetComponents<Events.Event>();
-            
-            // foreach (var evt in events)
-            // {
-            //     evt.Essentials = this;
-
-            //     if (evt.GetType() == typeof(Events.FallEvent))
-            //     {
-            //         fallEvent = (Events.FallEvent) evt;
-            //     }
-            // }
-
-            instanceID = gameObject.GetInstanceID();
+            // instanceID = gameObject.GetInstanceID();
         }
-
-        // void OnEnable()
-        // {
-        //     var virtualCamera = FindFirstObjectByType<CinemachineVirtualCamera>();
-
-        //     if (virtualCamera != null)
-        //     {
-        //         var follow = new GameObject("Follow");
-        //         follow.transform.position = Vector3.zero;
-        //         follow.transform.SetParent(transform);
-        //         virtualCamera.Follow = follow.transform;
-
-        //         virtualCamera.Follow = transform;
-        //     }
-        // }
 
         void OnEnable() => fallEvent.Subscribe(OnLanded);
 
@@ -242,15 +201,6 @@ namespace Tests
                         trigger.OnBlockedTop();
                     }
 
-                    // foreach (var state in actions)
-                    // {
-                    //     state.OnBlockedTop();
-                    // }
-
-                    // foreach (var evt in events)
-                    // {
-                    //     evt.OnBlockedTop();
-                    // }
                     break;
 
                 case EdgeTriggerHandler.Edge.Right:
@@ -261,15 +211,6 @@ namespace Tests
                         trigger.OnBlockedRight();
                     }
 
-                    // foreach (var state in actions)
-                    // {
-                    //     state.OnBlockedRight();
-                    // }
-
-                    // foreach (var evt in events)
-                    // {
-                    //     evt.OnBlockedRight();
-                    // }
                     break;
 
                 case EdgeTriggerHandler.Edge.Bottom:
@@ -280,15 +221,6 @@ namespace Tests
                         trigger.OnGrounded();
                     }
 
-                    // foreach (var state in actions)
-                    // {
-                    //     state.OnGrounded();
-                    // }
-
-                    // foreach (var evt in events)
-                    // {
-                    //     evt.OnGrounded();
-                    // }
                     break;
 
                 case EdgeTriggerHandler.Edge.Left:
@@ -299,15 +231,6 @@ namespace Tests
                         trigger.OnBlockedLeft();
                     }
 
-                    // foreach (var state in actions)
-                    // {
-                    //     state.OnBlockedLeft();
-                    // }
-
-                    // foreach (var evt in events)
-                    // {
-                    //     evt.OnBlockedLeft();
-                    // }
                     break;
             }
         }
@@ -324,10 +247,6 @@ namespace Tests
                         trigger.OnNotBlockedTop();
                     }
 
-                    // foreach (var state in actions)
-                    // {
-                    //     state.OnNotBlockedTop();
-                    // }
                     break;
 
                 case EdgeTriggerHandler.Edge.Right:
@@ -338,10 +257,6 @@ namespace Tests
                         trigger.OnNotBlockedRight();
                     }
 
-                    // foreach (var state in actions)
-                    // {
-                    //     state.OnNotBlockedRight();
-                    // }
                     break;
 
                 case EdgeTriggerHandler.Edge.Bottom:
@@ -352,10 +267,6 @@ namespace Tests
                         trigger.OnNotGrounded();
                     }
 
-                    // foreach (var state in actions)
-                    // {
-                    //     state.OnNotGrounded();
-                    // }
                     break;
 
                 case EdgeTriggerHandler.Edge.Left:
@@ -366,10 +277,6 @@ namespace Tests
                         trigger.OnNotBlockedLeft();
                     }
 
-                    // foreach (var state in actions)
-                    // {
-                    //     state.OnNotBlockedLeft();
-                    // }
                     break;
             }
         }
@@ -390,29 +297,9 @@ namespace Tests
             });
         }
 
-        public override void Activate()
-        {
-            // if (spriteShapeRenderer == null)
-            // {
-            //     spriteShapeRenderer = GetComponent<SpriteShapeRenderer>();
-            // }
-            
-            // spriteShapeRenderer.enabled = spotLight.enabled = true;
+        public override void Activate() => gameObject.SetActive(true);
 
-            gameObject.SetActive(true);
-        }
-
-        public override void Deactivate()
-        {
-            // if (spriteShapeRenderer == null)
-            // {
-            //     spriteShapeRenderer = GetComponent<SpriteShapeRenderer>();
-            // }
-
-            // spriteShapeRenderer.enabled = spotLight.enabled = false;
-
-            gameObject.SetActive(false);
-        }
+        public override void Deactivate() => gameObject.SetActive(false);
 
         private void AscertState()
         {

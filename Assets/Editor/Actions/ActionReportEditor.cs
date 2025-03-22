@@ -4,11 +4,19 @@ using UnityEngine;
 
 using Tests.Actions;
 
-#if false
-[CustomEditor(typeof(StateReport))]
-public class StateReportEditor : Editor
+[CustomEditor(typeof(ActionReport))]
+public class ActionReportEditor : Editor
 {
-    private StateReport stateReport;
+    private ActionReport actionReport;
+
+#if false
+    private void AddLine(int height = 1)
+    {
+        var rect = EditorGUILayout.GetControlRect(false, height);
+        rect.height = height;
+        
+        EditorGUI.DrawRect(rect, new Color(0.5f, 0.5f, 0.5f, 1f));
+    }
 
     private void AddExecutingIndicators()
     {
@@ -17,12 +25,12 @@ public class StateReportEditor : Editor
         var defaultColor = GUI.color;
         GUI.color = Color.green;
 
-        foreach (var state in stateReport.States)
+        foreach (var action in actionReport.Actions)
         {
-            if (state.CanExecute)
+            if (action.CanAction)
             {
                 EditorGUILayout.BeginVertical("Box");
-                EditorGUILayout.LabelField(state.GetType().Name);
+                EditorGUILayout.LabelField(action.GetType().Name);
                 EditorGUILayout.EndVertical();
             }
         }
@@ -37,50 +45,48 @@ public class StateReportEditor : Editor
         var defaultColor = GUI.color;
         GUI.color = Color.red;
 
-        foreach (var state in stateReport.States)
+        foreach (var action in actionReport.Actions)
         {
-            if (!state.CanExecute)
+            if (!action.CanAction)
             {
                 EditorGUILayout.BeginVertical("Box");
-                EditorGUILayout.LabelField(state.GetType().Name);
+                EditorGUILayout.LabelField(action.GetType().Name);
                 EditorGUILayout.EndVertical();
             }
         }
 
         GUI.color = defaultColor;
     }
+#endif
 
-    private void AddStatusReport()
+    private void AddReport()
     {
-        EditorGUILayout.LabelField("Status Overview", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Actions", EditorStyles.boldLabel);
 
-        foreach (var state in stateReport.States)
+        float originalValue = EditorGUIUtility.labelWidth;
+        EditorGUIUtility.labelWidth = 150;
+
+        foreach (var action in actionReport.Actions)
         {
             EditorGUILayout.BeginVertical("Box");
             GUI.enabled = false;
             var defaultColor = GUI.color;
-            GUI.color = state.CanExecute ? Color.green : Color.red;
-            var status = state.CanExecute ? "Active" : "Inactive";
-            EditorGUILayout.TextField(state.GetType().Name, status, GUILayout.Width(210));
+            GUI.color = action.CanAction ? Color.green : Color.red;
+            var status = action.CanAction ? "Active" : "Inactive";
+            EditorGUILayout.TextField(action.GetType().Name, status, GUILayout.Width(210));
             GUI.color = defaultColor;
             GUI.enabled = true;
             EditorGUILayout.EndVertical();
         }
-    }
 
-    private void AddLine(int height = 1)
-    {
-        var rect = EditorGUILayout.GetControlRect(false, height);
-        rect.height = height;
-        
-        EditorGUI.DrawRect(rect, new Color(0.5f, 0.5f, 0.5f, 1f));
+        EditorGUIUtility.labelWidth = originalValue;
     }
 
     public override void OnInspectorGUI()
     {
-        stateReport = (StateReport) target;
+        actionReport = (ActionReport) target;
 
-        if (stateReport.States == null) return;
+        if (actionReport.Actions == null) return;
 
         // AddExecutingIndicators();
 
@@ -89,8 +95,7 @@ public class StateReportEditor : Editor
         // EditorGUILayout.Space();
 
         // AddNonExecutingIndicators();
-        AddStatusReport();
+        AddReport();
     }
 }
-#endif
 #endif

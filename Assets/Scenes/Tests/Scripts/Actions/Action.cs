@@ -1,162 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using UnityEngine;
 
 namespace Tests.Actions
 {
     public abstract class Action : Trigger
     {
-        [Serializable]
-        public class BinaryCondition
-        {
-            public enum BinaryEnum
-            {
-                IsMoving,
-                IsJumping,
-                IsCrouching,
-                IsGrabbable,
-                IsTraversable,
-                IsHolding,
-                IsDashing,
-                IsSliding,
-                IsInputSuspended,
-                IsBlockedTop,
-                IsBlockedRight,
-                IsGrounded,
-                IsBlockedLeft
-            }
+        protected bool canAction;
 
-            public BinaryCondition(BinaryEnum @enum) => this.@enum = @enum;
+        public bool CanAction => canAction;
 
-            private BinaryEnum @enum;
-            
-            public BinaryEnum Enum { get => @enum; set => @enum = value; }
+        private BinaryConditions binaryConditions = new BinaryConditions();
 
-            public bool boolean;
-        }
+        public BinaryConditions BinaryConditions => binaryConditions;
 
-        [Serializable]
-        public class BinaryConditions
-        {
-            private List<BinaryCondition> conditions;
+        private PropertyConditions propertyConditions = new PropertyConditions();
 
-            private BinaryCondition.BinaryEnum @enum;
-            
-            public BinaryCondition.BinaryEnum Enum { get => @enum; set => @enum = value; }
-
-            public List<BinaryCondition> Conditions
-            {
-                get
-                {
-                    if (conditions == null)
-                    {
-                        conditions = new List<BinaryCondition>();
-                    }
-
-                    return conditions.ToList();
-                }
-                
-                set => conditions = value;
-            }
-
-            public void AddCondition(BinaryCondition.BinaryEnum condition)
-            {
-                if (conditions.Exists(c => c.Enum == condition)) return;
-                conditions.Add(new BinaryCondition(condition));
-            }
-
-            public void RevokeCondition(BinaryCondition.BinaryEnum condition) => conditions.RemoveAll(c => c.Enum == condition);
-        }
-
-        [Serializable]
-        public abstract class PropertyCondition
-        {
-            public enum PropertyEnum
-            {
-                Velocity
-            }
-
-            public PropertyCondition(PropertyEnum @enum) => this.@enum = @enum;
-
-            private PropertyEnum @enum;
-            
-            public PropertyEnum Enum { get => @enum; set => @enum = value; }
-        }
-
-        [Serializable]
-        public class VelocityCondition : PropertyCondition
-        {
-            public enum SignEnum
-            {
-                Positive,
-                Negative,
-                Either
-            }
-
-            [Serializable]
-            public class AxisValue
-            {
-                public bool include;
-                public bool isNonZero;
-                public SignEnum sign;
-            }
-            
-            public VelocityCondition(PropertyEnum @enum) : base(@enum) { }
-
-            public AxisValue xAxis;
-            public AxisValue yAxis;
-        }
-
-        [Serializable]
-        public class PropertyConditions
-        {
-            private List<PropertyCondition> conditions;
-
-            public PropertyCondition.PropertyEnum @enum;
-            
-            public PropertyCondition.PropertyEnum Enum { get => @enum; set => @enum = value; }
-
-            public List<PropertyCondition> Conditions
-            {
-                get
-                {
-                    if (conditions == null)
-                    {
-                        conditions = new List<PropertyCondition>();
-                    }
-
-                    return conditions.ToList();
-                }
-                
-                set => conditions = value;
-            }
-
-            public void AddCondition(PropertyCondition.PropertyEnum condition)
-            {
-                if (conditions.Exists(c => c.Enum == condition)) return;
-
-                switch (condition)
-                {
-                    case PropertyCondition.PropertyEnum.Velocity:
-                        conditions.Add(new VelocityCondition(condition));
-                        break;
-                }
-            }
-
-            public void RevokeCondition(PropertyCondition.PropertyEnum condition) => conditions.RemoveAll(c => c.Enum == condition);
-        }
-
-        protected bool canExecute;
-
-        public bool CanExecute => canExecute;
-
-        public BinaryConditions BinaryCollection { get; set; } = new BinaryConditions();
-
-        public PropertyConditions PropertyCollection { get; set; } = new PropertyConditions();
+        public PropertyConditions PropertyConditions => propertyConditions;
         
-        private bool TestBinaryCondition(BinaryCondition.BinaryEnum state, bool value)
+        private bool TestCondition(BinaryCondition.BinaryEnum state, bool value)
         {
             bool result = false;
 
@@ -218,7 +78,7 @@ namespace Tests.Actions
             return result;
         }
 
-        private bool TestVelocityCondition(VelocityCondition condition)
+        private bool TestCondition(VelocityCondition condition)
         {
             if (condition.xAxis.include)
             {
@@ -287,34 +147,31 @@ namespace Tests.Actions
             return true;
         }
         
-        public void TestConditions()
+        public void TestAction()
         {
-            var canExecute = true;
-
-            foreach (var condition in BinaryCollection.Conditions)
+            foreach (var condition in binaryConditions.Conditions)
             {
-                canExecute = TestBinaryCondition(condition.Enum, condition.boolean);
-                if (!canExecute) break;
+                canAction = TestCondition(condition.Enum, condition.Boolean);
+                if (!canAction) break;
             }
 
-            if (canExecute)
+            if (!canAction) return;
+
+            foreach (var condition in propertyConditions.Conditions)
             {
-                foreach (var condition in PropertyCollection.Conditions)
+                switch (condition.Enum)
                 {
-                    switch (condition.Enum)
-                    {
-                        case PropertyCondition.PropertyEnum.Velocity:
-                            canExecute = TestVelocityCondition((VelocityCondition) condition);
-                            break;
-                    }
-
-                    if (!canExecute) break;
+                    case PropertyCondition.PropertyEnum.Velocity:
+                        canAction = TestCondition((VelocityCondition) condition);
+                        break;
                 }
+
+                if (!canAction) break;
             }
-            
-            this.canExecute = canExecute;
+
+            // if (!canAction) return;
         }
 
-        public virtual void FixedUpdate() => TestConditions();
+        public virtual void FixedUpdate() => TestAction();
     }
 }

@@ -597,6 +597,7 @@ GameObject:
   - component: {fileID: 866190008849597548}
   - component: {fileID: 4351664096799953022}
   - component: {fileID: 636368420702859729}
+  - component: {fileID: 2117811083823562749}
   - component: {fileID: 4201907930334781997}
   - component: {fileID: 4400592807675468690}
   - component: {fileID: 2492654755538693766}
@@ -958,7 +959,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 95b42b4cb11b3954b9e6f3f9a3212690, type: 3}
   m_Name: 
@@ -971,7 +972,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6ca8b5cfd9a57147ba5bcb53dc63217, type: 3}
   m_Name: 
@@ -986,7 +987,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5bb646971e2dcc4b859258cb45cbad5, type: 3}
   m_Name: 
@@ -1013,7 +1014,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb687a77ed215824181cda390b04f182, type: 3}
   m_Name: 
@@ -1083,7 +1084,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3059291180111979932}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c04fd4a6736daac4986c0b20b054fb65, type: 3}
   m_Name: 
@@ -1103,6 +1104,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actions: []
+--- !u!114 &2117811083823562749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059291180111979932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f58851cb6bbb46044903104886cc6ff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  events: []
 --- !u!114 &4201907930334781997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1115,10 +1129,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ab3712bc246be649b20bfa15be11764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canMove: 1
+  canMove: 0
   canJump: 1
   canShift: 0
-  canDash: 1
+  canDash: 0
   canSneak: 0
   canSlide: 0
   canGrab: 0
@@ -1152,7 +1166,6 @@ MonoBehaviour:
   trailRenderer: {fileID: 1042140020813796802}
   spotLight: {fileID: 4842975783025376491}
   arrowBaseUI: {fileID: 254104720836281314}
-  instanceID: 0
 --- !u!1 &3954563937439435231
 GameObject:
   m_ObjectHideFlags: 0
